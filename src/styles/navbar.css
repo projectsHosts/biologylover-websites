@@ -1,0 +1,146 @@
+/* ---------------- BASE NAVBAR ---------------- */
+.site-nav {
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ---------------- NAV MENU ---------------- */
+.nav-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-menu ul li {
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-menu ul li:hover {
+  color: #ffd700;
+}
+
+/* ---------------- DROPDOWN ---------------- */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none; /* Hidden by default */
+  visibility: hidden; /* Additional layer of hiding */
+  opacity: 0; /* Fade effect when hidden */
+  background: rgba(0,0,0,0.95);
+  padding: 15px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  flex-direction: column;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Delay visibility transition */
+  z-index: 1001;
+}
+
+.dropdown-menu li {
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu li:hover {
+  background: rgba(135,206,250,0.2);
+}
+
+/* Show dropdown when React adds "show" class */
+.dropdown-menu.show {
+  display: flex; /* Show the menu */
+  visibility: visible; /* Make visible */
+  opacity: 1; /* Fade in */
+  transition: opacity 0.3s ease; /* Smooth fade */
+}
+
+/* ---------------- HAMBURGER ---------------- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .nav-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.95);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    flex-direction: column;
+  }
+
+  .nav-menu.show {
+    max-height: 600px; 
+  }
+
+  .nav-menu ul {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  /* Mobile dropdown slide */
+  .dropdown-menu {
+    position: static;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    background: rgba(0,0,0,0.8);
+    margin-left: 15px;
+    border-left: 2px solid #fff;
+    padding-left: 10px;
+  }
+
+  .dropdown-menu.show {
+    max-height: 500px;
+  }
+}

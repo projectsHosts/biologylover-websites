@@ -1,0 +1,174 @@
+/* --- FOOTER STYLES --- */
+.hostbooks-footer {
+    background: #000;
+    position: relative;
+    padding: 60px 40px 100px;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* --- Watermark Effect (Huge translucent "Biology") --- */
+.hostbooks-footer::after {
+    content: "Biology";
+    position: absolute;
+    bottom: -150px;
+    right: -100px;
+    font-size: 250px;
+    font-weight: 900;
+    /* Updated to sky-blue and light-pink gradient */
+    background: linear-gradient(135deg, rgba(135, 206, 250, 0.1), rgba(255, 182, 193, 0.1)); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.1;
+    z-index: 0;
+    user-select: none;
+    pointer-events: none;
+    transform: rotate(-10deg);
+}
+
+/* --- Gradient Overlay (Sky-blue & Light-pink glow) --- */
+.hostbooks-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(at 80% 20%, rgba(135, 206, 250, 0.2) 0%, transparent 50%),
+                radial-gradient(at 20% 80%, rgba(255, 182, 193, 0.2) 0%, transparent 50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- Column Layout --- */
+.footer-columns-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2; 
+}
+
+.footer-col {
+    padding: 0 15px;
+    line-height: 1.6;
+}
+
+.footer-col-info {
+    flex: 2;
+    max-width: 35%;
+}
+
+.footer-col-links {
+    flex: 1;
+    max-width: 20%;
+}
+
+/* --- Logo and Description --- */
+.footer-logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 5px;
+}
+.logo-tagline {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: -5px;
+    margin-bottom: 20px;
+}
+.company-description {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* --- Contact Items --- */
+.location-flag {
+    margin: 20px 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+.location-flag .flag-icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+}
+.contact-item {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    color: #ccc;
+}
+.contact-item span {
+    margin-right: 10px;
+    color: #999;
+}
+.contact-item a {
+    color: #ccc;
+    text-decoration: none;
+}
+.contact-item a:hover {
+    color: #fff;
+}
+
+/* --- Link Columns --- */
+.footer-col h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+}
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-col li {
+    margin-bottom: 10px;
+}
+.footer-col-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.footer-col-links a:hover {
+    color: #fff;
+}
+
+/* --- Social Icons --- */
+.footer-social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+.footer-social-icons a {
+    color: #fff;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+.footer-social-icons a:hover {
+    color: #00bcd4;
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 1024px) {
+    .footer-columns-container {
+        flex-wrap: wrap;
+    }
+    .footer-col-info {
+        max-width: 100%;
+        margin-bottom: 40px;
+    }
+    .footer-col-links {
+        max-width: 50%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 550px) {
+    .footer-col-links {
+        max-width: 100%;
+    }
+}

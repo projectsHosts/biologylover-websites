@@ -1,0 +1,111 @@
+ 
+.team-section {
+  background: #000;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.team-title {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.team-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+.team-card {
+  width: 260px;
+  height: 340px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  border-radius: 15px;
+}
+
+.team-card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.5), /* green glow */
+              0 0 30px rgba(255, 0, 255, 0.3),  /* pink glow */
+              0 0 40px rgba(0, 150, 255, 0.2);  /* blue glow */
+}
+
+
+.card-front {
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-front img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card-front h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #00e676;
+}
+
+.card-front p {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.card-back {
+  background: #1a1a1a;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.card-back p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #eee;
+}
+
+.social-icons a {
+  margin: 0 10px;
+  font-size: 1.5rem;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #00e676;
+}
