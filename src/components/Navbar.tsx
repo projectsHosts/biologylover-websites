@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/navbar.css';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // mobile menu open
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null); // which dropdown open
   const [, setIsMobile] = useState(window.innerWidth <= 768);
 
+  const navigate = useNavigate(); 
+  
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleNav = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setIsOpen(false); // close mobile menu
-    setDropdownOpen(null); // close dropdown
+  const handleNav = (pathOrId: string, isRoute: boolean = false) => {
+    if (isRoute) {
+      navigate(pathOrId); // Navigate to page
+    } else {
+      const el = document.getElementById(pathOrId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsOpen(false);
+    setDropdownOpen(null);
   };
 
   const toggleDropdown = (menu: string) => {
@@ -41,7 +48,7 @@ const Navbar: React.FC = () => {
         {/* Menu */}
         <nav className={`nav-menu ${isOpen ? 'show' : ''}`}>
           <ul>
-            <li onClick={() => handleNav('home')}>Home</li>
+            <li onClick={() => handleNav('/',true)}>Home</li>
 
             {/* Courses Dropdown */}
             <li className="dropdown" onClick={() => toggleDropdown('courses')}>
@@ -71,7 +78,7 @@ const Navbar: React.FC = () => {
               </ul>
             </li>
 
-            <li onClick={() => handleNav('about')}>About Us</li>
+            <li onClick={() => handleNav('/about', true)}>About Us</li>
             <li onClick={() => handleNav('contact')}>Contact</li>
           </ul>
         </nav>
