@@ -7,6 +7,8 @@ import ScrollButton from './components/ScrollButton'
 import OurTeam from './components/Team'
 import AIExamPrep from './components/EntrenchPrep'
 import AboutUs from './components/About'
+import Blogs from './components/Blogs'; 
+import BlogDetail from './components/BlogDetail'; 
 import { Route, Routes } from 'react-router-dom'
 
 function App() {
@@ -29,6 +31,11 @@ function App() {
         } />
 
         <Route path="/about" element={<AboutUs />} />
+        {/* New: Blogs Page */}
+          <Route path="/blogs" element={<Blogs />} />
+
+          {/* New: Individual Blog Detail */}
+          <Route path="/blog/:subject" element={<BlogDetail />} />
       </Routes>
 
       <Footer />

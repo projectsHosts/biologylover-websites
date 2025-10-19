@@ -1,0 +1,102 @@
+/* ---------- Base Container ---------- */
+.blogs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  text-align: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #c2e9fb 0%, #a1c4fd 100%);
+  color: #222;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ---------- Title & Subtitle ---------- */
+.blogs-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #0a2540;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.blogs-subtitle {
+  font-size: 1.1rem;
+  color: #333;
+  opacity: 0.8;
+  margin-bottom: 3rem;
+}
+
+/* ---------- Flash Cards Grid ---------- */
+.flash-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+}
+
+/* ---------- Flash Card ---------- */
+.flash-card {
+  position: relative;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  color: #222;
+}
+
+.flash-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.flash-card:hover::before {
+  opacity: 1;
+}
+
+.flash-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Icon ---------- */
+.card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  margin: 0 auto 1rem auto;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Title & Description ---------- */
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0a2540;
+  margin: 0.8rem 0;
+}
+
+.card-desc {
+  font-size: 1rem;
+  color: #333;
+  opacity: 0.85;
+}
+
+/* ---------- Hover Glow ---------- */
+.flash-card:hover .card-icon {
+  transform: rotate(10deg) scale(1.1);
+  transition: transform 0.3s ease;
+}

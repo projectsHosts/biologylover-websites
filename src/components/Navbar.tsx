@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
               </ul>
             </li>
 
-            <li onClick={() => handleNav('blogs')}>Blogs</li>
+            <li onClick={() => handleNav('/blogs', true)}>Blogs</li>
 
             {/* More Dropdown */}
             <li className="dropdown" onClick={() => toggleDropdown('more')}>
