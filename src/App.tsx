@@ -10,6 +10,7 @@ import AboutUs from './components/About'
 import Blogs from './components/Blogs'; 
 import BlogDetail from './components/BlogDetail'; 
 import { Route, Routes } from 'react-router-dom'
+import Faq from './components/Faq'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <OurTeam />
               <AIExamPrep />
               <Courses />
+              <Faq />
               <Contact />
             </main>
           </>

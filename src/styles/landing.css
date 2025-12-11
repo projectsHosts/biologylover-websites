@@ -1,15 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .landing-section {
   position: relative;
   min-height: 100vh;
-  padding-top: 60px; /* leave space for sticky navbar */
+  padding-top: 60px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
 }
 
+/* ============================================
+   ANIMATED BACKGROUND BLOBS
+   ============================================ */
+.blob {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+}
+
+.blob-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #00ff88, #00d4ff);
+  top: 10%;
+  left: 10%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.blob-2 {
+  width: 280px;
+  height: 280px;
+  background: linear-gradient(135deg, #00d4ff, #0099ff);
+  top: 30%;
+  right: 5%;
+  animation: float 10s ease-in-out infinite 2s;
+}
+
+.blob-3 {
+  width: 320px;
+  height: 320px;
+  background: linear-gradient(135deg, #00ff88, #0099ff);
+  bottom: 5%;
+  left: 20%;
+  animation: float 9s ease-in-out infinite 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+/* ============================================
+   BACKGROUND VIDEO & OVERLAY
+   ============================================ */
 .bg-video {
   position: absolute;
   top: 0;
@@ -17,7 +78,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -2;
+  z-index: 0;
+  opacity: 0.6;
 }
 
 .overlay {
@@ -26,94 +88,392 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
-  z-index: -1;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+  z-index: 2;
 }
 
+/* ============================================
+   CONTENT WRAPPER
+   ============================================ */
 .landing-content {
-  max-width: 800px;
+  position: relative;
+  z-index: 3;
+  max-width: 900px;
   padding: 0 20px;
-  animation: fadeIn 2s ease-in-out;
+  width: 100%;
 }
 
-/* Title and tagline */
-.title {
-  font-size: 4rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* ============================================
+   BADGE
+   ============================================ */
+.badge {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgba(0, 255, 136, 0.15);
+  border: 1px solid rgba(0, 255, 136, 0.5);
+  border-radius: 50px;
   margin-bottom: 1rem;
-  text-transform: uppercase;
-  background: linear-gradient(90deg, #ff0000, #0057ff, #000000);
+  opacity: 0;
+  backdrop-filter: blur(10px);
+}
+
+.badge-text {
+  color: #00ff88;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   TITLE & GRADIENT TEXT
+   ============================================ */
+.title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  opacity: 0;
+  text-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+}
+
+.title-gradient {
+  background: linear-gradient(90deg, #00ff88, #00d4ff, #0099ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientMove 4s infinite linear;
+  background-clip: text;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(30deg);
+  }
+}
+
+/* ============================================
+   TAGLINE SECTION
+   ============================================ */
+.tagline-section {
+  margin-bottom: 1rem;
+  opacity: 0;
 }
 
 .tagline {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #b0b0c0;
   line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
+/* ============================================
+   CTA BUTTONS
+   ============================================ */
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-text,
+.btn-icon {
+  position: relative;
+  z-index: 1;
+}
+
+/* Primary Button */
 .btn-primary {
-  background: #28a745;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 30px;
-  padding: 12px 24px;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background: #218838;
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 2px solid #fff;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 30px;
-  padding: 12px 24px;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background: #fff;
+  background: linear-gradient(135deg, #00ff88, #00d4ff);
   color: #000;
 }
 
-/* Buttons */
-.cta-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0, 255, 136, 0.4);
 }
 
-/* .btn-primary,
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+/* Secondary Button */
 .btn-secondary {
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-} */
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-  .title { font-size: 2.5rem; }
-  .tagline { font-size: 1.2rem; margin-bottom: 1.5rem; }
-  .cta-buttons { flex-direction: column; gap: 0.8rem; }
-  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 0.9rem; }
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.btn-secondary:hover {
+  border-color: #00d4ff;
+  color: #00d4ff;
+  background: rgba(0, 212, 255, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+.scroll-indicator {
+  color: #00ff88;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  margin-bottom: 1rem;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* ============================================
+   STATS PREVIEW
+   ============================================ */
+.stats-preview {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  margin-top: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00ff88, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #b0b0c0;
+  font-weight: 500;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   TABLET RESPONSIVE (768px and below)
+   ============================================ */
+@media (max-width: 768px) {
+  .landing-section {
+    padding-top: 60px;
+    min-height: 90vh;
+  }
+
+  .title {
+    font-size: 2.8rem;
+    letter-spacing: 0.5px;
+  }
+
+  .tagline {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .stats-preview {
+    gap: 1.5rem;
+    flex-direction: column;
+  }
+
+  .stat-item {
+    padding: 1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .blob-1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .blob-2 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .blob-3 {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (480px and below)
+   ============================================ */
 @media (max-width: 480px) {
-  .title { font-size: 2rem; }
-  .tagline { font-size: 1rem; margin-bottom: 1rem; }
-  .landing-content { padding: 0 15px; }
-  .cta-buttons a { width: 100%; text-align: center; }
+  .landing-section {
+    min-height: 80vh;
+    padding-top: 60px;
+  }
+
+  .title {
+    font-size: 2rem;
+    letter-spacing: 0px;
+    margin-bottom: 1rem;
+  }
+
+  .tagline {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .badge-text {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    padding: 11px 20px;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .cta-buttons {
+    gap: 0.8rem;
+  }
+
+  .stats-preview {
+    gap: 1rem;
+  }
+
+  .stat-number {
+    font-size: 1.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+
+  .blob-1 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .blob-2 {
+    width: 130px;
+    height: 130px;
+  }
+
+  .blob-3 {
+    width: 150px;
+    height: 150px;
+  }
 }
