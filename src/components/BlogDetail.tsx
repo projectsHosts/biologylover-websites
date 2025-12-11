@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "../styles/BlogDetail.css";
+import "../styles/blogDetail.css";
 
 import kinematics1 from "../assets/blogs/phy/Displacement–Time Graph.png";
 import kinematics2 from "../assets/blogs/phy/Velocity–Time Graph.png";
