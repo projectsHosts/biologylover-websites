@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../styles/Blogs.css';
+import '../styles/blogs.css';
 
 interface Subject {
   id: string;
