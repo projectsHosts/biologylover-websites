@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import '../styles/landing.css';
 
 const Landing: React.FC = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const [, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
