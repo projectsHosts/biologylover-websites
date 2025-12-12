@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/EntrenchPrep.css";
 
 import biologyImg from "../assets/ai-prep/biology.png"; 
@@ -40,6 +41,7 @@ const cards = [
 
 export default function AIExamPrep() {
   const [current, setCurrent] = useState(0);
+  const navigate = useNavigate();
 
   const nextSlide = () => setCurrent((prev) => (prev + 1) % cards.length);
   const prevSlide = () => setCurrent((prev) => (prev - 1 + cards.length) % cards.length);
@@ -74,7 +76,10 @@ export default function AIExamPrep() {
                 <div className="overlay">
                   {/* <h3>{card.title}</h3> */}
                   {/* <p>{card.company}</p> */}
-                  <button>{card.button}</button>
+                  {/* <button>{card.button}</button> */}
+                  <button onClick={() => navigate("/ai-practice")}>
+                    {card.button}
+                  </button>
                 </div>
               </div>
             ))}

@@ -11,6 +11,7 @@ import Blogs from './components/Blogs';
 import BlogDetail from './components/BlogDetail'; 
 import { Route, Routes } from 'react-router-dom'
 import Faq from './components/Faq'
+import AIPracticeChat from './components/AIPracticeChat'
 
 function App() {
   return (
@@ -35,9 +36,11 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         {/* New: Blogs Page */}
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/ai-practice" element={<AIPracticeChat />} />
 
           {/* New: Individual Blog Detail */}
-          <Route path="/blog/:subject" element={<BlogDetail />} />
+          <Route path="/blog/:subject" element={<BlogDetail />}
+           />
       </Routes>
 
       <Footer />
