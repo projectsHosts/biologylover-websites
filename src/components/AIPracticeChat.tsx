@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/aipracticeChat.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080";
+
 interface Message {
   role: "user" | "assistant";
   content: string;
@@ -140,7 +142,7 @@ export default function AIPracticeChat() {
       }))
     );
 
-    const resp = await fetch("http://localhost:8080/api/ai/chat", {
+    const resp = await fetch(`${API_BASE}/api/ai/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
