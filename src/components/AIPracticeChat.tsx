@@ -52,85 +52,60 @@ export default function AIPracticeChat() {
 
   // Format AI response with proper HTML structure
 
-  const formatResponse = (text: string): string => {
+const formatResponse = (text: string): string => {
   if (!text) return "";
 
-  let output = text.trim();
+  const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
 
-  // --- AUTO NORMALIZATION ---
-  // Fix messy double spaces, triple newlines etc.
-  output = output.replace(/\r/g, "");
-  output = output.replace(/\n{3,}/g, "\n\n");
-  output = output.replace(/[ ]{2,}/g, " ");
+  let html = "";
+  let inList = false;
 
-  // --- SMART HEADING DETECTION ---
-  // "**Biology**" → <h2>
-  output = output.replace(/^\*\*([^*]+)\*\*/gm, (_m, p1) => {
-    return `<h2 class="ai-heading">${p1}</h2>`;
-  });
+  for (let line of lines) {
 
-  // Lines like "Study Timetable:" → Heading
-  output = output.replace(/^([A-Z][A-Za-z ]{2,40}):$/gm, (_m, p1) => {
-    return `<h2 class="ai-heading">${p1}</h2>`;
-  });
-
-  // Detect lines that look like section headers
-  output = output.replace(/^([A-Z][A-Za-z ]{3,50})\s*$/gm, (_m, p1) => {
-    if (p1.length < 50) return `<h3 class="ai-subheading">${p1}</h3>`;
-    return p1;
-  });
-
-  // --- SMART TIMETABLE DETECTION ---
-  // Example: "9:00 AM – 10:00 AM: Biology"
-  output = output.replace(
-    /(\d{1,2}:\d{2}\s*(?:AM|PM))\s*[-–]\s*(\d{1,2}:\d{2}\s*(?:AM|PM)):\s*(.+)/gi,
-    (_m, start, end, task) => {
-      return `
-      <div class="time-row">
-        <div class="time-slot">${start} - ${end}</div>
-        <div class="time-task">${task}</div>
-      </div>`;
+    // ---- TITLES ----
+    if (line.startsWith("Title:")) {
+      html += `<h2 class="ai-title">${line.replace("Title:", "").trim()}</h2>`;
+      continue;
     }
-  );
 
-  // --- SMART BULLET LIST DETECTION ---
-  // "- item" OR "• item" OR "* item"
-  output = output.replace(/^[-•*]\s+(.+)$/gm, "<li>$1</li>");
+    if (line.startsWith("Question:")) {
+      html += `<p class="ai-question">${line.replace("Question:", "").trim()}</p>`;
+      continue;
+    }
 
-  // wrap <li> inside <ul> automatically
-  if (output.includes("<li>")) {
-    output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ul>$1</ul>");
+    if (line.startsWith("Answer:")) {
+      html += `<p class="ai-answer">${line.replace("Answer:", "").trim()}</p>`;
+      continue;
+    }
+
+    if (line.endsWith("Points:")) {
+      if (inList) html += "</ol>";
+      html += `<h3 class="ai-subheading">${line}</h3><ol>`;
+      inList = true;
+      continue;
+    }
+
+    // ---- NUMBERED LIST ----
+    if (/^\d+\./.test(line)) {
+      html += `<li>${line.replace(/^\d+\.\s*/, "")}</li>`;
+      continue;
+    }
+
+    // ---- END LIST ----
+    if (inList && !/^\d+\./.test(line)) {
+      html += "</ol>";
+      inList = false;
+    }
+
+    // ---- NORMAL TEXT ----
+    html += `<p>${line}</p>`;
   }
 
-  // --- SMART NUMBERED LIST DETECTION ---
-  // "1. Step explanation"
-  output = output.replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>");
+  if (inList) html += "</ol>";
 
-  if (output.includes("<li>")) {
-    output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ol>$1</ol>");
-  }
-
-  // --- PARAGRAPH CONVERSION ---
-  const parts = output.split("\n");
-  output = parts
-    .map((block) => {
-      block = block.trim();
-      if (!block) return "";
-      if (
-        block.startsWith("<h2") ||
-        block.startsWith("<h3") ||
-        block.startsWith("<ul") ||
-        block.startsWith("<ol") ||
-        block.startsWith("<div class=\"time-row")
-      ) {
-        return block;
-      }
-      return `<p>${block}</p>`;
-    })
-    .join("");
-
-  return output;
+  return html;
 };
+
 
 
   // Backend API call
