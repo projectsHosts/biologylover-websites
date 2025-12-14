@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/aipracticeChat.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
 
 interface Message {
