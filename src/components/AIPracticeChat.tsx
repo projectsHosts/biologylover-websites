@@ -52,85 +52,160 @@ export default function AIPracticeChat() {
 
   // Format AI response with proper HTML structure
 
+//   const formatResponse = (text: string): string => {
+//   if (!text) return "";
+
+//   let output = text.trim();
+
+//   // --- AUTO NORMALIZATION ---
+//   // Fix messy double spaces, triple newlines etc.
+//   output = output.replace(/\r/g, "");
+//   output = output.replace(/\n{3,}/g, "\n\n");
+//   output = output.replace(/[ ]{2,}/g, " ");
+
+//   // --- SMART HEADING DETECTION ---
+//   // "**Biology**" → <h2>
+//   output = output.replace(/^\*\*([^*]+)\*\*/gm, (_m, p1) => {
+//     return `<h2 class="ai-heading">${p1}</h2>`;
+//   });
+
+//   // Lines like "Study Timetable:" → Heading
+//   output = output.replace(/^([A-Z][A-Za-z ]{2,40}):$/gm, (_m, p1) => {
+//     return `<h2 class="ai-heading">${p1}</h2>`;
+//   });
+
+//   // Detect lines that look like section headers
+//   output = output.replace(/^([A-Z][A-Za-z ]{3,50})\s*$/gm, (_m, p1) => {
+//     if (p1.length < 50) return `<h3 class="ai-subheading">${p1}</h3>`;
+//     return p1;
+//   });
+
+//   // --- SMART TIMETABLE DETECTION ---
+//   // Example: "9:00 AM – 10:00 AM: Biology"
+//   output = output.replace(
+//     /(\d{1,2}:\d{2}\s*(?:AM|PM))\s*[-–]\s*(\d{1,2}:\d{2}\s*(?:AM|PM)):\s*(.+)/gi,
+//     (_m, start, end, task) => {
+//       return `
+//       <div class="time-row">
+//         <div class="time-slot">${start} - ${end}</div>
+//         <div class="time-task">${task}</div>
+//       </div>`;
+//     }
+//   );
+
+//   // --- SMART BULLET LIST DETECTION ---
+//   // "- item" OR "• item" OR "* item"
+//   output = output.replace(/^[-•*]\s+(.+)$/gm, "<li>$1</li>");
+
+//   // wrap <li> inside <ul> automatically
+//   if (output.includes("<li>")) {
+//     output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ul>$1</ul>");
+//   }
+
+//   // --- SMART NUMBERED LIST DETECTION ---
+//   // "1. Step explanation"
+//   output = output.replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>");
+
+//   if (output.includes("<li>")) {
+//     output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ol>$1</ol>");
+//   }
+
+//   // --- PARAGRAPH CONVERSION ---
+//   const parts = output.split("\n");
+//   output = parts
+//     .map((block) => {
+//       block = block.trim();
+//       if (!block) return "";
+//       if (
+//         block.startsWith("<h2") ||
+//         block.startsWith("<h3") ||
+//         block.startsWith("<ul") ||
+//         block.startsWith("<ol") ||
+//         block.startsWith("<div class=\"time-row")
+//       ) {
+//         return block;
+//       }
+//       return `<p>${block}</p>`;
+//     })
+//     .join("");
+
+//   return output;
+// };
+// Format AI response with proper HTML structure
   const formatResponse = (text: string): string => {
-  if (!text) return "";
+    if (!text) return "";
 
-  let output = text.trim();
+    let output = text.trim();
 
-  // --- AUTO NORMALIZATION ---
-  // Fix messy double spaces, triple newlines etc.
-  output = output.replace(/\r/g, "");
-  output = output.replace(/\n{3,}/g, "\n\n");
-  output = output.replace(/[ ]{2,}/g, " ");
+    // --- NORMALIZE ---
+    output = output.replace(/\r/g, "");
+    output = output.replace(/\n{3,}/g, "\n\n");
 
-  // --- SMART HEADING DETECTION ---
-  // "**Biology**" → <h2>
-  output = output.replace(/^\*\*([^*]+)\*\*/gm, (_m, p1) => {
-    return `<h2 class="ai-heading">${p1}</h2>`;
-  });
+    // --- HEADINGS ---
+    // **Text:** or **Text** → <h2>
+    output = output.replace(/\*\*([^*]+):\*\*/g, "<h2>$1</h2>");
+    output = output.replace(/\*\*([^*]+)\*\*/g, "<h2>$1</h2>");
 
-  // Lines like "Study Timetable:" → Heading
-  output = output.replace(/^([A-Z][A-Za-z ]{2,40}):$/gm, (_m, p1) => {
-    return `<h2 class="ai-heading">${p1}</h2>`;
-  });
+    // --- BULLET POINTS ---
+    // Convert * item → <li>item</li>
+    const lines = output.split("\n");
+    const formatted: string[] = [];
+    let inList = false;
 
-  // Detect lines that look like section headers
-  output = output.replace(/^([A-Z][A-Za-z ]{3,50})\s*$/gm, (_m, p1) => {
-    if (p1.length < 50) return `<h3 class="ai-subheading">${p1}</h3>`;
-    return p1;
-  });
-
-  // --- SMART TIMETABLE DETECTION ---
-  // Example: "9:00 AM – 10:00 AM: Biology"
-  output = output.replace(
-    /(\d{1,2}:\d{2}\s*(?:AM|PM))\s*[-–]\s*(\d{1,2}:\d{2}\s*(?:AM|PM)):\s*(.+)/gi,
-    (_m, start, end, task) => {
-      return `
-      <div class="time-row">
-        <div class="time-slot">${start} - ${end}</div>
-        <div class="time-task">${task}</div>
-      </div>`;
-    }
-  );
-
-  // --- SMART BULLET LIST DETECTION ---
-  // "- item" OR "• item" OR "* item"
-  output = output.replace(/^[-•*]\s+(.+)$/gm, "<li>$1</li>");
-
-  // wrap <li> inside <ul> automatically
-  if (output.includes("<li>")) {
-    output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ul>$1</ul>");
-  }
-
-  // --- SMART NUMBERED LIST DETECTION ---
-  // "1. Step explanation"
-  output = output.replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>");
-
-  if (output.includes("<li>")) {
-    output = output.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ol>$1</ol>");
-  }
-
-  // --- PARAGRAPH CONVERSION ---
-  const parts = output.split("\n");
-  output = parts
-    .map((block) => {
-      block = block.trim();
-      if (!block) return "";
-      if (
-        block.startsWith("<h2") ||
-        block.startsWith("<h3") ||
-        block.startsWith("<ul") ||
-        block.startsWith("<ol") ||
-        block.startsWith("<div class=\"time-row")
-      ) {
-        return block;
+    lines.forEach((line) => {
+      const trimmed = line.trim();
+      
+      // Check if it's a bullet point
+      if (trimmed.match(/^\*\s+(.+)$/)) {
+        const content = trimmed.replace(/^\*\s+/, "");
+        if (!inList) {
+          formatted.push("<ul>");
+          inList = true;
+        }
+        formatted.push(`<li>${content}</li>`);
+      } 
+      // Check if it's a numbered list
+      else if (trimmed.match(/^\d+\.\s+(.+)$/)) {
+        const content = trimmed.replace(/^\d+\.\s+/, "");
+        if (!inList) {
+          formatted.push("<ol>");
+          inList = true;
+        }
+        formatted.push(`<li>${content}</li>`);
       }
-      return `<p>${block}</p>`;
-    })
-    .join("");
+      // Regular text
+      else {
+        if (inList) {
+          // Check if previous item was ul or ol
+          const lastTag = formatted[formatted.length - 2];
+          if (lastTag && lastTag.includes("<ul>")) {
+            formatted.push("</ul>");
+          } else if (lastTag && lastTag.includes("<ol>")) {
+            formatted.push("</ol>");
+          }
+          inList = false;
+        }
+        
+        if (trimmed && !trimmed.startsWith("<h2")) {
+          formatted.push(`<p>${trimmed}</p>`);
+        } else if (trimmed.startsWith("<h2")) {
+          formatted.push(trimmed);
+        }
+      }
+    });
 
-  return output;
-};
+    // Close any open list
+    if (inList) {
+      const lastTag = formatted[formatted.length - 2];
+      if (lastTag && lastTag.includes("<ul>")) {
+        formatted.push("</ul>");
+      } else if (lastTag && lastTag.includes("<ol>")) {
+        formatted.push("</ol>");
+      }
+    }
+
+    return formatted.join("");
+  };
 
 
   // Backend API call
