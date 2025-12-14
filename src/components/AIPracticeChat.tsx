@@ -209,32 +209,50 @@ export default function AIPracticeChat() {
 
 
   // Backend API call
-  async function sendMessage(text: string, files: File[]) {
-    const fileData = await Promise.all(
-      files.map(async (file) => ({
-        name: file.name,
-        type: file.type,
-        data: await fileToBase64(file),
-      }))
-    );
+ async function sendMessage(text: string, files: File[]) {
+  const fileData = await Promise.all(
+    files.map(async (file) => ({
+      name: file.name,
+      type: file.type,
+      data: await fileToBase64(file),
+    }))
+  );
 
-    const resp = await fetch(`${API_BASE}/api/ai/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        conversationId: conversationId,
-        userId: "guest-123",
-        message: text,
-        files: fileData,
-      }),
-    });
+  const resp = await fetch(`${API_BASE}/api/ai/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      conversationId: conversationId,
+      userId: "guest-123",
+      message: text,
+      files: fileData,
+    }),
+  });
 
-    const data = await resp.json();
+  // 🔥 IMPORTANT: read as TEXT first
+  const rawText = await resp.text();
 
-    if (!conversationId) setConversationId(data.conversationId);
-
-    return data;
+  // ❌ HTTP error (502 / 500 / 504 etc)
+  if (!resp.ok) {
+    console.error("Server error:", rawText);
+    throw new Error("Server error");
   }
+
+  // ❌ Not JSON (HTML page etc)
+  if (!rawText.trim().startsWith("{")) {
+    console.error("Invalid response (not JSON):", rawText);
+    throw new Error("Invalid response from server");
+  }
+
+  // ✅ Safe JSON parse
+  const data = JSON.parse(rawText);
+
+  if (!conversationId && data.conversationId) {
+    setConversationId(data.conversationId);
+  }
+
+  return data;
+}
 
   const handleSend = async () => {
     if (!input.trim() && selectedFiles.length === 0) return;
