@@ -128,11 +128,12 @@ export default function AIPracticeChat() {
   //   return formatted.join("");
   // };
 
-  const formatResponse = (text: string): string => {
+const formatResponse = (text: string): string => {
   if (!text) return "";
 
   const lines = text.replace(/\r/g, "").split("\n");
   let html = "";
+
   let inUL = false;
   let inOL = false;
 
@@ -151,43 +152,57 @@ export default function AIPracticeChat() {
     const line = raw.trim();
     if (!line) continue;
 
-    // ---------- HEADINGS ----------
-    if (/^\*\*.+\*\*$/.test(line)) {
+    /* ================= HEADINGS ================= */
+
+    // Big heading (short & title-like line)
+    if (
+      line.length < 50 &&
+      /^[A-Z][A-Za-z0-9 ()-]+$/.test(line) &&
+      !/^\d+\./.test(line)
+    ) {
       closeLists();
-      html += `<h2>${line.replace(/\*\*/g, "")}</h2>`;
+      html += `<h2>${line}</h2>`;
       continue;
     }
 
-    // ---------- SUB HEADINGS ----------
-    if (/^[A-Z][A-Za-z ()]{3,40}$/.test(line)) {
+    // Sub-heading
+    if (
+      line.length < 40 &&
+      /^[A-Z][A-Za-z ()]+$/.test(line)
+    ) {
       closeLists();
       html += `<h3>${line}</h3>`;
       continue;
     }
 
-    // ---------- NUMBERED LIST ----------
+    /* ================= NUMBERED LIST ================= */
+
     if (/^\d+\.\s+/.test(line)) {
       if (!inOL) {
         closeLists();
         html += "<ol>";
         inOL = true;
       }
+
       html += `<li>${line.replace(/^\d+\.\s+/, "")}</li>`;
       continue;
     }
 
-    // ---------- BULLET LIST ----------
-    if (/^[-*•]\s+/.test(line)) {
+    /* ================= BULLET LIST ================= */
+
+    if (/^[-•]\s+/.test(line)) {
       if (!inUL) {
         closeLists();
         html += "<ul>";
         inUL = true;
       }
-      html += `<li>${line.replace(/^[-*•]\s+/, "")}</li>`;
+
+      html += `<li>${line.replace(/^[-•]\s+/, "")}</li>`;
       continue;
     }
 
-    // ---------- NORMAL PARAGRAPH ----------
+    /* ================= PARAGRAPH ================= */
+
     closeLists();
     html += `<p>${line}</p>`;
   }
@@ -195,6 +210,7 @@ export default function AIPracticeChat() {
   closeLists();
   return html;
 };
+
 
 
 
