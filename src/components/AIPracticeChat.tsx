@@ -53,163 +53,81 @@ export default function AIPracticeChat() {
   // Format AI response with proper HTML structure
 
 // Format AI response with proper HTML structure
-  // const formatResponse = (text: string): string => {
-  //   if (!text) return "";
+  const formatResponse = (text: string): string => {
+    if (!text) return "";
 
-  //   let output = text.trim();
+    let output = text.trim();
 
-  //   // --- NORMALIZE ---
-  //   output = output.replace(/\r/g, "");
-  //   output = output.replace(/\n{3,}/g, "\n\n");
+    // --- NORMALIZE ---
+    output = output.replace(/\r/g, "");
+    output = output.replace(/\n{3,}/g, "\n\n");
 
-  //   // --- HEADINGS ---
-  //   // **Text:** or **Text** → <h2>
-  //   output = output.replace(/\*\*([^*]+):\*\*/g, "<h2>$1</h2>");
-  //   output = output.replace(/\*\*([^*]+)\*\*/g, "<h2>$1</h2>");
+    // --- HEADINGS ---
+    // **Text:** or **Text** → <h2>
+    output = output.replace(/\*\*([^*]+):\*\*/g, "<h2>$1</h2>");
+    output = output.replace(/\*\*([^*]+)\*\*/g, "<h2>$1</h2>");
 
-  //   // --- BULLET POINTS ---
-  //   // Convert * item → <li>item</li>
-  //   const lines = output.split("\n");
-  //   const formatted: string[] = [];
-  //   let inList = false;
+    // --- BULLET POINTS ---
+    // Convert * item → <li>item</li>
+    const lines = output.split("\n");
+    const formatted: string[] = [];
+    let inList = false;
 
-  //   lines.forEach((line) => {
-  //     const trimmed = line.trim();
+    lines.forEach((line) => {
+      const trimmed = line.trim();
       
-  //     // Check if it's a bullet point
-  //     if (trimmed.match(/^\*\s+(.+)$/)) {
-  //       const content = trimmed.replace(/^\*\s+/, "");
-  //       if (!inList) {
-  //         formatted.push("<ul>");
-  //         inList = true;
-  //       }
-  //       formatted.push(`<li>${content}</li>`);
-  //     } 
-  //     // Check if it's a numbered list
-  //     else if (trimmed.match(/^\d+\.\s+(.+)$/)) {
-  //       const content = trimmed.replace(/^\d+\.\s+/, "");
-  //       if (!inList) {
-  //         formatted.push("<ol>");
-  //         inList = true;
-  //       }
-  //       formatted.push(`<li>${content}</li>`);
-  //     }
-  //     // Regular text
-  //     else {
-  //       if (inList) {
-  //         // Check if previous item was ul or ol
-  //         const lastTag = formatted[formatted.length - 2];
-  //         if (lastTag && lastTag.includes("<ul>")) {
-  //           formatted.push("</ul>");
-  //         } else if (lastTag && lastTag.includes("<ol>")) {
-  //           formatted.push("</ol>");
-  //         }
-  //         inList = false;
-  //       }
+      // Check if it's a bullet point
+      if (trimmed.match(/^\*\s+(.+)$/)) {
+        const content = trimmed.replace(/^\*\s+/, "");
+        if (!inList) {
+          formatted.push("<ul>");
+          inList = true;
+        }
+        formatted.push(`<li>${content}</li>`);
+      } 
+      // Check if it's a numbered list
+      else if (trimmed.match(/^\d+\.\s+(.+)$/)) {
+        const content = trimmed.replace(/^\d+\.\s+/, "");
+        if (!inList) {
+          formatted.push("<ol>");
+          inList = true;
+        }
+        formatted.push(`<li>${content}</li>`);
+      }
+      // Regular text
+      else {
+        if (inList) {
+          // Check if previous item was ul or ol
+          const lastTag = formatted[formatted.length - 2];
+          if (lastTag && lastTag.includes("<ul>")) {
+            formatted.push("</ul>");
+          } else if (lastTag && lastTag.includes("<ol>")) {
+            formatted.push("</ol>");
+          }
+          inList = false;
+        }
         
-  //       if (trimmed && !trimmed.startsWith("<h2")) {
-  //         formatted.push(`<p>${trimmed}</p>`);
-  //       } else if (trimmed.startsWith("<h2")) {
-  //         formatted.push(trimmed);
-  //       }
-  //     }
-  //   });
+        if (trimmed && !trimmed.startsWith("<h2")) {
+          formatted.push(`<p>${trimmed}</p>`);
+        } else if (trimmed.startsWith("<h2")) {
+          formatted.push(trimmed);
+        }
+      }
+    });
 
-  //   // Close any open list
-  //   if (inList) {
-  //     const lastTag = formatted[formatted.length - 2];
-  //     if (lastTag && lastTag.includes("<ul>")) {
-  //       formatted.push("</ul>");
-  //     } else if (lastTag && lastTag.includes("<ol>")) {
-  //       formatted.push("</ol>");
-  //     }
-  //   }
-
-  //   return formatted.join("");
-  // };
-
-const formatResponse = (text: string): string => {
-  if (!text) return "";
-
-  const lines = text.replace(/\r/g, "").split("\n");
-  let html = "";
-
-  let inUL = false;
-  let inOL = false;
-
-  const closeLists = () => {
-    if (inUL) {
-      html += "</ul>";
-      inUL = false;
+    // Close any open list
+    if (inList) {
+      const lastTag = formatted[formatted.length - 2];
+      if (lastTag && lastTag.includes("<ul>")) {
+        formatted.push("</ul>");
+      } else if (lastTag && lastTag.includes("<ol>")) {
+        formatted.push("</ol>");
+      }
     }
-    if (inOL) {
-      html += "</ol>";
-      inOL = false;
-    }
+
+    return formatted.join("");
   };
 
-  for (let raw of lines) {
-    const line = raw.trim();
-    if (!line) continue;
-
-    /* ================= HEADINGS ================= */
-
-    // Big heading (short & title-like line)
-    if (
-      line.length < 50 &&
-      /^[A-Z][A-Za-z0-9 ()-]+$/.test(line) &&
-      !/^\d+\./.test(line)
-    ) {
-      closeLists();
-      html += `<h2>${line}</h2>`;
-      continue;
-    }
-
-    // Sub-heading
-    if (
-      line.length < 40 &&
-      /^[A-Z][A-Za-z ()]+$/.test(line)
-    ) {
-      closeLists();
-      html += `<h3>${line}</h3>`;
-      continue;
-    }
-
-    /* ================= NUMBERED LIST ================= */
-
-    if (/^\d+\.\s+/.test(line)) {
-      if (!inOL) {
-        closeLists();
-        html += "<ol>";
-        inOL = true;
-      }
-
-      html += `<li>${line.replace(/^\d+\.\s+/, "")}</li>`;
-      continue;
-    }
-
-    /* ================= BULLET LIST ================= */
-
-    if (/^[-•]\s+/.test(line)) {
-      if (!inUL) {
-        closeLists();
-        html += "<ul>";
-        inUL = true;
-      }
-
-      html += `<li>${line.replace(/^[-•]\s+/, "")}</li>`;
-      continue;
-    }
-
-    /* ================= PARAGRAPH ================= */
-
-    closeLists();
-    html += `<p>${line}</p>`;
-  }
-
-  closeLists();
-  return html;
-};
 
 
 
