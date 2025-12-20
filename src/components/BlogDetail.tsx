@@ -116,7 +116,7 @@ const BlogDetail: React.FC = () => {
       {/* Main Content Area */}
       <main className="blog-right">
         <header className="blog-header">
-          <div className="breadcrumb">
+          {/* <div className="breadcrumb">
             <span>Education</span>
             <span className="separator">/</span>
             <span>{blog.title}</span>
@@ -124,7 +124,7 @@ const BlogDetail: React.FC = () => {
             <span className="current-topic">
               {currentSubtopic?.title || "Select a Topic"}
             </span>
-          </div>
+          </div> */}
 
           <h1 className="blog-title">{blog.title}</h1>
           <p className="blog-meta">
