@@ -63,6 +63,50 @@ const BlogDetail: React.FC = () => {
 }, [subject]);
 
 
+// 🫧 Bubble Cursor Effect (Blog page only)
+useEffect(() => {
+  // Mobile pe disable
+  if (window.innerWidth < 768) return;
+
+  const container = document.createElement("div");
+  container.id = "bubble-container";
+  document.body.appendChild(container);
+
+  const createBubble = (x: number, y: number) => {
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+
+    const size = Math.random() * 6 + 4;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+
+    bubble.style.left = `${x + Math.random() * 10 - 5}px`;
+    bubble.style.top = `${y + Math.random() * 10 - 5}px`;
+
+    bubble.style.setProperty("--rand", Math.random().toString());
+
+    container.appendChild(bubble);
+
+    setTimeout(() => bubble.remove(), 2500);
+  };
+
+  let last = 0;
+  const handleMove = (e: MouseEvent) => {
+    const now = Date.now();
+    if (now - last > 40) {
+      createBubble(e.clientX, e.clientY);
+      last = now;
+    }
+  };
+
+  document.addEventListener("mousemove", handleMove);
+
+  return () => {
+    document.removeEventListener("mousemove", handleMove);
+    container.remove();
+  };
+}, []);
+
   if (loading) {
     return (
       <div className="loading-container">
