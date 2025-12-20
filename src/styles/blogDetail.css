@@ -220,3 +220,42 @@
     max-width: 100%;
   }
 }
+
+
+/* ===============================
+   Comparison Table (Breathing vs Respiration)
+   =============================== */
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background: #121212;
+  color: #eaeaea;
+}
+
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid #2e2e2e;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.comparison-table th {
+  background: #1f1f1f;
+  color: #4da3ff;
+  font-weight: 600;
+}
+
+.comparison-table tr:nth-child(even) td {
+  background: #181818;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .comparison-table th,
+  .comparison-table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
