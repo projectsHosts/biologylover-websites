@@ -448,3 +448,22 @@
     opacity: 0;
   }
 }
+
+/* ===============================
+   Physics Question Styling
+   =============================== */
+
+.qa-box summary {
+  color: #ff4d4d; /* RED question */
+  font-weight: 600;
+}
+
+.qa-box p {
+  color: #ffffff; /* WHITE answer */
+  line-height: 1.6;
+}
+
+/* Optional highlight for numericals */
+.qa-box p strong {
+  color: #ffd166;
+}
