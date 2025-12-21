@@ -361,20 +361,26 @@
 
 
 .message-bubble.user {
-  max-width: 85%;
-  word-break: normal;
+  display: inline-block;              
+  width: fit-content;                 
+  max-width: 80vw;                  
+  min-width: 40px;                
+
   overflow-wrap: break-word;
-  word-break: keep-all;
+  word-break: normal;
   white-space: normal;
+
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-bottom-right-radius: 4px;
 }
 
+
 .message-bubble.user p {
+ display: inline;
  margin: 0;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+ word-break: normal;
+ overflow-wrap: break-word;
 }
 
 
@@ -830,7 +836,7 @@
 @media (max-width: 768px) {
 
   .message-bubble.user {
-    max-width: 80%;
+     max-width: 75vw;
   }
   /* Container */
   .chat-container {
