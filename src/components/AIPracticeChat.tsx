@@ -73,99 +73,58 @@ export default function AIPracticeChat() {
     const lines = output.split("\n");
     const formatted: string[] = [];
     let inList = false;
-    let inUl = false;
-    let inOl = false;
-
 
     lines.forEach((line) => {
       const trimmed = line.trim();
       
       // Check if it's a bullet point
-      // if (trimmed.match(/^\*\s+(.+)$/)) {
-      //   const content = trimmed.replace(/^\*\s+/, "");
-      //   if (!inList) {
-      //     formatted.push("<ul>");
-      //     inList = true;
-      //   }
-      //   formatted.push(`<li>${content}</li>`);
-      // } 
-      if (/^\*\s+/.test(trimmed)) {
-         const content = trimmed.replace(/^\*\s+/, "");
-           if (!inUl) {
-        formatted.push("<ul>");
-         inUl = true;
-         }
-           formatted.push(`<li>${content}</li>`);
+      if (trimmed.match(/^\*\s+(.+)$/)) {
+        const content = trimmed.replace(/^\*\s+/, "");
+        if (!inList) {
+          formatted.push("<ul>");
+          inList = true;
         }
-
+        formatted.push(`<li>${content}</li>`);
+      } 
       // Check if it's a numbered list
-      // else if (trimmed.match(/^\d+\.\s+/)) {
-      //      const content = trimmed.replace(/^\d+\.\s+/, "");
-      //     if (!inList) {
-      //      formatted.push("<ol>");
-      //       inList = true;
-      //      }
-      //      formatted.push(`<li>${content}</li>`);
-      //   }
-      else if (/^\d+\.\s+/.test(trimmed)) {
-  const content = trimmed.replace(/^\d+\.\s+/, "");
-
-  if (!inOl) {
-    formatted.push("<ol>");
-    inOl = true;
-  }
-
-  formatted.push(`<li>${content}</li>`);
-}
-
-
+      else if (trimmed.match(/^\d+\.\s+(.+)$/)) {
+        const content = trimmed.replace(/^\d+\.\s+/, "");
+        if (!inList) {
+          formatted.push("<ol>");
+          inList = true;
+        }
+        formatted.push(`<li>${content}</li>`);
+      }
       // Regular text
-      // else {
-      //   if (inList) {
-      //     // Check if previous item was ul or ol
-      //     const lastTag = formatted[formatted.length - 2];
-      //     if (lastTag && lastTag.includes("<ul>")) {
-      //       formatted.push("</ul>");
-      //     } else if (lastTag && lastTag.includes("<ol>")) {
-      //       formatted.push("</ol>");
-      //     }
-      //     inList = false;
-      //   }
-        
-      //   if (trimmed && !trimmed.startsWith("<h2")) {
-      //     formatted.push(`<p>${trimmed}</p>`);
-      //   } else if (trimmed.startsWith("<h2")) {
-      //     formatted.push(trimmed);
-      //   }
-      // }
       else {
-  if (inUl) {
-    formatted.push("</ul>");
-    inUl = false;
-  }
-  if (inOl) {
-    formatted.push("</ol>");
-    inOl = false;
-  }
-
-  if (trimmed && !trimmed.startsWith("<h2")) {
-    formatted.push(`<p>${trimmed}</p>`);
-  } else if (trimmed.startsWith("<h2")) {
-    formatted.push(trimmed);
-  }
-}
-
+        if (inList) {
+          // Check if previous item was ul or ol
+          const lastTag = formatted[formatted.length - 2];
+          if (lastTag && lastTag.includes("<ul>")) {
+            formatted.push("</ul>");
+          } else if (lastTag && lastTag.includes("<ol>")) {
+            formatted.push("</ol>");
+          }
+          inList = false;
+        }
+        
+        if (trimmed && !trimmed.startsWith("<h2")) {
+          formatted.push(`<p>${trimmed}</p>`);
+        } else if (trimmed.startsWith("<h2")) {
+          formatted.push(trimmed);
+        }
+      }
     });
 
-    // // Close any open list
-    // if (inList) {
-    //   const lastTag = formatted[formatted.length - 2];
-    //   if (lastTag && lastTag.includes("<ul>")) {
-    //     formatted.push("</ul>");
-    //   } else if (lastTag && lastTag.includes("<ol>")) {
-    //     formatted.push("</ol>");
-    //   }
-    // }
+    // Close any open list
+    if (inList) {
+      const lastTag = formatted[formatted.length - 2];
+      if (lastTag && lastTag.includes("<ul>")) {
+        formatted.push("</ul>");
+      } else if (lastTag && lastTag.includes("<ol>")) {
+        formatted.push("</ol>");
+      }
+    }
 
     return formatted.join("");
   };
