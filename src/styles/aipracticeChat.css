@@ -354,8 +354,8 @@
 
 .message-bubble {
   max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;  
+  word-break: normal;
   white-space: normal;
 }
 
@@ -364,6 +364,7 @@
   max-width: 85%;
   word-break: normal;
   overflow-wrap: break-word;
+  word-break: keep-all;
   white-space: normal;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -371,10 +372,9 @@
 }
 
 .message-bubble.user p {
-  margin: 0;
-  word-break: normal;
+ margin: 0;
+  word-break: keep-all;
   overflow-wrap: break-word;
-  white-space: normal;
 }
 
 
