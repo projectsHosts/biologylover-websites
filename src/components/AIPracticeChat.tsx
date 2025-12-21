@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import biologyLogo from "../assets/biologylover02.jpg";
 import "../styles/aipracticeChat.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
@@ -289,7 +290,9 @@ export default function AIPracticeChat() {
                   {msg.role === "user" ? (
                     <div className="avatar-user">You</div>
                   ) : (
-                    <div className="avatar-bot">AI</div>
+                    <div className="avatar-bot">
+                       <img src={biologyLogo} alt="Biology Lover AI" />
+                    </div>
                   )}
                 </div>
                 <div className="message-content">
@@ -329,7 +332,9 @@ export default function AIPracticeChat() {
           {isLoading && (
             <div className="message-wrapper assistant">
               <div className="message-avatar">
-                <div className="avatar-bot">AI</div>
+                <div className="avatar-bot">
+                   <img src={biologyLogo} alt="Biology Lover AI" />
+                </div>
               </div>
               <div className="message-content">
                 <div className="message-bubble assistant typing-indicator">
