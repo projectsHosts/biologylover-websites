@@ -39,7 +39,7 @@ function App() {
           <Route path="/ai-practice" element={<AIPracticeChat />} />
 
           {/* New: Individual Blog Detail */}
-          <Route path="/blog/:subject" element={<BlogDetail />}
+          <Route path="/blog/:subject/:topicId?" element={<BlogDetail />}
            />
       </Routes>
 

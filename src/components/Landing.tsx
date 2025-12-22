@@ -35,7 +35,7 @@ const Landing: React.FC = () => {
           <div className="badge" style={{
             animation: 'slideInDown 0.8s ease-out'
           }}>
-            <span className="badge-text">✨ Welcome to the Future of Biology Learning</span>
+            <span className="badge-text">Welcome to the Future of Biology Learning</span>
           </div>
 
           {/* Main Title */}

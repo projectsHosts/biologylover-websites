@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/blogDetail.css";
 
@@ -6,6 +6,7 @@ import "../styles/blogDetail.css";
 interface Subtopic {
   id: string;
   title: string;
+  topicId: string;
   content: string;
 }
 
@@ -15,10 +16,11 @@ interface Blog {
 }
 
 const BlogDetail: React.FC = () => {
-  const { subject } = useParams<{ subject: string }>();
+  const { subject ,topicId} = useParams<{ subject: string,topicId?: string; }>();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [activeSubtopic, setActiveSubtopic] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   // Enhanced blog data with better content structure
 
@@ -37,9 +39,20 @@ const BlogDetail: React.FC = () => {
       return res.json();
     })
     .then((data: Blog) => {
-      setBlog(data);
-      setActiveSubtopic(data.subtopics[0]?.id || "");
-    })
+  setBlog(data);
+
+  if (topicId) {
+    const match = data.subtopics.find(
+      (st) => st.topicId === topicId
+    );
+    if (match) {
+      setActiveSubtopic(match.id);
+      return;
+    }
+  }
+
+  setActiveSubtopic(data.subtopics[0]?.id || "");
+})
     .catch(() => {
       setBlog({
         title: "Subject Not Found",
@@ -47,6 +60,7 @@ const BlogDetail: React.FC = () => {
           {
             id: "notfound",
             title: "Not Found",
+            topicId: "notfound",
             content: `
               <div class="error-message">
                 <p>🚫 The requested subject is not available.</p>
@@ -143,7 +157,10 @@ useEffect(() => {
               className={`subtopic-item ${
                 activeSubtopic === subtopic.id ? "active" : ""
               }`}
-              onClick={() => setActiveSubtopic(subtopic.id)}
+             onClick={() => {
+                   setActiveSubtopic(subtopic.id);
+                     navigate(`/blog/${subject}/${subtopic.topicId}`);
+                  }}
             >
               <span className="subtopic-number">
                 {/* {String(index + 1).padStart(2, "0")} */}
