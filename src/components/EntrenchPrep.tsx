@@ -1,93 +1,99 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { useNavigate } from "react-router-dom";
 import "../styles/EntrenchPrep.css";
-
-import biologyImg from "../assets/ai-prep/biology.png"; 
-import physicsImg from "../assets/ai-prep/physics.png";
-import chemistryImg from "../assets/ai-prep/Chemistry..png";
-import mathImg from "../assets/ai-prep/math.png";
 import backgroundVideo from "../assets/ai-prep/backgg.mp4";
 
-const cards = [
-  {
-    id: 1,
-    title: "Biology Mastery",
-    company: "AI Coach",
-    image: biologyImg,
-    button: "Start Practice",
-  },
-  {
-    id: 2,
-    title: "Physics Crash Test",
-    company: "AI Mentor",
-    image: physicsImg,
-    button: "Start Practice",
-  },
-  {
-    id: 3,
-    title: "Chemistry Challenge",
-    company: "AI Tutor",
-    image: chemistryImg,
-    button: "Start Practice",
-  },
-  {
-    id: 4,
-    title: "Math Challenge",
-    company: "AI Tutor",
-    image: mathImg,
-    button: "Start Practice",
-  },
-];
-
 export default function AIExamPrep() {
-  const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % cards.length);
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + cards.length) % cards.length);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const decorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(
+      titleRef.current,
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2 }
+    )
+      .fromTo(
+        subtitleRef.current,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.6"
+      )
+      .fromTo(
+        buttonRef.current,
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8 },
+        "-=0.4"
+      );
+
+    // Floating animation for decorative blob
+    gsap.to(decorRef.current, {
+      y: -20,
+      repeat: -1,
+      yoyo: true,
+      duration: 2,
+      ease: "sine.inOut",
+    });
+
+    // Button pulse effect
+    gsap.to(buttonRef.current, {
+      boxShadow: "0 0 30px rgba(147, 51, 234, 0.8)",
+      repeat: -1,
+      yoyo: true,
+      duration: 1.5,
+      ease: "sine.inOut",
+    });
+  }, []);
 
   return (
     <section className="ai-prep-section">
       {/* Video Background */}
-      <video autoPlay loop muted className="bg-video">
+      <video autoPlay loop muted playsInline className="bg-video">
         <source src={backgroundVideo} type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
 
-      {/* Overlay content */}
-      <div className="ai-prep-content">
-        <div className="ai-prep-header">
-          <h2>Entrance Exam Prep with AI</h2>
-          <p>Practice, analyze, and improve your performance with smart AI Tutor.</p>
-        </div>
+      {/* Animated Background Blobs */}
+      <div ref={decorRef} className="decor-blob-1" />
+      <div className="decor-blob-2" />
 
-        <div className="ai-prep-carousel">
-          <button className="arrow left" onClick={prevSlide}>
-            &#10094;
+      {/* Content */}
+      <div className="ai-prep-hero">
+        <div className="content-wrapper">
+          {/* Title */}
+          <h1 ref={titleRef} className="hero-title">
+            <span className="gradient-text-1">Entrance Exam Prep</span>
+            <span className="gradient-text-2">with AI</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p ref={subtitleRef} className="hero-subtitle">
+            Practice smarter, analyze deeper, and boost your exam performance
+            with an intelligent AI Tutor that adapts to your learning style.
+          </p>
+
+          {/* CTA Button */}
+          <button
+            ref={buttonRef}
+            className="hero-cta"
+            onClick={() => navigate("/ai-practice")}
+          >
+            <span>🚀</span>
+            <span>Start Practice</span>
           </button>
 
-          <div className="card-container">
-            {cards.map((card, index) => (
-              <div
-                key={card.id}
-                className={`ai-card ${index === current ? "active" : ""}`}
-                style={{ backgroundImage: `url(${card.image})` }}
-              >
-                <div className="overlay">
-                  {/* <h3>{card.title}</h3> */}
-                  {/* <p>{card.company}</p> */}
-                  {/* <button>{card.button}</button> */}
-                  <button onClick={() => navigate("/ai-practice")}>
-                    {card.button}
-                  </button>
-                </div>
-              </div>
-            ))}
+          {/* Feature Pills */}
+          <div className="feature-pills">
+            <div className="feature-pill">AI-Powered</div>
+            <div className="feature-pill">Personalized</div>
+            <div className="feature-pill">Real-time Feedback</div>
           </div>
-
-          <button className="arrow right" onClick={nextSlide}>
-            &#10095;
-          </button>
         </div>
       </div>
     </section>

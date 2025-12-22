@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "flag-icon-css": "^4.1.7",
+    "gsap": "^3.14.2",
     "lucide-react": "^0.559.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
