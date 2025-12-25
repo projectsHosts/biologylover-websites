@@ -15,22 +15,58 @@ interface Props {
   exam: string;
   className: string;
   subject: string;
+  chemistryType?: "PHYSICAL" | "ORGANIC" | "INORGANIC" | null;
 }
 
-export default function ChapterList({ exam, className, subject }: Props) {
+const CHEMISTRY_CATEGORY_MAP: Record<
+  "PHYSICAL" | "ORGANIC" | "INORGANIC",
+  string
+> = {
+  PHYSICAL: "Physical Chemistry",
+  ORGANIC: "Organic Chemistry",
+  INORGANIC: "Inorganic Chemistry",
+};
+
+
+export default function ChapterList({ exam, className, subject,chemistryType }: Props) {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!exam || !className || !subject) return;
+useEffect(() => {
+  if (!exam || !className || !subject) return;
 
-    setLoading(true);
+  setLoading(true);
+  setChapters([]);
 
-    getChapters(exam, className, subject)
-      .then((data) => setChapters(data))
-      .finally(() => setLoading(false));
-  }, [exam, className, subject]);
+  const category =
+    subject === "Chemistry" &&
+    (className === "class-11" || className === "class-12") &&
+    chemistryType
+      ? CHEMISTRY_CATEGORY_MAP[chemistryType]
+      : undefined;
+
+  getChapters(exam, className, subject, category)
+    .then((data) => {
+      if (
+        subject === "Chemistry" &&
+        (className === "class-11" || className === "class-12") &&
+        chemistryType
+      ) {
+        const expectedCategory = CHEMISTRY_CATEGORY_MAP[chemistryType];
+
+        const filtered = data.filter(
+          (item: { category: string; }) => item.category === expectedCategory
+        );
+
+        setChapters(filtered);
+      } else {
+        setChapters(data);
+      }
+    })
+    .finally(() => setLoading(false));
+}, [exam, className, subject, chemistryType]);
+
 
   useEffect(() => {
     if (chapters.length > 0 && containerRef.current) {
