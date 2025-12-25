@@ -8,7 +8,7 @@ export const getChapters = async (
   subject: string
 ) => {
   const res = await axios.get(
-    `${API_BASE}/api/resources/pdf/fetch`,
+    `${API_BASE}/api/pdf/fetch`,
     {
       params: { exam, className, subject }
     }
