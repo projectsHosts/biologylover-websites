@@ -12,6 +12,7 @@ import BlogDetail from './components/BlogDetail';
 import { Route, Routes } from 'react-router-dom'
 import Faq from './components/Faq'
 import AIPracticeChat from './components/AIPracticeChat'
+import Resources from './components/pdfnotes/Resources'
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
           {/* New: Individual Blog Detail */}
           <Route path="/blog/:subject/:topicId?" element={<BlogDetail />}
            />
+       {/* New: Resources Page */}
+             <Route path="/resources" element={<Resources />} />
       </Routes>
 
       <Footer />

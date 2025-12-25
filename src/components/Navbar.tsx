@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
               More ▾
               <ul className={`dropdown-menu ${dropdownOpen === 'more' ? 'show' : ''}`}>
                 <li onClick={() => handleNav('faq')}>FAQs</li>
-                <li onClick={() => handleNav('resources')}>Resources</li>
+                <li onClick={() => handleNav('/resources', true)}>Resources</li>
                 <li onClick={() => handleNav('help')}>Help & Support</li>
                 <li onClick={() => handleNav('policies')}>Policies</li>
               </ul>
