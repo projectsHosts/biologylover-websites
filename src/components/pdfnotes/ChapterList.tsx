@@ -16,6 +16,7 @@ interface Props {
   className: string;
   subject: string;
   chemistryType?: "PART1" | "PART2" | null;
+  englishSection?: string | null;
 }
 
 const CHEMISTRY_CATEGORY_MAP: Record<
@@ -27,7 +28,7 @@ const CHEMISTRY_CATEGORY_MAP: Record<
 };
 
 
-export default function ChapterList({ exam, className, subject,chemistryType }: Props) {
+export default function ChapterList({ exam, className, subject,chemistryType, englishSection}: Props) {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,8 +39,9 @@ useEffect(() => {
   setLoading(true);
   setChapters([]);
 
-  const category =
-    (subject === "Chemistry" || subject === "Physics"  || subject === "Maths") && 
+  const category = subject === "English" && englishSection
+    ? englishSection
+    : (subject === "Chemistry" || subject === "Physics"  || subject === "Maths") && 
     (className === "class-11" || className === "class-12") &&
     chemistryType
       ? CHEMISTRY_CATEGORY_MAP[chemistryType]
@@ -47,7 +49,13 @@ useEffect(() => {
 
   getChapters(exam, className, subject, category)
     .then((data) => {
-      if (
+      if (subject === "English" && englishSection) {
+      setChapters(
+         data.filter(
+            (item: { category: string }) => item.category === englishSection
+        )
+      );
+    } else if (
         (subject === "Chemistry" || subject === "Physics" || subject === "Maths") &&
         (className === "class-11" || className === "class-12") &&
         chemistryType
@@ -64,7 +72,7 @@ useEffect(() => {
       }
     })
     .finally(() => setLoading(false));
-}, [exam, className, subject, chemistryType]);
+}, [exam, className, subject, chemistryType,englishSection]);
 
 
   useEffect(() => {
