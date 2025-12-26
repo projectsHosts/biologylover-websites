@@ -3,17 +3,17 @@ import ChapterList from "./ChapterList";
 
 const classes = ["6", "7", "8", "9", "10", "11", "12"];
 const subjects = ["Physics", "Chemistry", "Biology", "Maths"];
-const chemistryTypes = ["PHYSICAL", "ORGANIC", "INORGANIC"] as const;
+const chemistryTypes = ["PART1", "PART2"] as const;
 
 export default function NcertBooks() {
   const [cls, setCls] = useState<string | null>(null);
   const [subject, setSubject] = useState<string | null>(null);
   const [chemType, setChemType] = useState<
-    "PHYSICAL" | "ORGANIC" | "INORGANIC" | null
+    "PART1" | "PART2" | null
   >(null);
 
   const isSeniorChemistry =
-    subject === "Chemistry" && (cls === "11" || cls === "12");
+    (subject === "Physics" || subject === "Chemistry") && (cls === "11" || cls === "12");
 
   return (
     <div>
@@ -63,9 +63,8 @@ export default function NcertBooks() {
               className={chemType === type ? "active" : ""}
               onClick={() => setChemType(type)}
             >
-              {type === "PHYSICAL" && "Physical Chemistry"}
-              {type === "ORGANIC" && "Organic Chemistry"}
-              {type === "INORGANIC" && "Inorganic Chemistry"}
+              {type === "PART1" && "PART 1"}
+              {type === "PART2" && "PART 2"}
             </button>
           ))}
         </div>

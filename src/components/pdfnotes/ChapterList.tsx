@@ -15,16 +15,15 @@ interface Props {
   exam: string;
   className: string;
   subject: string;
-  chemistryType?: "PHYSICAL" | "ORGANIC" | "INORGANIC" | null;
+  chemistryType?: "PART1" | "PART2" | null;
 }
 
 const CHEMISTRY_CATEGORY_MAP: Record<
-  "PHYSICAL" | "ORGANIC" | "INORGANIC",
+  "PART1" | "PART2",
   string
 > = {
-  PHYSICAL: "Physical Chemistry",
-  ORGANIC: "Organic Chemistry",
-  INORGANIC: "Inorganic Chemistry",
+  PART1: "PART1",
+  PART2: "PART2",
 };
 
 
@@ -40,7 +39,7 @@ useEffect(() => {
   setChapters([]);
 
   const category =
-    subject === "Chemistry" &&
+    (subject === "Chemistry" || subject === "Physics" ) && 
     (className === "class-11" || className === "class-12") &&
     chemistryType
       ? CHEMISTRY_CATEGORY_MAP[chemistryType]
@@ -49,7 +48,7 @@ useEffect(() => {
   getChapters(exam, className, subject, category)
     .then((data) => {
       if (
-        subject === "Chemistry" &&
+        (subject === "Chemistry" || subject === "Physics") &&
         (className === "class-11" || className === "class-12") &&
         chemistryType
       ) {
