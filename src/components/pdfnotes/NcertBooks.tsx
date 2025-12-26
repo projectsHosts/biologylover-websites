@@ -13,7 +13,9 @@ export default function NcertBooks() {
   >(null);
 
   const isSeniorChemistry =
-    (subject === "Physics" || subject === "Chemistry") && (cls === "11" || cls === "12");
+   (cls === "11" && (subject === "Physics" || subject === "Chemistry")) ||
+  (cls === "12" &&
+    (subject === "Physics" || subject === "Chemistry" || subject === "Maths"));
 
   return (
     <div>
