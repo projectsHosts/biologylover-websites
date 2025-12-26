@@ -39,7 +39,7 @@ useEffect(() => {
   setChapters([]);
 
   const category =
-    (subject === "Chemistry" || subject === "Physics" ) && 
+    (subject === "Chemistry" || subject === "Physics"  || subject === "Maths") && 
     (className === "class-11" || className === "class-12") &&
     chemistryType
       ? CHEMISTRY_CATEGORY_MAP[chemistryType]
@@ -48,7 +48,7 @@ useEffect(() => {
   getChapters(exam, className, subject, category)
     .then((data) => {
       if (
-        (subject === "Chemistry" || subject === "Physics") &&
+        (subject === "Chemistry" || subject === "Physics" || subject === "Maths") &&
         (className === "class-11" || className === "class-12") &&
         chemistryType
       ) {
