@@ -111,17 +111,10 @@ useEffect(() => {
     }
   };
 
-  if (loading) return(
-    <div className="content-box">
-      <p>Loading PDFs...</p>
-    </div>
-  );
+  if (loading) return <p>Loading PDFs...</p>;
 
   if (chapters.length === 0)
-    return  (<div className="content-box">
-      <p>No PDFs available yet.</p>
-    </div>
-  );
+    return <p>No PDFs available yet.</p>;
 
   return (
     <div ref={containerRef}>
