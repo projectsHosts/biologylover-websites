@@ -14,6 +14,7 @@ import Faq from './components/Faq'
 import AIPracticeChat from './components/AIPracticeChat'
 import Resources from './components/pdfnotes/Resources'
 import VerifyEmail from './components/auth/VerifyEmail'
+import LoginForm from './components/auth/LoginForm'
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
        {/* New: Resources Page */}
              <Route path="/resources" element={<Resources />} />
              <Route path="/verify-email" element={<VerifyEmail />} />
+             <Route path="/login" element={<LoginForm />} />
       </Routes>
 
       <Footer />
