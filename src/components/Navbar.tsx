@@ -15,6 +15,12 @@ const Navbar: React.FC = () => {
 
   const [, setIsMobile] = useState(window.innerWidth <= 768);
 
+  useEffect(() => {
+  const handleResize = () => setIsMobile(window.innerWidth <= 768);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
   const navigate = useNavigate(); 
   
 useEffect(() => {
@@ -22,7 +28,7 @@ useEffect(() => {
   if (!token) return;
 
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const payload: JwtPayload = JSON.parse(atob(token.split('.')[1]));
     if (!payload?.sub) throw new Error();
     setUserEmail(payload.sub);
   } catch {
