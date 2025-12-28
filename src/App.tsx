@@ -13,6 +13,7 @@ import { Route, Routes } from 'react-router-dom'
 import Faq from './components/Faq'
 import AIPracticeChat from './components/AIPracticeChat'
 import Resources from './components/pdfnotes/Resources'
+import VerifyEmail from './components/auth/VerifyEmail'
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
            />
        {/* New: Resources Page */}
              <Route path="/resources" element={<Resources />} />
+             <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
 
       <Footer />

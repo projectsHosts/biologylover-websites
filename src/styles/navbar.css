@@ -95,6 +95,31 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* ================= AUTH BUTTON ================= */
+.signin-nav {
+  background: #0f7c53;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.signin-nav:hover {
+  background: #0c6443;
+  color: #fff;
+}
+
+/* ================= PROFILE ================= */
+.profile-nav {
+  font-weight: 500;
+}
+
+.profile-email {
+  font-size: 13px;
+  opacity: 0.8;
+  cursor: default;
+}
+
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .hamburger { display: flex; }

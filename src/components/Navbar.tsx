@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/navbar.css';
 import { useNavigate } from 'react-router-dom';
+import AuthModal from './auth/AuthModal';
+
+interface JwtPayload {
+  sub: string; // email
+}
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // mobile menu open
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null); // which dropdown open
+  const [showAuth, setShowAuth] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
   const [, setIsMobile] = useState(window.innerWidth <= 768);
 
   const navigate = useNavigate(); 
   
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (!payload?.sub) throw new Error();
+    setUserEmail(payload.sub);
+  } catch {
+    localStorage.removeItem('token');
+    setUserEmail(null);
+  }
+}, []);
+
 
   const handleNav = (pathOrId: string, isRoute: boolean = false) => {
     if (isRoute) {
@@ -30,7 +47,14 @@ const Navbar: React.FC = () => {
     setDropdownOpen(dropdownOpen === menu ? null : menu);
   };
 
+   const logout = () => {
+    localStorage.removeItem('token');
+    setUserEmail(null);
+    window.location.reload();
+  };
+
   return (
+      <>
     <header className="site-nav">
       <div className="nav-container">
         <div className="brand">BiologyLover</div>
@@ -80,10 +104,30 @@ const Navbar: React.FC = () => {
 
             <li onClick={() => handleNav('/about', true)}>About Us</li>
             <li onClick={() => handleNav('contact')}>Contact</li>
+
+            {/* ================= AUTH BUTTON ================= */}
+              {!userEmail ? (
+                <li className="signin-nav" onClick={() => setShowAuth(true)}>
+                  Sign In
+                </li>
+              ) : (
+                <li
+                  className="dropdown profile-nav"
+                  onClick={() => toggleDropdown('profile')}
+                >
+                  Profile ▾
+                  <ul className={`dropdown-menu ${dropdownOpen === 'profile' ? 'show' : ''}`}>
+                    <li className="profile-email">{userEmail}</li>
+                    <li onClick={logout}>Logout</li>
+                  </ul>
+                </li>
+              )}
           </ul>
         </nav>
       </div>
     </header>
+    {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+  </>
   );
 };
 
