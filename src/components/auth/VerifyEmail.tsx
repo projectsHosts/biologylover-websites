@@ -65,9 +65,10 @@ export default function VerifyEmail() {
         const timer = setInterval(() => {
           setCountdown((prev) => {
             if (prev === 1) {
-              clearInterval(timer);
-              navigate("/login");
-            }
+             clearInterval(timer);
+             navigate("/", { state: { openLogin: true } });
+             }
+
             return prev - 1;
           });
         }, 1000);
