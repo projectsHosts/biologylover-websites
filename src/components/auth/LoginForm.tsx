@@ -1,20 +1,46 @@
 import { useState } from "react";
-import "../../styles/auth.css"
+import "../../styles/auth.css";
+
+// ✅ API base (local + production safe)
+const API_BASE =
+  import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
-    const res = await fetch("http://localhost:8080/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
 
-    const data = await res.json();
-    localStorage.setItem("token", data.token);
-    window.location.reload();
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // safe for future cookies
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.token);
+      window.location.reload();
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,6 +50,7 @@ export default function LoginForm() {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        disabled={loading}
       />
 
       <input
@@ -31,17 +58,24 @@ export default function LoginForm() {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        disabled={loading}
       />
 
-      <button className="auth-btn" onClick={handleLogin}>
-        Sign In
+      {error && <div className="auth-error">{error}</div>}
+
+      <button
+        className="auth-btn"
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? "Signing in..." : "Sign In"}
       </button>
 
       <div className="divider">or</div>
 
       <a
-        className="google-btn"
-        href="http://localhost:8080/oauth2/authorization/google"
+        className="google-btn google-dark"
+        href={`${API_BASE}/oauth2/authorization/google`}
       >
         Continue with Google
       </a>
