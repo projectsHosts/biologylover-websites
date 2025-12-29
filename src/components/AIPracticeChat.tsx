@@ -272,10 +272,10 @@ export default function AIPracticeChat() {
               <h3>Start Your Practice Session</h3>
               <p>Ask questions, upload images, or share files to get started!</p>
               <div className="suggestion-chips">
-                <button className="chip" onClick={() => setInput("Explain photosynthesis")}>
+                <button className="chip" onClick={() => setInput("Explain photosynthesis in detail")}>
                   Explain photosynthesis
                 </button>
-                <button className="chip" onClick={() => setInput("Give me a study timetable for Class 10")}>
+                <button className="chip" onClick={() => setInput("Give me a study timetable for Class 10 ")}>
                   Class 10 study schedule
                 </button>
                 <button className="chip" onClick={() => setInput("Help me with chemistry reactions")}>

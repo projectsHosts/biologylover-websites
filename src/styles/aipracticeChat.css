@@ -339,6 +339,7 @@
 /* Message Content */
 .message-content {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 4px;
   flex: 1;
@@ -347,16 +348,12 @@
 .message-bubble {
   padding: 16px 20px;
   border-radius: 18px;
-  word-wrap: break-word;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   line-height: 1.6;
-}
-
-.message-bubble {
   max-width: 100%;
-  overflow-wrap: break-word;  
-  word-break: normal;
   white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -412,9 +409,9 @@
 .message-bubble.assistant h2 {
   font-size: 20px;
   color: #764ba2;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
+  align-items: left;
+  width: 100%; 
 }
 
 .message-bubble.assistant h2::before {
@@ -456,11 +453,15 @@
 /* Lists in Assistant Messages */
 .message-bubble.assistant ul,
 .message-bubble.assistant ol {
-  margin: 12px 0;
-  padding-left: 24px;
+  display: block;    
+  width: 100%;
+  margin: 10px 0;
+  padding-left: 26px;
 }
 
 .message-bubble.assistant li {
+  list-style-position: outside; 
+  text-align: left;
   margin: 8px 0;
   font-size: 15px;
   color: #334155;
