@@ -339,7 +339,6 @@
 /* Message Content */
 .message-content {
   display: flex;
-  min-width: 0;
   flex-direction: column;
   gap: 4px;
   flex: 1;
@@ -409,9 +408,9 @@
 .message-bubble.assistant h2 {
   font-size: 20px;
   color: #764ba2;
-  display: block;
-  align-items: left;
-  width: 100%; 
+   display: flex;
+  align-items: center;
+  gap: 8px; 
 }
 
 .message-bubble.assistant h2::before {
@@ -453,15 +452,11 @@
 /* Lists in Assistant Messages */
 .message-bubble.assistant ul,
 .message-bubble.assistant ol {
-  display: block;    
-  width: 100%;
-  margin: 10px 0;
-  padding-left: 26px;
+  margin: 12px 0;
+  padding-left: 24px;
 }
 
 .message-bubble.assistant li {
-  list-style-position: outside; 
-  text-align: left;
   margin: 8px 0;
   font-size: 15px;
   color: #334155;
