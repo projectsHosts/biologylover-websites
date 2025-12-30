@@ -78,7 +78,7 @@ const OurTeam: React.FC = () => {
 
         <div className="card-back">
           <p>{member.intro}</p>
-          <div className="social-icons">
+         <div className="social-icons" onClick={(e) => e.stopPropagation()}>
             <a href={member.socials.instagram} target="_blank" rel="noreferrer">
               <i className="fab fa-instagram"></i>
             </a>

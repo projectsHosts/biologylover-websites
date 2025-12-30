@@ -125,6 +125,13 @@
   .team-card {
     pointer-events: auto;
   }
+
+.social-icons,
+.social-icons a,
+.social-icons i {
+  pointer-events: auto !important;
+}
+
 }
 
 @media (hover: hover) {
