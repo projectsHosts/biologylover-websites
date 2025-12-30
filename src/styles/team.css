@@ -37,9 +37,14 @@
   border-radius: 15px;
 }
 
-.team-card:hover .card-inner {
+/* .team-card:hover .card-inner {
+  transform: rotateY(180deg);
+} */
+
+.team-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
+
 
 .card-front,
 .card-back {
@@ -108,4 +113,22 @@
 
 .social-icons a:hover {
   color: #00e676;
+}
+
+@media (max-width: 1024px) {
+
+  .card-front,
+  .card-back {
+    pointer-events: none;
+  }
+
+  .team-card {
+    pointer-events: auto;
+  }
+}
+
+@media (hover: hover) {
+  .team-card:hover .card-inner {
+    transform: rotateY(180deg);
+  }
 }

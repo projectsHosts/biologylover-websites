@@ -1,5 +1,5 @@
- 
-import React from "react";
+import React, { useState } from "react";
+
 import "../styles/team.css";
 
 import yogeshImg from "../assets/yogesh.jpeg";
@@ -59,31 +59,41 @@ const OurTeam: React.FC = () => {
     <section id="team" className="team-section">
       <h2 className="team-title">Our Team</h2>
       <div className="team-container">
-        {teamMembers.map((member, index) => (
-          <div className="team-card" key={index}>
-            <div className="card-inner">
-              <div className="card-front">
-                <img src={member.img} alt={member.name} />
-                <h3>{member.name}</h3>
-                <p>{member.role}</p>
-              </div>
-              <div className="card-back">
-                <p>{member.intro}</p>
-                <div className="social-icons">
-                  <a href={member.socials.instagram} target="_blank" rel="noreferrer">
-                    <i className="fab fa-instagram"></i>
-                  </a>
-                  <a href={member.socials.facebook} target="_blank" rel="noreferrer">
-                    <i className="fab fa-facebook"></i>
-                  </a>
-                  <a href={member.socials.linkedin} target="_blank" rel="noreferrer">
-                    <i className="fab fa-linkedin"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+        
+        {teamMembers.map((member, index) => {
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    <div
+      className={`team-card ${flipped ? "flipped" : ""}`}
+      key={index}
+      onClick={() => setFlipped(!flipped)}
+    >
+      <div className="card-inner">
+        <div className="card-front">
+          <img src={member.img} alt={member.name} />
+          <h3>{member.name}</h3>
+          <p>{member.role}</p>
+        </div>
+
+        <div className="card-back">
+          <p>{member.intro}</p>
+          <div className="social-icons">
+            <a href={member.socials.instagram} target="_blank" rel="noreferrer">
+              <i className="fab fa-instagram"></i>
+            </a>
+            <a href={member.socials.facebook} target="_blank" rel="noreferrer">
+              <i className="fab fa-facebook"></i>
+            </a>
+            <a href={member.socials.linkedin} target="_blank" rel="noreferrer">
+              <i className="fab fa-linkedin"></i>
+            </a>
           </div>
-        ))}
+        </div>
+      </div>
+    </div>
+  );
+})}
       </div>
     </section>
   );
