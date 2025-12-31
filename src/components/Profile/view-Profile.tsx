@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../styles/profile.css";
 
 const API_BASE =
@@ -17,7 +16,6 @@ export default function EditProfile() {
   const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
 
   // ================= FETCH PROFILE =================
   useEffect(() => {

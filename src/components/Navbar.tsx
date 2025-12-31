@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [userName, setUserName] = useState<string | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [, setAvatarUrl] = useState<string | null>(null);
 
 
   const [profileComplete, setProfileComplete] = useState(false);
