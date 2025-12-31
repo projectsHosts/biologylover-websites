@@ -31,11 +31,12 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data?.message || "Login failed");
+        throw new Error(data?.error || data?.message || "Login failed");
       }
 
-      localStorage.setItem("token", data.token);
-      window.location.reload();
+      localStorage.setItem("token", data.accessToken);
+      window.dispatchEvent(new Event("auth-change"));
+     
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
