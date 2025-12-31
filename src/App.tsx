@@ -14,6 +14,11 @@ import Faq from './components/Faq'
 import AIPracticeChat from './components/AIPracticeChat'
 import Resources from './components/pdfnotes/Resources'
 import VerifyEmail from './components/auth/VerifyEmail'
+import OAuthSuccess from './components/auth/OAuthSuccess'
+import AddProfile from './components/Profile/add-Profile'
+import ProfileView from './components/Profile/view-Profile'
+import EditProfile from './components/Profile/edit-Profile'
+
 
 function App() {
   return (
@@ -46,6 +51,10 @@ function App() {
        {/* New: Resources Page */}
              <Route path="/resources" element={<Resources />} />
              <Route path="/verify-email" element={<VerifyEmail />} />
+             <Route path="/oauth-success" element={<OAuthSuccess />} />
+             <Route path="/profile" element={<ProfileView  />} />
+             <Route path="/profile/edit" element={<EditProfile />} />
+             <Route path="/profile/add" element={<AddProfile />} />
       </Routes>
 
       <Footer />

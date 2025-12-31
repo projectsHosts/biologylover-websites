@@ -7,11 +7,31 @@ interface JwtPayload {
   sub: string; // email
 }
 
+const getInitials = (firstName?: string, lastName?: string) => {
+  if (firstName && lastName) {
+    return `${firstName[0]}${lastName[0]}`.toUpperCase();
+  }
+  if (firstName) {
+    return firstName[0].toUpperCase();
+  }
+  return "?";
+};
+
+
+const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // mobile menu open
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null); // which dropdown open
   const [showAuth, setShowAuth] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
+  const [userName, setUserName] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+
+  const [profileComplete, setProfileComplete] = useState(false);
+
 
   const [, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -22,20 +42,100 @@ const Navbar: React.FC = () => {
 }, []);
 
   const navigate = useNavigate(); 
-  
-useEffect(() => {
-  const token = localStorage.getItem('token');
+
+  useEffect(() => {
   if (!token) return;
 
+  fetch(`${API_BASE}/api/profile/view`, {
+  headers: { Authorization: `Bearer ${token}` },
+  })
+
+    .then(res => res.json())
+    .then(data => {
+      setUserName(
+        `${data.firstName ?? ""} ${data.lastName ?? ""}`.trim()
+      );
+      setAvatarUrl(data.avatarUrl || null);
+      setProfileComplete(!!data.firstName && !!data.lastName);
+    })
+    .catch(() => {
+      localStorage.removeItem("token");
+      setToken(null);
+      setUserName(null);
+      setAvatarUrl(null);
+    });
+
+}, [token]);
+
+// 🔥 Profile update hone par navbar refresh
+useEffect(() => {
+  const refreshProfile = () => {
+    if (!token) return;
+
+    fetch(`${API_BASE}/api/profile/view`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setUserName(
+          `${data.firstName ?? ""} ${data.lastName ?? ""}`.trim()
+        );
+        setAvatarUrl(data.avatarUrl || null);
+        setProfileComplete(!!data.firstName && !!data.lastName);
+      });
+  };
+
+  window.addEventListener("profile-updated", refreshProfile);
+
+  return () => {
+    window.removeEventListener("profile-updated", refreshProfile);
+  };
+}, [token]);
+
+
+
+useEffect(() => {
+  const close = () => setDropdownOpen(null);
+  window.addEventListener("click", close);
+  return () => window.removeEventListener("click", close);
+}, []);
+
+useEffect(() => {
+  if (!token) {
+    setUserEmail(null);
+    return;
+  }
+
   try {
-    const payload: JwtPayload = JSON.parse(atob(token.split('.')[1]));
-    if (!payload?.sub) throw new Error();
+    const payload: JwtPayload = JSON.parse(atob(token.split(".")[1]));
     setUserEmail(payload.sub);
   } catch {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUserEmail(null);
   }
+}, [token])
+
+useEffect(() => {
+  const handleAuthChange = () => {
+  const t = localStorage.getItem("token");
+
+  if (!t) return;
+
+  setToken(t);
+  setShowAuth(false);
+
+  try {
+    const payload: JwtPayload = JSON.parse(atob(t.split(".")[1]));
+    setUserEmail(payload.sub); // 🔥 THIS WAS MISSING
+    setShowAuth(false);
+  } catch {
+    setUserEmail(null);
+  }
+};
+    window.addEventListener("auth-change", handleAuthChange);
+   return () => window.removeEventListener("auth-change", handleAuthChange);
 }, []);
+
 
 
   const handleNav = (pathOrId: string, isRoute: boolean = false) => {
@@ -54,10 +154,16 @@ useEffect(() => {
   };
 
    const logout = () => {
-    localStorage.removeItem('token');
-    setUserEmail(null);
-    window.location.reload();
-  };
+  localStorage.removeItem("token");
+  setToken(null);
+  setUserEmail(null);
+  setUserName(null);
+  setAvatarUrl(null);
+  setProfileComplete(false);
+  setDropdownOpen(null);
+  navigate("/");
+};
+
 
   return (
       <>
@@ -81,7 +187,7 @@ useEffect(() => {
             <li onClick={() => handleNav('/',true)}>Home</li>
 
             {/* Courses Dropdown */}
-            <li className="dropdown" onClick={() => toggleDropdown('courses')}>
+            <li className="dropdown" onClick={(e) => { e.stopPropagation(); toggleDropdown('courses'); }}>
               Courses ▾
               <ul className={`dropdown-menu ${dropdownOpen === 'courses' ? 'show' : ''}`}>
                 <li onClick={() => handleNav('physics')}>Physics</li>
@@ -98,7 +204,7 @@ useEffect(() => {
             <li onClick={() => handleNav('/blogs', true)}>Blogs</li>
 
             {/* More Dropdown */}
-            <li className="dropdown" onClick={() => toggleDropdown('more')}>
+            <li className="dropdown" onClick={(e) => { e.stopPropagation(); toggleDropdown('more'); }}>
               More ▾
               <ul className={`dropdown-menu ${dropdownOpen === 'more' ? 'show' : ''}`}>
                 <li onClick={() => handleNav('faq')}>FAQs</li>
@@ -113,20 +219,65 @@ useEffect(() => {
 
             {/* ================= AUTH BUTTON ================= */}
               {!userEmail ? (
-                <li className="signin-nav" onClick={() => setShowAuth(true)}>
+                <li className="signin-nav" onClick={() => {setShowAuth(true);  setIsOpen(false);}}>
                   Sign In
                 </li>
               ) : (
-                <li
-                  className="dropdown profile-nav"
-                  onClick={() => toggleDropdown('profile')}
-                >
-                  Profile ▾
-                  <ul className={`dropdown-menu ${dropdownOpen === 'profile' ? 'show' : ''}`}>
-                    <li className="profile-email">{userEmail}</li>
-                    <li onClick={logout}>Logout</li>
-                  </ul>
-                </li>
+                <li className="avatar-wrapper" onClick={(e) => e.stopPropagation()}>
+                  <div
+                      className="avatar initials-avatar"
+                      onClick={() => {
+                          toggleDropdown("profile");
+                      }}
+                    >
+                   {getInitials(userName?.split(" ")[0], userName?.split(" ")[1])}
+                  </div>
+
+
+                  {dropdownOpen === "profile" && (
+                    <div className="profile-menu">
+                      <div className="profile-header">
+                          <div className="avatar initials-avatar big">
+                            {getInitials(userName?.split(" ")[0], userName?.split(" ")[1])}
+                          </div>
+
+                          <div>
+                            <small>{userEmail}</small>
+                          </div>
+                        </div>
+                      <ul>
+                          <li
+                            onClick={() => {
+                              setDropdownOpen(null);
+                              navigate(profileComplete ? "/profile" : "/profile/add");
+                            }}
+                          >
+                            My Profile
+                          </li>
+
+                          <li
+                            onClick={() => {
+                              setDropdownOpen(null);
+                              navigate("/dashboard");
+                            }}
+                          >
+                            My Dashboard
+                          </li>
+
+                          <li
+                            onClick={() => {
+                              setDropdownOpen(null);
+                              logout();
+                            }}
+                            className="logout-item"
+                          >
+                            Logout
+                          </li>
+                        </ul>
+
+                    </div>
+                  )}
+                </li> 
               )}
           </ul>
         </nav>
