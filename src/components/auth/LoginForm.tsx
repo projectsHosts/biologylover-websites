@@ -34,7 +34,7 @@ export default function LoginForm() {
         throw new Error(data?.error || data?.message || "Login failed");
       }
 
-      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("token", data.data.token);
       window.dispatchEvent(new Event("auth-change"));
      
     } catch (err: any) {
