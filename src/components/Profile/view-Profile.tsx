@@ -8,20 +8,18 @@ const API_BASE =
 export default function ViewProfile() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   /* ================= FETCH PROFILE ================= */
  useEffect(() => {
   if (!token) return;
-
   fetch(`${API_BASE}/api/profile/view`, {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then(res => res.json())
     .then(res => {
-      setProfile(res.data); // 🔥 IMPORTANT FIX
+      setProfile(res.data); 
     })
     .finally(() => setLoading(false));
 }, [token]);

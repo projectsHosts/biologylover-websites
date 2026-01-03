@@ -48,9 +48,6 @@ const Navbar: React.FC = () => {
 
   const [profileComplete, setProfileComplete] = useState(false);
   const [profileExists, setProfileExists] = useState(false);
-
-
-
   const [, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
