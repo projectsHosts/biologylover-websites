@@ -24,7 +24,7 @@ export default function AddProfile() {
   const [classLevel, setClassLevel] = useState<number | "">("");
   const [board, setBoard] = useState("");
   const [medium, setMedium] = useState("");
-  const [schoolName, setSchoolName] = useState("");
+  const [schoolName, ] = useState("");
   const [stream, setStream] = useState<Stream>("");
 
   /* ================= COMPETITIVE ================= */
