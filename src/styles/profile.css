@@ -1,107 +1,248 @@
+/* ================= PROFILE PAGE ================= */
+
 .profile-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 60px 20px;
+  align-items: flex-start;
+  padding: 40px 16px;
+  background: radial-gradient(
+    circle at top,
+    #0f172a 0%,
+    #020617 70%
+  );
+  color: #e5e7eb;
 }
+
+/* ================= CARD ================= */
 
 .profile-container {
-  width: 850px;
-  background: rgba(15,23,42,0.95);
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 41, 59, 0.85),
+    rgba(15, 23, 42, 0.95)
+  );
   border-radius: 18px;
-  padding: 40px;
-  color: #fff;
+  padding: 28px 26px 32px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
 }
 
-.profile-header {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  border-bottom: 1px solid #1e293b;
-  padding-bottom: 20px;
-  margin-bottom: 30px;
+/* ================= TITLE ================= */
+
+.profile-container h2 {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
 }
 
-.avatar-lg {
-  width: 90px;
-  height: 90px;
-  background: linear-gradient(135deg,#22c55e,#16a34a);
-  border-radius: 50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:26px;
-  font-weight:700;
-}
-
-.muted {
-  color: #94a3b8;
+.profile-container .muted {
   font-size: 14px;
+  text-align: center;
+  color: #9ca3af;
+  margin-bottom: 26px;
 }
 
-section {
-  margin-bottom: 30px;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 16px;
-}
-
-.info-grid div {
-  background: #020617;
-  padding: 14px;
-  border-radius: 10px;
-}
-
-.info-grid span {
-  display: block;
-  font-size: 12px;
-  color: #94a3b8;
-  margin-bottom: 4px;
-}
+/* ================= FORM GROUP ================= */
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-  font-size: 12px;
-  color: #94a3b8;
-  display: block;
-  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #cbd5f5;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 10px;
+/* ================= INPUTS ================= */
+
+.form-group input,
+.form-group select {
+  height: 44px;
   border-radius: 10px;
-  border: none;
-  background: #020617;
-  color: #fff;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-.primary-btn {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 12px;
-  background: #22c55e;
-  border: none;
-  font-weight: 600;
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+/* ================= SELECT ================= */
+
+.form-group select {
   cursor: pointer;
 }
 
-.secondary-btn {
-  padding: 12px;
-  border-radius: 12px;
-  background: #334155;
-  border: none;
-  color: #fff;
+/* ================= READ ONLY TEXT (VIEW PROFILE) ================= */
+
+.profile-text {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  color: #e5e7eb;
+  font-size: 14px;
 }
+
+/* ================= ERROR ================= */
+
+.auth-error {
+  margin: 14px 0 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fecaca;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ================= BUTTONS ================= */
+
+.primary-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 12px;
+  border: none;
+  margin-top: 18px;
+  background: linear-gradient(
+    135deg,
+    #22c55e,
+    #16a34a
+  );
+  color: #022c22;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 25px rgba(34, 197, 94, 0.35);
+}
+
+.primary-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ================= SECONDARY ================= */
+
+.secondary-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+/* ================= ACTION GROUP ================= */
 
 .actions {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  flex-direction: column;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 22px 20px 26px;
+  }
+
+  .profile-container h2 {
+    font-size: 22px;
+  }
+}
+
+/* ================= SUBJECTS ================= */
+
+.subjects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* CHIP */
+.subject-chip {
+  position: relative;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  color: #cbd5f5;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* HIDE CHECKBOX COMPLETELY */
+.subject-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* HOVER */
+.subject-chip:hover {
+  border-color: #22c55e;
+  color: #e5fbee;
+}
+
+/* ACTIVE (SELECTED) */
+.subject-chip.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #022c22;
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 480px) {
+  .subjects-grid {
+    gap: 8px;
+  }
+
+  .subject-chip {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
 }

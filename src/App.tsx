@@ -18,13 +18,18 @@ import OAuthSuccess from './components/auth/OAuthSuccess'
 import AddProfile from './components/Profile/add-Profile'
 import ProfileView from './components/Profile/view-Profile'
 import EditProfile from './components/Profile/edit-Profile'
+import ProtectedRoute from './routes/ProtectedRoute'
+import ContactUs from './components/ContactUs'
+import Dashboard from './components/Dashboard/Dashboard'
+import ScrollToTop from './components/Scrollhandle/ScrollToTop'
 
 
 function App() {
   return (
     <div>
       <Navbar />
-
+      <ScrollToTop />
+      
       <Routes>
         {/* Separate pages */}
         <Route path="/" element={
@@ -41,6 +46,7 @@ function App() {
         } />
 
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/contactus" element={<ContactUs />} />
         {/* New: Blogs Page */}
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/ai-practice" element={<AIPracticeChat />} />
@@ -52,9 +58,11 @@ function App() {
              <Route path="/resources" element={<Resources />} />
              <Route path="/verify-email" element={<VerifyEmail />} />
              <Route path="/oauth-success" element={<OAuthSuccess />} />
-             <Route path="/profile" element={<ProfileView  />} />
-             <Route path="/profile/edit" element={<EditProfile />} />
-             <Route path="/profile/add" element={<AddProfile />} />
+          {/* Protect Routes  */}
+             <Route path="/profile" element={<ProtectedRoute><ProfileView  /></ProtectedRoute>} />
+             <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+             <Route path="/profile/add" element={<ProtectedRoute><AddProfile /></ProtectedRoute>} />
+             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       </Routes>
 
       <Footer />

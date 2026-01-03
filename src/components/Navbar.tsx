@@ -7,15 +7,31 @@ interface JwtPayload {
   sub: string; // email
 }
 
-const getInitials = (firstName?: string, lastName?: string) => {
-  if (firstName && lastName) {
-    return `${firstName[0]}${lastName[0]}`.toUpperCase();
+
+const getInitialsFromUserName = (
+  userName?: string | null,
+  email?: string | null
+) => {
+  const value = userName?.trim();
+
+  if (value) {
+    const parts = value.split(/\s+/);
+
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+
+    return parts[0][0].toUpperCase();
   }
-  if (firstName) {
-    return firstName[0].toUpperCase();
+
+  // 🔥 fallback to email
+  if (email) {
+    return email[0].toUpperCase();
   }
+
   return "?";
 };
+
 
 
 const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
@@ -31,6 +47,8 @@ const Navbar: React.FC = () => {
 
 
   const [profileComplete, setProfileComplete] = useState(false);
+  const [profileExists, setProfileExists] = useState(false);
+
 
 
   const [, setIsMobile] = useState(window.innerWidth <= 768);
@@ -56,13 +74,15 @@ const Navbar: React.FC = () => {
         `${data.firstName ?? ""} ${data.lastName ?? ""}`.trim()
       );
       setAvatarUrl(data.avatarUrl || null);
-      setProfileComplete(!!data.firstName && !!data.lastName);
+      setProfileExists(true);
+     setProfileComplete(!!data.firstName &&!!data.lastName);
     })
     .catch(() => {
       localStorage.removeItem("token");
       setToken(null);
       setUserName(null);
       setAvatarUrl(null);
+      setProfileExists(false);
     });
 
 }, [token]);
@@ -215,7 +235,7 @@ useEffect(() => {
             </li>
 
             <li onClick={() => handleNav('/about', true)}>About Us</li>
-            <li onClick={() => handleNav('contact')}>Contact</li>
+            <li onClick={() => handleNav('/contactus', true)}>Contact</li>
 
             {/* ================= AUTH BUTTON ================= */}
               {!userEmail ? (
@@ -230,7 +250,8 @@ useEffect(() => {
                           toggleDropdown("profile");
                       }}
                     >
-                   {getInitials(userName?.split(" ")[0], userName?.split(" ")[1])}
+                   {getInitialsFromUserName(userName || userEmail)}
+
                   </div>
 
 
@@ -238,7 +259,7 @@ useEffect(() => {
                     <div className="profile-menu">
                       <div className="profile-header">
                           <div className="avatar initials-avatar big">
-                            {getInitials(userName?.split(" ")[0], userName?.split(" ")[1])}
+                           {getInitialsFromUserName(userName || userEmail)}
                           </div>
 
                           <div>
@@ -249,7 +270,14 @@ useEffect(() => {
                           <li
                             onClick={() => {
                               setDropdownOpen(null);
-                              navigate(profileComplete ? "/profile" : "/profile/add");
+                              setIsOpen(false);
+                              if (!profileExists) {
+                                    navigate("/profile/add");
+                                  } else if (!profileComplete) {               
+                                      navigate("/profile/edit");
+                                    }else {
+                                    navigate("/profile");
+                                  }
                             }}
                           >
                             My Profile
@@ -258,6 +286,7 @@ useEffect(() => {
                           <li
                             onClick={() => {
                               setDropdownOpen(null);
+                              setIsOpen(false);
                               navigate("/dashboard");
                             }}
                           >
@@ -267,6 +296,7 @@ useEffect(() => {
                           <li
                             onClick={() => {
                               setDropdownOpen(null);
+                              setIsOpen(false);
                               logout();
                             }}
                             className="logout-item"

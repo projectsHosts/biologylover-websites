@@ -1,14 +1,16 @@
 /* ---------------- BASE NAVBAR ---------------- */
 /* Navbar base */
 .site-nav {
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.35);
   color: #fff;
   padding: 15px 20px;
   position: sticky; /* keep it on top */
   top: 0;
   width: 100%;
   z-index: 1000;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-container {
