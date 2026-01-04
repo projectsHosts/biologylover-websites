@@ -12,6 +12,10 @@ type Exam = "NEET" | "JEE" | "BOTH" | "";
 export default function AddProfile() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
 
   /* ================= BASIC ================= */
   const [firstName, setFirstName] = useState("");
@@ -53,6 +57,46 @@ export default function AddProfile() {
     );
   };
 
+  const uploadAvatar = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_BASE}/api/profile/upload-avatar`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  if (!data.success) {
+    throw new Error("Avatar upload failed");
+  }
+
+  return data.data; // cloudinary image URL
+};
+
+const handleAvatarChange = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  // preview
+  setAvatarPreview(URL.createObjectURL(file));
+  setAvatarFile(file);
+
+  try {
+    const url = await uploadAvatar(file);
+    setAvatarUrl(url);
+  } catch (err: any) {
+    setError(err.message);
+  }
+};
+
+
   /* ================= SAVE ================= */
   const save = async () => {
     if (!firstName || !lastName || !studentType) {
@@ -73,6 +117,7 @@ export default function AddProfile() {
         body: JSON.stringify({
           firstName,
           lastName,
+          avatarUrl,
           studentType,
 
           classLevel: studentType === "SCHOOL" ? classLevel : null,
@@ -112,6 +157,27 @@ export default function AddProfile() {
     <div className="profile-page">
       <div className="profile-container">
         <h2>Student Profile</h2>
+        {/* AVATAR */}
+<div className="profile-avatar-section">
+  {avatarPreview ? (
+    <img src={avatarPreview} className="profile-avatar" />
+  ) : (
+    <div className="profile-avatar placeholder">
+      {firstName ? firstName[0].toUpperCase() : "?"}
+    </div>
+  )}
+
+  <label className="upload-btn">
+    Upload Photo
+    <input
+      type="file"
+      accept="image/*"
+      hidden
+      onChange={handleAvatarChange}
+    />
+  </label>
+</div>
+
         <p className="muted">Tell us about your academic journey</p>
 
         {/* BASIC */}

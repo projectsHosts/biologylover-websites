@@ -9,26 +9,84 @@ export default function ViewProfile() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const navigate = useNavigate();
 
   /* ================= FETCH PROFILE ================= */
- useEffect(() => {
-  if (!token) return;
-  fetch(`${API_BASE}/api/profile/view`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(res => res.json())
-    .then(res => {
-      setProfile(res.data); 
+  useEffect(() => {
+    if (!token) return;
+    fetch(`${API_BASE}/api/profile/view`, {
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .finally(() => setLoading(false));
-}, [token]);
+      .then((res) => res.json())
+      .then((res) => {
+        setProfile(res.data);
+        setAvatarUrl(res.data.avatarUrl || null);
+      })
+      .finally(() => setLoading(false));
+  }, [token]);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !e.target.files[0]) return;
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setUploading(true);
+
+      const res = await fetch(`${API_BASE}/api/profile/upload-avatar`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setAvatarUrl(data.data); // new image URL
+        window.dispatchEvent(new Event("profile-updated")); // 🔥 navbar sync
+      }
+    } catch (err) {
+      console.error("Avatar upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   if (loading || !profile) return null;
 
   return (
     <div className="profile-page">
       <div className="profile-container">
+        {/* ===== PROFILE AVATAR ===== */}
+        <div className="profile-avatar-section">
+          <div className="profile-avatar">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Profile" />
+            ) : (
+              <span className="avatar-fallback">
+                {profile.firstName?.[0]}
+                {profile.lastName?.[0]}
+              </span>
+            )}
+          </div>
+
+          <label className="upload-btn">
+            {uploading ? "Uploading..." : "Change Photo"}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleAvatarUpload}
+            />
+          </label>
+        </div>
 
         <h2>My Profile</h2>
         <p className="muted">Your academic details</p>
@@ -130,9 +188,7 @@ export default function ViewProfile() {
         {profile.studyHoursPerDay && (
           <div className="form-group">
             <label>Study Hours / Day</label>
-            <p className="profile-text">
-              {profile.studyHoursPerDay} hours
-            </p>
+            <p className="profile-text">{profile.studyHoursPerDay} hours</p>
           </div>
         )}
 
@@ -145,7 +201,6 @@ export default function ViewProfile() {
             ✏️ Edit Profile
           </button>
         </div>
-
       </div>
     </div>
   );

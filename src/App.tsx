@@ -9,7 +9,7 @@ import AIExamPrep from './components/EntrenchPrep'
 import AboutUs from './components/About'
 import Blogs from './components/Blogs'; 
 import BlogDetail from './components/BlogDetail'; 
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Faq from './components/Faq'
 import AIPracticeChat from './components/AIPracticeChat'
 import Resources from './components/pdfnotes/Resources'
@@ -25,12 +25,13 @@ import ScrollToTop from './components/Scrollhandle/ScrollToTop'
 
 
 function App() {
+  const location = useLocation(); 
   return (
     <div>
       <Navbar />
       <ScrollToTop />
       
-      <Routes>
+      <Routes location={location} key={location.pathname}>
         {/* Separate pages */}
         <Route path="/" element={
           <>
@@ -59,10 +60,18 @@ function App() {
              <Route path="/verify-email" element={<VerifyEmail />} />
              <Route path="/oauth-success" element={<OAuthSuccess />} />
           {/* Protect Routes  */}
-             <Route path="/profile" element={<ProtectedRoute><ProfileView  /></ProtectedRoute>} />
+             {/* <Route path="/profile" element={<ProtectedRoute><ProfileView /></ProtectedRoute>} />
              <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
              <Route path="/profile/add" element={<ProtectedRoute><AddProfile /></ProtectedRoute>} />
-             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
+
+             <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfileView />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/profile/add" element={<AddProfile />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+
       </Routes>
 
       <Footer />

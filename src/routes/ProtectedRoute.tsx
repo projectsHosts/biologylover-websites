@@ -1,20 +1,14 @@
-import type { JSX } from "react";
-import { Navigate } from "react-router-dom";
 
-interface Props {
-  children: JSX.Element;
-}
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ children }: Props) => {
+const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
 
-  // ❌ User not logged in
   if (!token) {
     return <Navigate to="/" replace />;
   }
 
-  // ✅ User logged in
-  return children;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

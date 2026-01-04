@@ -22,8 +22,6 @@ const getInitialsFromUserName = (
 
     return parts[0][0].toUpperCase();
   }
-
-  // 🔥 fallback to email
   if (email) {
     return email[0].toUpperCase();
   }
@@ -43,7 +41,7 @@ const Navbar: React.FC = () => {
     localStorage.getItem("token")
   );
   const [userName, setUserName] = useState<string | null>(null);
-  const [, setAvatarUrl] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const [profileComplete, setProfileComplete] = useState(false);
   const [profileExists, setProfileExists] = useState(false);
@@ -71,23 +69,17 @@ const Navbar: React.FC = () => {
           );
           setProfileExists(true);
           setProfileComplete(!!res.data.firstName && !!res.data.lastName);
-        }
-
-        
-        else if (res.error === "Profile not found") {
+          setAvatarUrl(res.data.avatarUrl || null);
+        } else if (res.error === "Profile not found") {
           setProfileExists(false);
           setProfileComplete(false);
           setUserName(null);
-        }
-
-       
-        else {
+        } else {
           setProfileExists(false);
         }
       });
   }, [token]);
 
-  
   useEffect(() => {
     const refreshProfile = () => {
       if (!token) return;
@@ -97,23 +89,18 @@ const Navbar: React.FC = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-        
           if (res.success && res.data) {
             setUserName(
               `${res.data.firstName ?? ""} ${res.data.lastName ?? ""}`.trim()
             );
             setProfileExists(true);
             setProfileComplete(!!res.data.firstName && !!res.data.lastName);
-          }
-
-         
-          else if (res.error === "Profile not found") {
+            setAvatarUrl(res.data.avatarUrl || null);
+          } else if (res.error === "Profile not found") {
             setProfileExists(false);
             setProfileComplete(false);
             setUserName(null);
-          }
-         
-          else {
+          } else {
             setProfileExists(false);
           }
         });
@@ -286,19 +273,29 @@ const Navbar: React.FC = () => {
                 >
                   <div
                     className="avatar initials-avatar"
-                    onClick={() => {
-                      toggleDropdown("profile");
-                    }}
+                    onClick={() => toggleDropdown("profile")}
                   >
-                    {getInitialsFromUserName(userName || userEmail)}
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Profile" />
+                    ) : (
+                      getInitialsFromUserName(userName || userEmail)
+                    )}
                   </div>
 
                   {dropdownOpen === "profile" && (
                     <div className="profile-menu">
                       <div className="profile-header">
-                        <div className="avatar initials-avatar big">
-                          {getInitialsFromUserName(userName || userEmail)}
-                        </div>
+                        {avatarUrl ? (
+                          <img
+                            src={avatarUrl}
+                            alt="Profile"
+                            className="avatar-img big"
+                          />
+                        ) : (
+                          <div className="avatar initials-avatar big">
+                            {getInitialsFromUserName(userName || userEmail)}
+                          </div>
+                        )}
 
                         <div>
                           <small>{userEmail}</small>
