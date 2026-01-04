@@ -12,7 +12,7 @@ type Exam = "NEET" | "JEE" | "BOTH" | "";
 export default function AddProfile() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
