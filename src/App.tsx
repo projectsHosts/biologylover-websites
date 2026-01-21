@@ -22,6 +22,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import ContactUs from './components/ContactUs'
 import Dashboard from './components/Dashboard/Dashboard'
 import ScrollToTop from './components/Scrollhandle/ScrollToTop'
+import DailyQuizPage from './components/quizzes/pages/DailyQuizPage'
 
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
         {/* New: Blogs Page */}
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/ai-practice" element={<AIPracticeChat />} />
+          <Route path="/daily-quiz" element={<DailyQuizPage />} />
+          <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
 
           {/* New: Individual Blog Detail */}
           <Route path="/blog/:subject/:topicId?" element={<BlogDetail />}

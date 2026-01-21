@@ -247,6 +247,9 @@ const Navbar: React.FC = () => {
                   <li onClick={() => handleNav("/resources", true)}>
                     Resources
                   </li>
+                  <li onClick={() => handleNav("/daily-quiz", true)}>
+                    Daily Quiz
+                  </li>
                   <li onClick={() => handleNav("help")}>Help & Support</li>
                   <li onClick={() => handleNav("policies")}>Policies</li>
                 </ul>
