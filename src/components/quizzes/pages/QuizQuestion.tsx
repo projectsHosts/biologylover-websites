@@ -49,7 +49,7 @@ export default function QuizQuestion({
 
       <div className="question-header">
         <span className="question-number">Question {index + 1} of {total}</span>
-        <span className="question-category">General Knowledge</span>
+        <span className="question-category">Quiz Of The Day</span>
       </div>
 
       <h2 className="question-text">{quiz.question}</h2>
