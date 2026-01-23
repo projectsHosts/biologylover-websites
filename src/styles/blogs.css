@@ -1,102 +1,165 @@
-/* ---------- Base Container ---------- */
+/* ==================== BLOGS PAGE – FULL WIDTH DARK THEME ==================== */
 .blogs-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-  text-align: center;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #c2e9fb 0%, #a1c4fd 100%);
-  color: #222;
-  font-family: "Poppins", sans-serif;
+  background: #000000;                     /* full black background */
+  color: #e0e0ff;
+  padding: 6rem 1.5rem 4rem;               /* top/bottom zyada, sides kam */
+  font-family: "Poppins", system-ui, -apple-system, sans-serif;
 }
 
-/* ---------- Title & Subtitle ---------- */
+/* Hero Section – Centered but full-width friendly */
 .blogs-title {
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: #0a2540;
-  margin-bottom: 0.5rem;
-  letter-spacing: 1px;
+  font-size: clamp(2.5rem, 7vw, 4.2rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #667eea, #764ba2, #e94560);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+  line-height: 1.1;
 }
 
 .blogs-subtitle {
-  font-size: 1.1rem;
-  color: #333;
-  opacity: 0.8;
-  margin-bottom: 3rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  color: #b0b0d0;
+  line-height: 1.6;
+  opacity: 0.9;
 }
 
-/* ---------- Flash Cards Grid ---------- */
+/* Flash Cards Grid – Responsive + Centered */
 .flash-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  justify-content: center;
+  max-width: 1400px;                       /* cards ka maximum spread – zyada wide na ho */
+  margin: 0 auto;                          /* center karo */
+  padding: 0 1rem;                         /* mobile pe breathing space */
 }
 
-/* ---------- Flash Card ---------- */
+/* Flash Card – Dark Glass + Glow (same as leaderboard/contact us) */
 .flash-card {
   position: relative;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 18px;
-  padding: 2rem 1.5rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  transition: all 0.4s ease;
+  background: rgba(15, 15, 35, 0.5);       /* dark semi-transparent glass */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(80, 80, 120, 0.3);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
-  color: #222;
+  box-shadow: 
+    0 0 16px 4px rgba(100, 140, 255, 0.22),
+    0 0 35px 10px rgba(100, 140, 255, 0.12),
+    0 15px 50px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
 }
 
+.flash-card:hover {
+  transform: translateY(-14px);
+  box-shadow: 
+    0 0 28px 10px rgba(100, 140, 255, 0.35),
+    0 0 60px 20px rgba(100, 140, 255, 0.18),
+    0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+/* Remove the ::before overlay if you want cleaner look, ya rakho extra shine ke liye */
 .flash-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(100,140,255,0.08), transparent 70%);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
 }
 
 .flash-card:hover::before {
   opacity: 1;
 }
 
-.flash-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-}
-
-/* ---------- Icon ---------- */
+/* Icon */
 .card-icon {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: white;
-  margin: 0 auto 1rem auto;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  margin: 0 auto 1.5rem;
+  box-shadow: 
+    0 8px 25px rgba(0,0,0,0.5),
+    inset 0 3px 10px rgba(255,255,255,0.15);
+  transition: transform 0.4s ease;
 }
 
-/* ---------- Title & Description ---------- */
+.flash-card:hover .card-icon {
+  transform: scale(1.15) rotate(12deg);
+}
+
+/* Text */
 .card-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #0a2540;
-  margin: 0.8rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .card-desc {
-  font-size: 1rem;
-  color: #333;
-  opacity: 0.85;
+  font-size: 1.05rem;
+  color: #c0c0e0;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 0.92;
 }
 
-/* ---------- Hover Glow ---------- */
-.flash-card:hover .card-icon {
-  transform: rotate(10deg) scale(1.1);
-  transition: transform 0.3s ease;
+
+/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+@media (max-width: 1024px) {
+  .blogs-container {
+    padding: 5rem 1.2rem 3rem;
+  }
+  
+  .flash-cards-grid {
+    gap: 1.6rem;
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .blogs-title {
+    font-size: 2.8rem;
+  }
+  
+  .flash-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+  
+  .flash-card {
+    padding: 2.2rem 1.8rem;
+  }
+  
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogs-subtitle {
+    font-size: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.6rem;
+  }
 }

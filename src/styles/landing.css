@@ -145,11 +145,69 @@
 }
 
 .title-gradient {
-  background: linear-gradient(90deg, #00ff88, #00d4ff, #0099ff);
+   display: inline-block;
+  margin-left: 8px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #00f0ff, #7a7cff, #ff00ff);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 4s ease-in-out infinite;
+  animation: energyFlow 3s linear infinite;
+  position: relative;
+}
+
+.title-gradient::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  filter: blur(10px);
+  opacity: 0.6;
+  background: inherit;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: -1;
+}
+
+.fade-in {
+  animation:
+    wordIn 1s ease-out,
+    energyFlow 1s linear infinite;
+}
+
+.fade-out {
+  animation: wordOut 1s ease-in;
+}
+
+/* gradient movement */
+@keyframes energyFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* appear */
+@keyframes wordIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* disappear */
+@keyframes wordOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.85);
+  }
 }
 
 @keyframes gradientShift {

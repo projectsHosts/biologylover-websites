@@ -1,3 +1,15 @@
+:root {
+  --primary:    #3b82f6;      /* softer blue */
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+  --text:       #e2e8f0;
+  --text-light: #94a3b8;
+  --bg:         #0f172a;      /* slightly lighter dark */
+  --card:       #1e293b;
+  --border:     #334155;
+  --hover:      #1e40af22;    /* very subtle */
+}
+
 /* ===== BlogDetail.css (CLEAN & FIXED) ===== */
 
 .blog-detail-container {
@@ -5,22 +17,43 @@
   width: 100%;              /* 🔥 FULL WIDTH */
   margin: 0;                /* 🔥 NO AUTO CENTER */
   min-height: 100vh;
-  background: #121212;      /* simple, no gradient outside */
-  color: #e0e0e0;
+  background: var(--bg);      /* simple, no gradient outside */
+  color: var(--text);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 
 /* ===== Sidebar ===== */
 .blog-left {
-  flex: 0 0 260px;            /* FIX 2 */
-  background: #1e1e1e;
-  padding: 1.8rem 1.2rem;
-  border-right: 1px solid #333;
+  flex: 0 0 280px;            /* FIX 2 */
+  background: var(--card);
+  padding: 2rem 1.25rem;
+  border-right: 1px solid var(--border);
   height: 100vh;
   position: sticky;
   top: 0;
   overflow-y: auto;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-header h3 {
+  font-size: 1.35rem;
+  margin: 0;
+  color: white;
+  letter-spacing: -0.025em;
+}
+
+.topics-count {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  display: block;
+  margin-top: 0.35rem;
 }
 
 .blog-left::-webkit-scrollbar {
@@ -42,31 +75,40 @@
 }
 
 .subtopic-item {
-  padding: 0.9rem 1rem;
-  margin-bottom: 0.4rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  color: #b0b0b0;
-  transition: background 0.25s ease, color 0.25s ease;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  transition: all 0.22s ease;
+  position: relative;
+  font-size: 1.02rem;
 }
 
 .subtopic-item:hover {
-  background: #2a2a2a;
-  color: #fff;
+ transform: translateX(6px);
 }
 
 .subtopic-item.active {
-  background: #007bff;
-  color: #fff;
-  font-weight: 600;
+  transform: translateX(4px);
+}
+
+.subtopic-title {
+  font-weight: 500;
+}
+
+.subtopic-number {           /* Uncomment & improve if you want numbers */
+  display: inline-block;
+  width: 2.1rem;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-family: 'Consolas', monospace;
+  margin-right: 0.6rem;
 }
 
 /* ===== Right Content ===== */
 .blog-right {
-  flex: 1;
-  padding: 2rem;              /* FIX 3 */
-  background: #121212;
+  padding: 3rem 2.5rem;     /* more breathing room */
+  max-width: 1200px;        /* prevent ultra-wide on big screens */
+  margin: 0 auto;
 }
 
 /* Header */
@@ -78,14 +120,36 @@
 }
 
 .blog-title {
-  font-size: 2.6rem;
-  margin-bottom: 0.8rem;
-  color: #ffffff;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: white;
+  margin-bottom: 0.6rem;
 }
 
 .blog-meta {
-  font-size: 0.95rem;
-  color: #888;
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: 3rem;
+}
+
+.content-display {
+  max-width: 860px;         /* Goldilocks width for reading */
+  margin: 0 auto;
+  font-size: 1.08rem;
+  line-height: 1.78;
+}
+
+.content-display p {
+  margin: 1.4rem 0;
+  color: #cbd5e1;
+}
+
+.subtopic-item.active::before {
+  content: "→";
+  position: absolute;
+  left: 1rem;
+  font-size: 1.1rem;
 }
 
 /* ===== CONTENT WIDTH FIX (MOST IMPORTANT) ===== */
@@ -119,20 +183,23 @@
 
 /* Typography */
 .blog-right h1 {
-  font-size: 2.2rem;
-  margin: 2rem 0 1rem;
+  font-size: 2.4rem;
+  margin: 3.2rem 0 1.4rem;
+  color: white;
 }
 
 .blog-right h2 {
-  font-size: 1.7rem;
-  margin: 2rem 0 1rem;
-  color: #4da3ff;
+  font-size: 1.95rem;
+  margin: 2.8rem 0 1.2rem;
+  color: #93c5fd;
 }
 
 .blog-right h3 {
-  font-size: 1.4rem;
-  margin: 1.5rem 0 0.8rem;
+  font-size: 1.55rem;
+  margin: 2.2rem 0 1rem;
+  color: #bfdbfe;
 }
+.blog-right strong { color: #facc15; }
 
 .blog-right section {
   width: 100%;
@@ -431,9 +498,52 @@
     rgba(100, 180, 255, 0.2)
   );
   border: 1px solid rgba(120, 190, 255, 0.6);
-  opacity: 0.85;
+  opacity: 0.6;
   animation: bubble-float 2.5s ease-out forwards;
 }
+
+/* ===== BACK BUTTON PREMIUM STYLE ===== */
+.back-btn.sidebar-back {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.45);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* glow border */
+.back-btn.sidebar-back::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #7dd3fc, #c084fc, #7dd3fc);
+  filter: blur(10px);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+/* hover */
+.back-btn.sidebar-back:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.8);
+}
+
+/* active click */
+.back-btn.sidebar-back:active {
+  transform: scale(0.97);
+}
+
 
 @keyframes bubble-float {
   from {

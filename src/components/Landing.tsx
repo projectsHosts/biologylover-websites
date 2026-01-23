@@ -5,6 +5,39 @@ import '../styles/landing.css';
 const Landing: React.FC = () => {
   const [, setScrollY] = useState(0);
 
+const rotatingPhrases = [
+  "the Cell",
+  "DNA",
+  "Motion",
+  "Electricity",
+  "Atoms",
+  "Chemical Bonding",
+  "Genetics",
+  "Optics",
+  "Organic Chemistry",
+  "Evolution",
+  "Thermodynamics",
+  "Modern Physics"
+];
+
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Rotating text effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+
+      setTimeout(() => {
+        setCurrentPhraseIndex((prev) => (prev + 1) % rotatingPhrases.length);
+        setIsVisible(true);
+      }, 400); // fade out duration ke baad change (600ms fade)
+
+    }, 3000); // har 3 seconds mein change (adjust kar sakte ho)
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -42,7 +75,13 @@ const Landing: React.FC = () => {
           <h1 className="title" style={{
             animation: 'slideInDown 0.8s ease-out 0.2s forwards'
           }}>
-            Unlock the Secrets of <span className="title-gradient">Life</span>
+            Unlock the Secrets of {' '}
+           <span
+              data-text={rotatingPhrases[currentPhraseIndex]}
+              className={`title-gradient ${isVisible ? "fade-in" : "fade-out"}`}
+            >
+              {rotatingPhrases[currentPhraseIndex]}
+            </span>
           </h1>
 
           {/* Tagline Section */}

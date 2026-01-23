@@ -146,6 +146,9 @@ useEffect(() => {
       {/* Navigation Sidebar */}
       <nav className="blog-left">
         <div className="sidebar-header">
+          <button className="back-btn sidebar-back" onClick={() => navigate(-1)}>
+                       ← Back to subjects
+         </button>
           <h3>{blog.title} Topics</h3>
           <span className="topics-count">{blog.subtopics.length} topics</span>
         </div>
