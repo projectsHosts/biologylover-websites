@@ -455,6 +455,7 @@
   display: grid;
   grid-template-columns: 60px 1fr auto;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   padding: 1rem;
   background: #111111;
@@ -521,13 +522,20 @@
 .user-section {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
+  min-width: 0;            
+  flex: 1; 
 }
 
 .user-name {
   font-size: 1rem;
   font-weight: 700;
   color: #ffffff;
+  max-width: 140px;       /* adjust as per card width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .leaderboard-row.top-three .user-name {
@@ -552,6 +560,7 @@
 .score-section {
   display: flex;
   align-items: baseline;
+  flex-shrink: 0;
   gap: 0.25rem;
 }
 
@@ -740,5 +749,11 @@
   .nav-btn,
   .submit-btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .user-name {
+    max-width: 90px;
   }
 }
