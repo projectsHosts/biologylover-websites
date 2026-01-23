@@ -7,6 +7,7 @@ interface JwtPayload {
   sub: string; // email
 }
 
+
 const getInitialsFromUserName = (
   userName?: string | null,
   email?: string | null
@@ -54,6 +55,10 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+  (window as any).openLogin = () => setShowAuth(true);
+}, []);
 
   useEffect(() => {
     if (!token) return;
@@ -185,7 +190,7 @@ const Navbar: React.FC = () => {
     <>
       <header className="site-nav">
         <div className="nav-container">
-          <div className="brand">BiologyLover</div>
+          <div className="brand" onClick={() => handleNav("/", true)}>BiologyLover</div>
 
           {/* Hamburger */}
           <div

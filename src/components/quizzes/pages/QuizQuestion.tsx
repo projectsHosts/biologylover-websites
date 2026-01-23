@@ -11,7 +11,8 @@ export default function QuizQuestion({
   onPrev,
   onSubmit,
   canSubmit,
-  isLocked
+  isLocked,
+  elapsedTime
 }: {
   quiz: Quiz;
   index: number;
@@ -23,8 +24,10 @@ export default function QuizQuestion({
   onSubmit: () => void;
   canSubmit: boolean;
   isLocked: boolean;
+  elapsedTime?: string;
 }) {
   const [selected, setSelected] = useState<number | null>(selectedAnswer ?? null);
+  
 
   useEffect(() => {
     setSelected(selectedAnswer ?? null);
@@ -50,6 +53,8 @@ export default function QuizQuestion({
       <div className="question-header">
         <span className="question-number">Question {index + 1} of {total}</span>
         <span className="question-category">Quiz Of The Day</span>
+        {elapsedTime && (<span className="quiz-timer-inline">⏱ {elapsedTime}</span>
+  )}
       </div>
 
       <h2 className="question-text">{quiz.question}</h2>

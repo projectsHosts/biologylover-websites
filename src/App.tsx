@@ -23,6 +23,7 @@ import ContactUs from './components/ContactUs'
 import Dashboard from './components/Dashboard/Dashboard'
 import ScrollToTop from './components/Scrollhandle/ScrollToTop'
 import DailyQuizPage from './components/quizzes/pages/DailyQuizPage'
+import LoginForm from './components/auth/LoginForm'
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
              <Route path="/resources" element={<Resources />} />
              <Route path="/verify-email" element={<VerifyEmail />} />
              <Route path="/oauth-success" element={<OAuthSuccess />} />
+             <Route path="/login" element={<LoginForm />} />
           {/* Protect Routes  */}
              {/* <Route path="/profile" element={<ProtectedRoute><ProfileView /></ProtectedRoute>} />
              <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />

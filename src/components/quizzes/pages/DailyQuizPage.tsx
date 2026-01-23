@@ -8,6 +8,7 @@ import Leaderboard from "./Leaderboard";
 import "../../../styles/quiz.css";
 import QuizComplete from "./QuizComplete";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../../../utils/auth";
 
 type AttemptStatus = "checking" | "not_attempted" | "attempted";
 
@@ -24,11 +25,42 @@ export default function DailyQuizPage() {
   const [error, setError] = useState<string | null>(null);
   const [attemptStatus, setAttemptStatus] = useState<AttemptStatus>("checking");
   const [started, setStarted] = useState(false); // New state for starting the quiz
+  const [elapsed, setElapsed] = useState(0);
+
+
+
+  const formatTime = (sec: number) => {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}m ${s.toString().padStart(2, "0")}s`;
+};
+
+useEffect(() => {
+  if (!started) return;
+
+  const startTime = Number(localStorage.getItem("dailyQuizStartTime"));
+  if (!startTime) return;
+
+  const interval = setInterval(() => {
+    const diff = Math.floor((Date.now() - startTime) / 1000);
+    setElapsed(diff);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [started]);
 
 
 useEffect(() => {
     const init = async () => {
       try {
+        if (!isLoggedIn()) {
+          // guest → sirf quiz lao
+          const data = await getDailyQuizzes();
+          setQuizzes(data);
+          setAttemptStatus("not_attempted");
+          return;
+        }
+
         const res = await getDailyQuizStatus();
 
         if (isLeaderboard) {
@@ -105,6 +137,7 @@ useEffect(() => {
     localStorage.removeItem("dailyQuizStartTime"); // 🧹 CLEANUP
 
     if (lastLeaderboard) {
+      setElapsed(0);  
       setLeaderboard(lastLeaderboard);
       setAttemptStatus("attempted");
       navigate("/daily-quiz/leaderboard");
@@ -159,9 +192,22 @@ useEffect(() => {
           <div className="quiz-start-box">
             <h2>Today's Quiz</h2>
             <p>7 exciting questions await you!</p>
-            <button className="start-btn" onClick={() => {localStorage.setItem("dailyQuizStartTime", Date.now().toString()); setStarted(true)}}>
-              Start Quiz
-            </button>
+            <button
+                className="start-btn"
+                onClick={() => {
+                  if (!isLoggedIn()) {
+                    (window as any).openLogin(); // 🔥 same modal
+                    return;
+                  }
+
+                  localStorage.setItem("dailyQuizStartTime", Date.now().toString());
+                  setStarted(true);
+                }}
+              >
+                Start Quiz
+              </button>
+
+
           </div>
           <div className="motivational-text">
             <h3>Why Quiz Daily?</h3>
@@ -185,6 +231,7 @@ useEffect(() => {
             onSubmit={handleSubmit}
             canSubmit={Object.keys(answers).length === quizzes.length}
             isLocked={false}
+            elapsedTime={formatTime(elapsed)} 
           />
         </div>
       )}
