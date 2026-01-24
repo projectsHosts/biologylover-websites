@@ -117,7 +117,9 @@ useEffect(() => {
       return;
     }
 
-    const quizStartTime = Number(startTimeStr); // ✅ IMPORTANT
+    // const quizStartTime = Number(startTimeStr); // ✅ IMPORTANT
+    const quizStartTime = Math.floor((Date.now() - Number(startTimeStr)) / 1000);
+
 
     let lastLeaderboard: LeaderboardResponse | null = null;
 
