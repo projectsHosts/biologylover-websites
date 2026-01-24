@@ -16,4 +16,5 @@ export interface LeaderboardResponse {
   totalQuestions: number;
   top50: LeaderboardEntry[];
   self?: LeaderboardEntry;
+  streak?: number;
 }

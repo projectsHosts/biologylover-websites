@@ -243,6 +243,7 @@ useEffect(() => {
               totalQuestions={leaderboard.totalQuestions || 7}
               userRank={leaderboard.self?.rank}
               userScore={leaderboard.self?.score}
+              streak={leaderboard.streak}
             />
           </div>
 

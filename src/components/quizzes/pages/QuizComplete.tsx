@@ -1,11 +1,13 @@
 export default function QuizComplete({
   totalQuestions,
   userRank,
-  userScore
+  userScore,
+  streak
 }: {
   totalQuestions: number;
   userRank?: number;
   userScore?: number;
+  streak?: number;
 }) {
   const getEncouragementMessage = () => {
     if (!userRank) return "Great effort!";
@@ -28,6 +30,19 @@ export default function QuizComplete({
       <h2>Quiz Completed!</h2>
       <p className="complete-message">{getEncouragementMessage()}</p>
 
+     {streak && streak > 0 && (
+        <div className="streak-container">
+          <div className="streak-hero">
+            <div className="flame">🔥</div>
+            <div className="streak-count">{streak}</div>
+            <div className="streak-label">DAY STREAK</div>
+            <div className="streak-motivation">
+              Come back tomorrow to grow your streak!
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-value">{totalQuestions}</div>
@@ -41,13 +56,15 @@ export default function QuizComplete({
           </div>
         )}
 
-        {userRank && (
+       {userRank && (
+
           <div className="stat-card highlight">
             <div className="stat-value">#{userRank}</div>
             <div className="stat-label">Your Rank</div>
           </div>
-        )}
+      )}
       </div>
+
 
       <div className="next-quiz-info">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
