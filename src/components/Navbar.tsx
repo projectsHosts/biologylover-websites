@@ -216,20 +216,35 @@ const Navbar: React.FC = () => {
                 }}
               >
                 Courses ▾
-                <ul
-                  className={`dropdown-menu ${
-                    dropdownOpen === "courses" ? "show" : ""
-                  }`}
-                >
-                  <li onClick={() => handleNav("physics")}>Physics</li>
-                  <li onClick={() => handleNav("chemistry")}>Chemistry</li>
-                  <li onClick={() => handleNav("math")}>Math</li>
-                  <li onClick={() => handleNav("biology")}>Biology</li>
-                  <li onClick={() => handleNav("jee")}>JEE</li>
-                  <li onClick={() => handleNav("neet")}>NEET</li>
-                  <li onClick={() => handleNav("school")}>School</li>
-                  <li onClick={() => handleNav("combo")}>Combo Packages</li>
-                </ul>
+                <div
+                className={`mega-dropdown ${
+                  dropdownOpen === "courses" ? "show" : ""
+                }`}
+              >
+                <div className="mega-grid">
+
+                  <div>
+                    <div className="menu-title">Subjects</div>
+                    <div className="menu-link" onClick={() => handleNav("physics")}>Physics</div>
+                    <div className="menu-link" onClick={() => handleNav("chemistry")}>Chemistry</div>
+                    <div className="menu-link" onClick={() => handleNav("math")}>Math</div>
+                    <div className="menu-link" onClick={() => handleNav("biology")}>Biology</div>
+                  </div>
+
+                  <div>
+                    <div className="menu-title">Competitive</div>
+                    <div className="menu-link" onClick={() => handleNav("jee")}>JEE</div>
+                    <div className="menu-link" onClick={() => handleNav("neet")}>NEET</div>
+
+                    <div className="menu-title" style={{ marginTop: "14px" }}>School</div>
+                    <div className="menu-link" onClick={() => handleNav("school")}>Class 6–12</div>
+
+                    <div className="menu-title" style={{ marginTop: "14px" }}>Packages</div>
+                    <div className="menu-link" onClick={() => handleNav("combo")}>Combo Plans</div>
+                  </div>
+
+                </div>
+              </div>
               </li>
 
               <li onClick={() => handleNav("/blogs", true)}>Blogs</li>
@@ -243,21 +258,27 @@ const Navbar: React.FC = () => {
                 }}
               >
                 More ▾
-                <ul
-                  className={`dropdown-menu ${
-                    dropdownOpen === "more" ? "show" : ""
-                  }`}
-                >
-                  <li onClick={() => handleNav("faq")}>FAQs</li>
-                  <li onClick={() => handleNav("/resources", true)}>
-                    Resources
-                  </li>
-                  <li onClick={() => handleNav("/daily-quiz", true)}>
-                    Daily Quiz
-                  </li>
-                  <li onClick={() => handleNav("help")}>Help & Support</li>
-                  <li onClick={() => handleNav("policies")}>Policies</li>
-                </ul>
+               <div
+                className={`mega-dropdown ${
+                  dropdownOpen === "more" ? "show" : ""
+                }`}
+              >
+                <div className="mega-grid">
+
+                  <div>
+                    <div className="menu-title">Support</div>
+                    <div className="menu-link" onClick={() => handleNav("faq")}>FAQs</div>
+                    <div className="menu-link" onClick={() => handleNav("help")}>Help & Support</div>
+                    <div className="menu-link" onClick={() => handleNav("policies")}>Policies</div>
+                  </div>
+
+                  <div>
+                    <div className="menu-title">Learning</div>
+                    <div className="menu-link" onClick={() => handleNav("/resources", true)}>Resources</div>
+                    <div className="menu-link" onClick={() => handleNav("/daily-quiz", true)}>Daily Quiz</div>
+                  </div>
+                </div>
+              </div>
               </li>
 
               <li onClick={() => handleNav("/about", true)}>About Us</li>

@@ -21,9 +21,9 @@ const ScrollButton: React.FC = () => {
       <button
         className={`scroll-btn ${atTop ? 'down' : 'up'}`}
         onClick={handleClick}
-        aria-label="scroll"
-      />
-      <div className="scroll-label">{atTop ? 'Scroll Down' : 'Scroll Up'}</div>
+      >
+        {atTop ? 'Explore Courses' : 'Back to Top'}
+      </button>
     </div>
   );
 };

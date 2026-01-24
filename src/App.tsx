@@ -80,7 +80,9 @@ function App() {
       </Routes>
 
       <Footer />
-      <ScrollButton />
+      {location.pathname === "/" && <ScrollButton />}
+
+      {/* <ScrollButton /> */}
     </div>
   )
 }

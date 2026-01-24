@@ -1,58 +1,48 @@
 .scroll-container {
   position: fixed;
-  bottom: 20px; /* a little closer to bottom */
-  right: 20px;  /* a little closer to right */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1000;
+  bottom: 18px;
+  right: 18px;
+  z-index: 99999;
 }
 
+/* glass pill */
 .scroll-btn {
-  width: 50px;   /* smaller button */
-  height: 50px;  /* smaller button */
-  border: none;
-  border-radius: 50%;
+  all: unset;
   cursor: pointer;
-  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  padding: 10px 18px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .4px;
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  position: relative;
-}
+  gap: 10px;
 
-.scroll-btn::before {
-  content: '';
-  width: 10px;   /* smaller arrow */
-  height: 10px;  /* smaller arrow */
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 2px;
-  transform: rotate(45deg);
-  transition: transform 0.3s;
-}
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 25px rgba(0,0,0,.45);
 
-.scroll-btn.down::before {
-  transform: rotate(45deg);
-}
-
-.scroll-btn.up::before {
-  transform: rotate(-135deg);
+  transition: all .25s ease;
 }
 
 .scroll-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(0,0,0,.6);
 }
 
-.scroll-label {
-  margin-top: 6px;
-  font-size: 12px; /* smaller text */
-  color: white;    /* white text */
-  font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  user-select: none;
+/* arrow */
+.scroll-btn::after {
+  content: "↓";
+  font-size: 14px;
+}
+
+.scroll-btn.up::after {
+  content: "↑";
 }
