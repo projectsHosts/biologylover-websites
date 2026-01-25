@@ -27,7 +27,7 @@ const BlogDetail: React.FC = () => {
  useEffect(() => {
   if (!subject) return;
 
-  setLoading(true);
+  if (!blog) setLoading(true);
 
   fetch(
     `${import.meta.env.VITE_API_BASE}/api/blogs/subject/${subject}`
@@ -146,7 +146,7 @@ useEffect(() => {
       {/* Navigation Sidebar */}
       <nav className="blog-left">
         <div className="sidebar-header">
-          <button className="back-btn sidebar-back" onClick={() => navigate(-1)}>
+          <button className="back-btn sidebar-back" onClick={() => navigate("/blogs")}>
                        ← Back to subjects
          </button>
           <h3>{blog.title} Topics</h3>
@@ -161,9 +161,13 @@ useEffect(() => {
                 activeSubtopic === subtopic.id ? "active" : ""
               }`}
              onClick={() => {
-                   setActiveSubtopic(subtopic.id);
-                     navigate(`/blog/${subject}/${subtopic.topicId}`);
-                  }}
+                  setActiveSubtopic(subtopic.id);
+                  window.history.replaceState(
+                    null,
+                    "",
+                    `/blog/${subject}/${subtopic.topicId}`
+                  );
+                }}
             >
               <span className="subtopic-number">
                 {/* {String(index + 1).padStart(2, "0")} */}
@@ -202,7 +206,8 @@ useEffect(() => {
         <article className="blog-content">
           {currentSubtopic ? (
             <section
-              className="content-display"
+              key={activeSubtopic}
+              className="content-display fade-slide"
               dangerouslySetInnerHTML={{ __html: currentSubtopic.content }}
             />
           ) : (

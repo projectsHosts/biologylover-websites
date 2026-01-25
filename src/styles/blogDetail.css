@@ -25,14 +25,15 @@
 
 /* ===== Sidebar ===== */
 .blog-left {
-  flex: 0 0 280px;            /* FIX 2 */
-  background: var(--card);
-  padding: 2rem 1.25rem;
-  border-right: 1px solid var(--border);
+  flex: 0 0 260px;
+  background: linear-gradient(180deg,#0f172a,#111827);
+  padding: 1.75rem 1rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
   height: 100vh;
   position: sticky;
   top: 0;
   overflow-y: auto;
+  backdrop-filter: blur(6px);
 }
 
 .sidebar-header {
@@ -68,41 +69,49 @@
 }
 
 /* Sidebar list */
-.subtopics-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .subtopic-item {
-  padding: 1rem 1.25rem;
-  margin-bottom: 0.5rem;
-  border-radius: 10px;
-  transition: all 0.22s ease;
-  position: relative;
-  font-size: 1.02rem;
+  padding: 10px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  color: #cbd5e1;
+  transition: color .2s ease;
 }
 
 .subtopic-item:hover {
- transform: translateX(6px);
+  color: #60a5fa;
+  background: transparent;
+  transform: none;
 }
 
 .subtopic-item.active {
-  transform: translateX(4px);
+  color: #3b82f6;
+  font-weight: 600;
+  background: transparent;
 }
 
-.subtopic-title {
-  font-weight: 500;
+.subtopic-item.active::before {
+  display: none;
 }
 
-.subtopic-number {           /* Uncomment & improve if you want numbers */
-  display: inline-block;
-  width: 2.1rem;
-  font-size: 0.95rem;
-  color: var(--text-light);
-  font-family: 'Consolas', monospace;
-  margin-right: 0.6rem;
+.subtopics-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
+
+.subtopics-list li::marker {
+  content: none;
+}
+
+
+.fade-slide {
+  animation: fade 0.25s ease;
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 
 /* ===== Right Content ===== */
 .blog-right {
@@ -134,9 +143,10 @@
 }
 
 .content-display {
-  max-width: 860px;         /* Goldilocks width for reading */
+  max-width: 900px;         /* Goldilocks width for reading */
   margin: 0 auto;
   font-size: 1.08rem;
+  padding: 0 1rem;
   line-height: 1.78;
 }
 
