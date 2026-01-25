@@ -46,6 +46,9 @@ export default function RegisterForm({ onSwitchLogin }: { onSwitchLogin: () => v
       setMessage("Verification email sent! Please check your inbox.");
       setEmail("");
       setPassword("");
+      setTimeout(() => {
+      onSwitchLogin();
+    }, 2500);
     } catch (err:any) {
       setError(err?.message || "Something went wrong");
     } finally {
