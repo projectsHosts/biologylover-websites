@@ -19,7 +19,7 @@ export default function AuthModal({ onClose }: Props) {
         <h2>
           {mode === "login" && "Log in"}
           {mode === "register" && "Create Account"}
-          {mode === "forgot" && "Reset Password"}
+          {mode === "forgot" && "Forgot your password?"}
         </h2>
 
         {mode === "login" && (
@@ -30,18 +30,13 @@ export default function AuthModal({ onClose }: Props) {
         )}
 
         {mode === "register" && (
-          <RegisterForm
-            onSwitchLogin={() => setMode("login")}
-          />
+          <RegisterForm onSwitchLogin={() => setMode("login")} />
         )}
 
         {mode === "forgot" && (
-          <ForgotPassword
-            onBack={() => setMode("login")}
-          />
+          <ForgotPassword onBack={() => setMode("login")} />
         )}
 
-        {/* switch links */}
         {mode !== "forgot" && (
           <p className="switch-text">
             {mode === "login" ? "New user?" : "Already have an account?"}
@@ -58,3 +53,4 @@ export default function AuthModal({ onClose }: Props) {
     </div>
   );
 }
+

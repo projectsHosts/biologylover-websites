@@ -70,7 +70,9 @@ function App() {
         } } onSwitchRegister={function (): void {
           throw new Error('Function not implemented.')
         } } />} />
-             <Route path="/forgot-password" element={<ForgotPassword />} />
+             <Route path="/forgot-password" element={<ForgotPassword onBack={function (): void {
+          throw new Error('Function not implemented.')
+        } } />} />
              <Route path="/reset-password" element={<ResetPassword />} />
           {/* Protect Routes  */}
              {/* <Route path="/profile" element={<ProtectedRoute><ProfileView /></ProtectedRoute>} />
