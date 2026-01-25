@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../styles/auth.css";
 
 const API_BASE =
@@ -9,7 +8,6 @@ export default function ForgotPassword({ onBack }: any) {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleSend = async () => {
     if (!email) {
