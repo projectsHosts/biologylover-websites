@@ -24,6 +24,8 @@ import Dashboard from './components/Dashboard/Dashboard'
 import ScrollToTop from './components/Scrollhandle/ScrollToTop'
 import DailyQuizPage from './components/quizzes/pages/DailyQuizPage'
 import LoginForm from './components/auth/LoginForm'
+import ForgotPassword from './components/auth/ForgotPassword'
+import ResetPassword from './components/auth/ResetPassword'
 
 
 function App() {
@@ -63,7 +65,13 @@ function App() {
              <Route path="/resources" element={<Resources />} />
              <Route path="/verify-email" element={<VerifyEmail />} />
              <Route path="/oauth-success" element={<OAuthSuccess />} />
-             <Route path="/login" element={<LoginForm />} />
+             <Route path="/login" element={<LoginForm onForgot={function (): void {
+          throw new Error('Function not implemented.')
+        } } onSwitchRegister={function (): void {
+          throw new Error('Function not implemented.')
+        } } />} />
+             <Route path="/forgot-password" element={<ForgotPassword />} />
+             <Route path="/reset-password" element={<ResetPassword />} />
           {/* Protect Routes  */}
              {/* <Route path="/profile" element={<ProtectedRoute><ProfileView /></ProtectedRoute>} />
              <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />

@@ -6,7 +6,7 @@ import "../../styles/auth.css";
 const API_BASE =
   import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
-export default function RegisterForm() {
+export default function RegisterForm({ onSwitchLogin }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
