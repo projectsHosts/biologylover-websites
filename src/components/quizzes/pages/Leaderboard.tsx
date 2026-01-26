@@ -32,7 +32,7 @@ export default function Leaderboard({ data }: { data: LeaderboardResponse }) {
       </div>
 
       <div className="leaderboard-list">
-  {data.top50.slice(0, 10).map((user) => (
+  {data.top50.slice(0, 50).map((user) => (
     <div
       key={user.userId}
       className={`leaderboard-row ${user.rank <= 3 ? "top-three" : ""} ${
