@@ -34,10 +34,13 @@ export default function Resources() {
   return (
     <div className="resources-page">
       <h1 ref={titleRef} className="page-title">
-        📚 Free Study Resources
+       <p className="page-subtitle">
+        1000+ Free PDFs • Class 6–12 • NEET • JEE • Boards
+      </p>
       </h1>
 
       {/* Main Tabs */}
+      <div className="glass-box">
       <div className="tab-bar">
         <button
           className={activeTab === "state" ? "active" : ""}
@@ -51,6 +54,7 @@ export default function Resources() {
         >
           NCERT Books
         </button>
+      </div>
       </div>
 
       {/* Content */}

@@ -24,7 +24,11 @@ export default function NcertBooks() {
 
   return (
     <div>
+      <div className="section-title">
       <h2>📖 NCERT Books</h2>
+      <span>Choose your class & subject</span>
+    </div>
+
 
       {/* Class Tabs */}
       <div className="tab-bar">

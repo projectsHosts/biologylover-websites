@@ -13,11 +13,25 @@ body {
 }
 
 .resources-page {
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: auto;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  padding: 80px 40px;
+  background:
+    radial-gradient(circle at top left, #667eea55, transparent 40%),
+    radial-gradient(circle at bottom right, #22c55e55, transparent 40%),
+    linear-gradient(135deg, #0f172a, #020617);
 }
+
+.page-subtitle {
+  text-align: center;
+  color: #c7d2fe;
+  font-size: 1.1rem;
+  margin-top: -20px;
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
+}
+
 
 .chapter-card {
   background: #ffffff;
@@ -74,6 +88,17 @@ body {
   }
 }
 
+.glass-box {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+
 .tab-bar {
   display: flex;
   flex-wrap: wrap;
@@ -119,11 +144,13 @@ body {
 }
 
 .tab-bar button.active {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-  color: #667eea;
-  border-color: transparent;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #22c55e, #38bdf8);
+  color: #020617;
+  box-shadow: 0 0 25px #38bdf8;
+}
+
+.tab-bar button:hover {
+  box-shadow: 0 0 20px rgba(99,102,241,0.6);
 }
 
 .content-box {
@@ -152,6 +179,40 @@ body {
   color: #667eea;
   font-weight: 600;
 }
+.section-title {
+  text-align: center;
+  margin: 40px 0 24px;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(99,102,241,0.6);
+  letter-spacing: -0.5px;
+}
+
+.section-title span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+/* glowing underline */
+.section-title::after {
+  content: "";
+  display: block;
+  margin: 12px auto 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, #22c55e);
+  border-radius: 999px;
+  box-shadow: 0 0 15px rgba(99,102,241,0.6);
+}
+
 
 h2, h3 {
   color: #ffffff;

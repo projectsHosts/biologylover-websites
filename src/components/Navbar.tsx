@@ -275,7 +275,7 @@ const Navbar: React.FC = () => {
                   <div>
                     <div className="menu-title">Learning</div>
                     <div className="menu-link" onClick={() => handleNav("/resources", true)}>Resources</div>
-                    <div className="menu-link" onClick={() => handleNav("/daily-quiz", true)}>Daily Quiz</div>
+                    <div className="menu-link" onClick={() => handleNav("/daily-quiz", true)}>Quiz of the Day</div>
                   </div>
                 </div>
               </div>

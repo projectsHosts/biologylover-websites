@@ -9,7 +9,11 @@ export default function StateBooks() {
 
   return (
     <div>
+      <div className="section-title">
       <h2>🏫 Select State</h2>
+      <span>Choose your board</span>
+    </div>
+
 
       <div className="tab-bar">
         {states.map((s) => (
