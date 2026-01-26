@@ -7,7 +7,8 @@ const API_BASE =
 
 type StudentType = "SCHOOL" | "COMPETITIVE" | "";
 type Stream = "PCM" | "PCB" | "COMMERCE" | "ARTS" | "";
-type Exam = "NEET" | "JEE" | "BOTH" | "";
+type Exam = "NEET" | "AIIMS" | "JIPMER" | "NURSING" | "PARAMEDICAL" | "PHARMACY" | "VETERINARY" | "AYUSH" | "JEE" | "BITSAT" | "VITEEE" | "SRMJEEE" | "STATE_ENGG" | "CUET" | "BOARDS" | "OLYMPIAD" | "BOTH" | "";
+
 
 export default function AddProfile() {
   const navigate = useNavigate();
@@ -156,7 +157,7 @@ const handleAvatarChange = async (
   return (
     <div className="profile-page">
       <div className="profile-container">
-        <h2>Student Profile</h2>
+        <h2>Complete Your Profile</h2>
         {/* AVATAR */}
 <div className="profile-avatar-section">
   {avatarPreview ? (
@@ -259,14 +260,44 @@ const handleAvatarChange = async (
         {studentType === "COMPETITIVE" && (
           <>
             <div className="form-group">
-              <label>Target Exam</label>
-              <select value={targetExam} onChange={e => setTargetExam(e.target.value as Exam)}>
-                <option value="">Select</option>
-                <option value="NEET">NEET</option>
-                <option value="JEE">JEE</option>
-                <option value="BOTH">Both</option>
-              </select>
-            </div>
+            <label>Target Exam</label>
+            <select
+              value={targetExam}
+              onChange={e => setTargetExam(e.target.value as Exam)}
+            >
+              <option value="">Select</option>
+
+              {/* MEDICAL */}
+              <optgroup label="Medical / Health">
+                <option value="NEET">NEET (MBBS/BDS)</option>
+                <option value="AIIMS">AIIMS</option>
+                <option value="JIPMER">JIPMER</option>
+                <option value="NURSING">Nursing Entrance</option>
+                <option value="PARAMEDICAL">Paramedical</option>
+                <option value="PHARMACY">Pharmacy</option>
+                <option value="VETERINARY">Veterinary</option>
+                <option value="AYUSH">AYUSH (BAMS/BHMS)</option>
+              </optgroup>
+
+              {/* ENGINEERING */}
+              <optgroup label="Engineering / PCM">
+                <option value="JEE">JEE (Main/Advanced)</option>
+                <option value="BITSAT">BITSAT</option>
+                <option value="VITEEE">VITEEE</option>
+                <option value="SRMJEEE">SRMJEEE</option>
+                <option value="STATE_ENGG">State Engineering Exams</option>
+              </optgroup>
+
+              {/* SCHOOL / OTHERS */}
+              <optgroup label="School / Other">
+                <option value="CUET">CUET</option>
+                <option value="BOARDS">Board Exams</option>
+                <option value="OLYMPIAD">Olympiads</option>
+                <option value="BOTH">Both (Medical + Engg)</option>
+              </optgroup>
+            </select>
+          </div>
+
 
             <div className="form-group">
               <label>Dropper?</label>
@@ -284,9 +315,9 @@ const handleAvatarChange = async (
                     onChange={e => setAttemptYear(e.target.value)}
                   >
                     <option value="">Select</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
+                    <option value="2025">2026</option>
+                    <option value="2026">2027</option>
+                    <option value="2027">2028</option>
                   </select>
                 </div>
 
@@ -321,8 +352,9 @@ const handleAvatarChange = async (
        <div className="form-group">
             <label>Subjects of Interest</label>
 
+         <div className="subjects-scroll">
             <div className="subjects-grid">
-              {["Physics", "Chemistry", "Biology", "Mathematics"].map(s => (
+              {["Physics", "Chemistry", "Biology", "Mathematics", "Botany", "Zoology", "Organic", "Inorganic", "Physical", "Statistics"].map(s => (
                 <label
                   key={s}
                   className={`subject-chip ${subjects.includes(s) ? "active" : ""}`}
@@ -335,6 +367,7 @@ const handleAvatarChange = async (
                   {s}
                 </label>
               ))}
+            </div>
             </div>
           </div>
 

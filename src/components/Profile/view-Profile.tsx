@@ -171,7 +171,7 @@ export default function ViewProfile() {
         {/* ===== SUBJECTS ===== */}
         <div className="form-group">
           <label>Subjects of Interest</label>
-          <div className="subjects-grid">
+          <div className="subjects-scroll">
             {(profile.subjects || []).length > 0 ? (
               profile.subjects.map((s: string) => (
                 <span key={s} className="subject-chip active">

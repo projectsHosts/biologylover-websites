@@ -1,3 +1,5 @@
+import streakAnime from "../../../assets/streak-anime.png";
+
 export default function QuizComplete({
   totalQuestions,
   userRank,
@@ -11,23 +13,23 @@ export default function QuizComplete({
 }) {
   const getEncouragementMessage = () => {
     if (!userRank) return "Great effort!";
-    if (userRank === 1) return "🎉 Champion!";
-    if (userRank <= 3) return "🏆 Excellent!";
-    if (userRank <= 10) return "⭐ Well Done!";
-    if (userRank <= 50) return "👏 Good Job!";
-    return "💪 Keep Going!";
+    if (userRank === 1) return " Champion!";
+    if (userRank <= 3) return "Excellent!";
+    if (userRank <= 10) return " Well Done!";
+    if (userRank <= 50) return " Good Job!";
+    return " Keep Going!";
   };
 
   return (
     <div className="quiz-complete">
-      <div className="complete-icon">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-          <polyline points="8 12 11 15 16 9" strokeWidth="2"/>
-        </svg>
-      </div>
+    {/* STREAK ANIME ICON */}
+    <div className="complete-icon streak-anime">
+      <img src={streakAnime} alt="Streak" />
+    </div>
 
-      <h2>Quiz Completed!</h2>
+
+
+      <h2 className="complete-title">Quiz Completed!</h2>
       <p className="complete-message">{getEncouragementMessage()}</p>
 
      {streak && streak > 0 && (

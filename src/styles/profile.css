@@ -338,3 +338,56 @@
     font-size: 13px;
   }
 }
+
+/* SUBJECTS HORIZONTAL SCROLL (VIEW + EDIT) */
+.subjects-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px 8px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.subjects-scroll::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+.subjects-scroll .subject-chip {
+  flex: 0 0 auto;        /* 🔥 one row only */
+  white-space: nowrap; /* no wrap */
+}
+
+/* scroll hint animation */
+@keyframes scrollHint {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(-12px); }
+  100% { transform: translateX(0); }
+}
+
+/* apply nudge */
+.subjects-scroll {
+  animation: scrollHint 2.8s ease-in-out infinite;
+}
+
+/* stop animation when user interacts */
+.subjects-scroll:hover,
+.subjects-scroll:focus-within,
+.subjects-scroll:active {
+  animation: none;
+}
+
+
+/* MOBILE SELECT FIX */
+@media (max-width: 640px) {
+  .form-group select {
+    font-size: 14px;
+    padding: 10px 12px;
+    height: 42px;
+  }
+
+  /* reduce dropdown width look */
+  .form-group select option {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}

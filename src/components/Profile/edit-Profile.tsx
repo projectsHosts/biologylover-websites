@@ -261,8 +261,9 @@ export default function EditProfile() {
         {/* ===== SUBJECTS ===== */}
         <div className="form-group">
           <label>Subjects of Interest</label>
+          <div className="subjects-scroll">
           <div className="subjects-grid">
-            {["Physics", "Chemistry", "Biology", "Mathematics"].map(s => (
+           {["Physics", "Chemistry", "Biology", "Mathematics", "Botany", "Zoology", "Organic", "Inorganic", "Physical", "Statistics"].map(s => (
               <label
                 key={s}
                 className={`subject-chip ${
@@ -279,6 +280,7 @@ export default function EditProfile() {
                 {s}
               </label>
             ))}
+          </div>
           </div>
         </div>
 
