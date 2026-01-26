@@ -65,7 +65,7 @@ export default function Leaderboard({ data }: { data: LeaderboardResponse }) {
 </div>
 
 
-      {data.self && data.self.rank > 10 && (
+      {data.self && data.self.rank > 5 && (
   <div className="self-rank-card">
     <div className="self-rank-header">Your Position</div>
 
