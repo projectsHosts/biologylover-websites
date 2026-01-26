@@ -28,7 +28,7 @@ export default function Leaderboard({ data }: { data: LeaderboardResponse }) {
           <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" strokeWidth="2"/>
           <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" strokeWidth="2"/>
         </svg>
-        <h3>Top Performers</h3>
+        <h3>Top 20 Performers</h3>
       </div>
 
       <div className="leaderboard-list">
