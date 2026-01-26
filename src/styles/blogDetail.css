@@ -169,6 +169,31 @@
   width: 100%;
 }
 
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.blog-content th,
+.blog-content td {
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-content th {
+  background: rgba(255,255,255,0.08);
+  font-weight: 600;
+}
+
+.blog-content tr:nth-child(even) {
+  background: rgba(255,255,255,0.03);
+}
+
+
 .content-display {
   max-width: 900px;        /* 👈 Desktop ke liye wide */
   margin: 0 auto;
