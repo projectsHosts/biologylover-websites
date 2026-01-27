@@ -26,10 +26,12 @@ import DailyQuizPage from './components/quizzes/pages/DailyQuizPage'
 import LoginForm from './components/auth/LoginForm'
 import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
+import usePageTracking from './utils/usePageTracking'
 
 
 function App() {
   const location = useLocation(); 
+  usePageTracking();
   return (
     <div>
       <Navbar />
