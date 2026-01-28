@@ -3,7 +3,7 @@ import '../styles/footer.css'
 
 const Footer: React.FC = () => (
   <footer className="site-footer">
-    <div>© 2025 Your Website. All rights reserved.</div>
+    <div>© 2025 BiologyLover. All rights reserved.</div>
   </footer>
 )
 

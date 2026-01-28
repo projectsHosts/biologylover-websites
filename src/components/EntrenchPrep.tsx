@@ -84,7 +84,7 @@ export default function AIExamPrep() {
             className="hero-cta"
             onClick={() => navigate("/ai-practice")}
           >
-            <span>🚀</span>
+            
             <span>Start Practice</span>
           </button>
 
