@@ -80,9 +80,9 @@ export default function EditProfile() {
           
           {/* ===== BASIC INFO CARD ===== */}
           <div className="profile-card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <span className="card-icon">👤</span>
+            <div className="card-header pro">
+              <h3 className="card-title pro">
+                <span className="card-icon pro">👤</span>
                 Basic Information
               </h3>
             </div>
@@ -128,9 +128,9 @@ export default function EditProfile() {
 
           {/* ===== ACADEMIC DETAILS CARD ===== */}
           <div className="profile-card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <span className="card-icon">📚</span>
+            <div className="card-header pro">
+              <h3 className="card-title pro">
+                <span className="card-icon pro">📚</span>
                 Academic Details
               </h3>
             </div>
@@ -319,9 +319,9 @@ export default function EditProfile() {
 
         {/* ===== SUBJECTS & GOALS CARD ===== */}
         <div className="profile-card" style={{ marginTop: '24px' }}>
-          <div className="card-header">
-            <h3 className="card-title">
-              <span className="card-icon">🧪</span>
+          <div className="card-header pro">
+            <h3 className="card-title pro">
+              <span className="card-icon pro">🧪</span>
               Subjects & Study Goals
             </h3>
           </div>

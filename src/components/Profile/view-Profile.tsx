@@ -129,9 +129,9 @@ export default function ViewProfile() {
           
           {/* ===== ACADEMIC DETAILS CARD ===== */}
           <div className="profile-card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <span className="card-icon">📖</span>
+            <div className="card-header pro">
+              <h3 className="card-title pro">
+                <span className="card-icon pro">📖</span>
                 Academic Details
               </h3>
             </div>
@@ -199,9 +199,9 @@ export default function ViewProfile() {
 
           {/* ===== SUBJECTS CARD ===== */}
           <div className="profile-card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <span className="card-icon">🧪</span>
+            <div className="card-header pro">
+              <h3 className="card-title pro">
+                <span className="card-icon pro">🧪</span>
                 Subjects of Interest
               </h3>
             </div>
@@ -230,9 +230,9 @@ export default function ViewProfile() {
 
           {/* ===== STUDY STATS CARD ===== */}
           <div className="profile-card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <span className="card-icon">📊</span>
+            <div className="card-header pro">
+              <h3 className="card-title pro">
+                <span className="card-icon pro">📊</span>
                 Study Statistics
               </h3>
             </div>

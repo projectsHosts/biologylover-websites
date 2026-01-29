@@ -311,14 +311,14 @@ body {
   opacity: 1;
 }
 
-.card-header {
+.card-header.pro {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
 }
 
-.card-title {
+.card-title.pro{
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
@@ -327,7 +327,7 @@ body {
   gap: 10px;
 }
 
-.card-icon {
+.card-icon.pro {
   width: 32px;
   height: 32px;
   display: flex;
@@ -733,7 +733,7 @@ body {
     border-radius: 16px;
   }
 
-  .card-title {
+  .card-title.pro {
     font-size: 18px;
   }
 
