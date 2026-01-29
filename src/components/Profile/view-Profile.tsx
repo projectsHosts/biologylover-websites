@@ -247,21 +247,21 @@ export default function ViewProfile() {
 
               {profile.subjects && (
                 <div className="stat-item">
-                  <div className="stat-value">{profile.subjects.length}</div>
+                  <div className="stat-value pro">{profile.subjects.length}</div>
                   <div className="stat-label">Subjects</div>
                 </div>
               )}
 
               {profile.attemptYear && (
                 <div className="stat-item">
-                  <div className="stat-value">{profile.attemptYear}</div>
+                  <div className="stat-value pro">{profile.attemptYear}</div>
                   <div className="stat-label">Target Year</div>
                 </div>
               )}
 
               {profile.dropper !== null && (
                 <div className="stat-item">
-                  <div className="stat-value">{profile.dropper ? "Yes" : "No"}</div>
+                  <div className="stat-value pro">{profile.dropper ? "Yes" : "No"}</div>
                   <div className="stat-label">Dropper</div>
                 </div>
               )}

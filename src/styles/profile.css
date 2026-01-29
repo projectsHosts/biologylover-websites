@@ -496,7 +496,7 @@ body {
   transform: translateY(-2px);
 }
 
-.stat-value {
+.stat-value.pro {
   font-size: 32px;
   font-weight: 800;
    background: linear-gradient(135deg, #22c55e, #4ade80);

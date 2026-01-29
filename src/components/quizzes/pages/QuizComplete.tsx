@@ -1,14 +1,17 @@
 import streakAnime from "../../../assets/streak-anime.png";
+import LevelProgressCard from "./LevelProgressCard";
 
 export default function QuizComplete({
   totalQuestions,
   userRank,
   userScore,
+  totalXp,
   streak
 }: {
   totalQuestions: number;
   userRank?: number;
   userScore?: number;
+  totalXp: number;
   streak?: number;
 }) {
   const getEncouragementMessage = () => {
@@ -22,17 +25,15 @@ export default function QuizComplete({
 
   return (
     <div className="quiz-complete">
-    {/* STREAK ANIME ICON */}
-    <div className="complete-icon streak-anime">
-      <img src={streakAnime} alt="Streak" />
-    </div>
-
-
+      {/* STREAK ANIME ICON */}
+      <div className="complete-icon streak-anime">
+        <img src={streakAnime} alt="Streak" />
+      </div>
 
       <h2 className="complete-title">Quiz Completed!</h2>
       <p className="complete-message">{getEncouragementMessage()}</p>
 
-     {streak && streak > 0 && (
+      {streak && streak > 0 && (
         <div className="streak-container">
           <div className="streak-hero">
             <div className="flame">🔥</div>
@@ -58,23 +59,29 @@ export default function QuizComplete({
           </div>
         )}
 
-       {userRank && (
-
+        {userRank && (
           <div className="stat-card highlight">
             <div className="stat-value">#{userRank}</div>
             <div className="stat-label">Your Rank</div>
           </div>
-      )}
-      </div>
+        )}
 
+        {totalXp > 0 && (
+          <div className="stat-card xp-card">
+            <div className="stat-value">{totalXp}</div>
+            <div className="total-xp">TOTAL XP</div>
+          </div>
+        )}
+      </div>
 
       <div className="next-quiz-info">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-          <polyline points="12 6 12 12 16 14" strokeWidth="2"/>
+          <circle cx="12" cy="12" r="10" strokeWidth="2" />
+          <polyline points="12 6 12 12 16 14" strokeWidth="2" />
         </svg>
         <p>Next quiz available tomorrow!</p>
       </div>
     </div>
-  );
+);
+
 }

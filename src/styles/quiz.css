@@ -405,6 +405,13 @@
    box-shadow: 0 0 25px rgba(175, 40, 209, 0.7); 
 }
 
+.stat-card.xp-card{
+  background: #222222;
+  color: #ffb000;
+  border: none;
+  box-shadow: 0 0 25px rgba(255, 176, 0, 0.7);
+}
+
 .streak-anime {
   width: 96px;
   height: 96px;
@@ -504,6 +511,10 @@
 
 .next-quiz-info svg {
   stroke: #667eea;
+}
+
+.total-xp{
+  color: #ffb000;
 }
 
 /* ==================== LEADERBOARD ==================== */
