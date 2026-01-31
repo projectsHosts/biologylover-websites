@@ -1,0 +1,73 @@
+/* styles/policesAndhelp/ploicesOrhelp.css */
+
+.privacy-page {
+  background-color: #000000;
+  color: #e0e0e0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 40px 20px;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.privacy-page h1 {
+  font-size: 2.4rem;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 30px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.privacy-page h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin: 40px 0 15px 0;
+}
+
+.privacy-page p,
+.privacy-page ul li {
+  font-size: 1.1rem;
+  color: #dddddd;
+  margin: 12px 0;
+}
+
+.privacy-page ul {
+  padding-left: 30px;
+  margin: 15px 0;
+}
+
+.privacy-page strong {
+  color: #ffffff;
+}
+
+.privacy-page a {
+  color: #4ade80;
+  text-decoration: none;
+}
+
+.privacy-page a:hover {
+  text-decoration: underline;
+}
+
+.privacy-page .thank-you {
+  text-align: center;
+  margin-top: 60px;
+  color: #888888;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .privacy-page {
+    padding: 30px 15px;
+  }
+  .privacy-page h1 {
+    font-size: 2rem;
+  }
+  .privacy-page h2 {
+    font-size: 1.6rem;
+  }
+}

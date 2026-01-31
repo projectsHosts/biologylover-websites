@@ -1,5 +1,4 @@
 import streakAnime from "../../../assets/streak-anime.png";
-// import LevelProgressCard from "./LevelProgressCard";
 
 export default function QuizComplete({
   totalQuestions,

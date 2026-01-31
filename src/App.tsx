@@ -27,6 +27,12 @@ import LoginForm from './components/auth/LoginForm'
 import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
 import usePageTracking from './utils/usePageTracking'
+import HelpSupport from './components/policesAndHelp/HelpSupport'
+import Policies from './components/policesAndHelp/Policies'
+import PyqHome from './components/pyq/pages/PyqHome'
+import PyqInstructions from './components/pyq/pages/PyqInstructions'
+import PyqSolve from './components/pyq/pages/PyqSolve'
+import PyqResult from './components/pyq/pages/PyqResult'
 
 
 function App() {
@@ -56,9 +62,19 @@ function App() {
         <Route path="/contactus" element={<ContactUs />} />
         {/* New: Blogs Page */}
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/help" element={<HelpSupport />} />
+          <Route path="/privacy-policy" element={<Policies />} />
           <Route path="/ai-practice" element={<AIPracticeChat />} />
           <Route path="/daily-quiz" element={<DailyQuizPage />} />
           <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
+
+          {/* ================= PYQ ROUTES ================= */}
+          <Route path="/pyq" element={<PyqHome />} />
+          <Route path="/pyq/:examId/instructions" element={<PyqInstructions />}/>
+          <Route path="/pyq/solve/:attemptId" element={<PyqSolve />} />
+          <Route path="/pyq/result" element={<PyqResult />} />
+
 
           {/* New: Individual Blog Detail */}
           <Route path="/blog/:subject/:topicId?" element={<BlogDetail />}
@@ -76,11 +92,6 @@ function App() {
           throw new Error('Function not implemented.')
         } } />} />
              <Route path="/reset-password" element={<ResetPassword />} />
-          {/* Protect Routes  */}
-             {/* <Route path="/profile" element={<ProtectedRoute><ProfileView /></ProtectedRoute>} />
-             <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
-             <Route path="/profile/add" element={<ProtectedRoute><AddProfile /></ProtectedRoute>} />
-             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
 
              <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<ProfileView />} />

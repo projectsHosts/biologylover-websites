@@ -266,10 +266,10 @@ const Navbar: React.FC = () => {
                 <div className="mega-grid">
 
                   <div>
-                    <div className="menu-title">Support</div>
-                    <div className="menu-link" onClick={() => handleNav("faq")}>FAQs</div>
-                    <div className="menu-link" onClick={() => handleNav("help")}>Help & Support</div>
-                    <div className="menu-link" onClick={() => handleNav("policies")}>Policies</div>
+                    <div className="menu-title">Practice </div>
+                    <div className="menu-link" onClick={() => handleNav("faq")}>Mock Tests <sup style={{color: "red"}}><b>Soon</b></sup></div>
+                    <div className="menu-link" onClick={() => handleNav("/help")}>Competitions <sup style={{color: "red"}}><b>Soon</b></sup> </div>
+                    <div className="menu-link" onClick={() => handleNav("/pyq", true)}>PYQ <sup style={{color: "green"}}><b>NEW</b></sup></div>
                   </div>
 
                   <div>

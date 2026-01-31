@@ -480,7 +480,7 @@ body {
   margin-top: 16px;
 }
 
-.stat-item {
+.stats-grid .stat-item {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
@@ -490,7 +490,7 @@ body {
   box-shadow: 0 0 10px rgba(175, 40, 209, 0.7);
 }
 
-.stat-item:hover {
+.stats-grid .stat-item:hover {
   background: rgba(255, 255, 255, 0.04);
   border-color: var(--border-bright);
   transform: translateY(-2px);

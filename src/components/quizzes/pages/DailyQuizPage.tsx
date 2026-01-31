@@ -55,8 +55,8 @@ useEffect(() => {
       try {
         if (!isLoggedIn()) {
           // guest → sirf quiz lao
-          const data = await getDailyQuizzes();
-          setQuizzes(data);
+          // const data = await getDailyQuizzes();
+          // setQuizzes(data);
           setAttemptStatus("not_attempted");
           return;
         }
@@ -84,12 +84,12 @@ useEffect(() => {
             navigate("/daily-quiz/leaderboard", { replace: true });
           }
         } else {
-          const data = await getDailyQuizzes();
-          if (!data || data.length === 0) {
-            setError("No quizzes available today");
-            return;
-          }
-          setQuizzes(data);
+          // const data = await getDailyQuizzes();
+          // if (!data || data.length === 0) {
+          //   setError("No quizzes available today");
+          //   return;
+          // }
+          // setQuizzes(data);
           setAttemptStatus("not_attempted");
         }
       } catch {
@@ -196,13 +196,15 @@ useEffect(() => {
             <p>7 exciting questions await you!</p>
             <button
                 className="start-btn"
-                onClick={() => {
+                onClick={async () => {
                   if (!isLoggedIn()) {
                     (window as any).openLogin(); // 🔥 same modal
                     return;
                   }
 
                   localStorage.setItem("dailyQuizStartTime", Date.now().toString());
+                  const data = await getDailyQuizzes();
+                  setQuizzes(data);
                   setStarted(true);
                 }}
               >

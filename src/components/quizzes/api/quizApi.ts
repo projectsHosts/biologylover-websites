@@ -5,7 +5,8 @@ const API_BASE =
   import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
 export const getDailyQuizzes = async () => {
-  const res = await fetch(`${API_BASE}/api/quiz/daily`, {
+  const res = await fetch(`${API_BASE}/api/quiz/daily/start`, {
+     method: "POST", 
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token") || ""}`
     }

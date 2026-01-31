@@ -2,6 +2,7 @@ import React from 'react';
 import { FaYoutube, FaInstagram, FaFacebookF, FaLinkedinIn, FaXing } from 'react-icons/fa';
 import '../styles/contact.css'; // Assuming you rename the CSS file for the footer
 import 'flag-icon-css/css/flag-icons.min.css';
+import { Link } from 'react-router-dom';
 
 // NOTE: Updated the logo text to reflect @biologylover02
 const logoText = "🔬 Biologylover"; 
@@ -43,7 +44,7 @@ const Footer: React.FC = () => {
                     <div className="contact-item">
                         <span className="icon-phone">📞</span>
                         {/* Updated Phone */}
-                        <a href="tel:+911234567890">+91 12345 67890</a>
+                        <a href="tel:+911234567890">+91 982....</a>
                     </div>
                     
                     {/* Social Icons */}
@@ -76,9 +77,10 @@ const Footer: React.FC = () => {
                     <h3>Study Resources</h3>
                     <ul>
                         <li><a href="#about">About Our Mentors</a></li>
-                        <li><a href="#blog">Study Notes & Blog</a></li>
+                        <li><Link to="/blogs"  rel="noopener noreferrer">Study Notes & Blog</Link></li>
                         <li><a href="#tests">Online Practice Tests</a></li>
-                        <li><a href="#faqs">FAQs & Support</a></li>
+                        <li><Link to="/faq"  rel="noopener noreferrer">FAQs & Support</Link></li>
+
                         <li><a href="#downloads">Free Downloads</a></li>
                         <li><a href="#contact-us">Contact Us</a></li>
                     </ul>
@@ -89,7 +91,7 @@ const Footer: React.FC = () => {
                     <h3>Legal & Connect</h3>
                     <ul>
                         <li><a href="#terms">Terms of Service</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><Link to="/privacy-policy"  rel="noopener noreferrer">Privacy Policy</Link></li>
                         <li><a href="#disclaimer">Disclaimer</a></li>
                         <li><a href="#careers">Join Our Team</a></li>
                         <li><a href="#sitemap">Website Map</a></li>
