@@ -14,7 +14,7 @@ export default function PyqInstructions() {
   }, [examId]);
 
   const start = async () => {
-    const attemptId = await startPyq(Number(examId), 21); // userId
+    const attemptId = await startPyq(Number(examId));
     navigate(`/pyq/solve/${attemptId}`, {
       state: {
         durationMinutes: data.durationMinutes,

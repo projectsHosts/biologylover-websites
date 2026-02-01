@@ -32,13 +32,16 @@ export const getInstructions = async (examId: number) => {
 };
 
 // 3️⃣ Start PYQ (returns attemptId)
-export const startPyq = async (
-  examId: number,
-  userId: number
-) => {
+// 3️⃣ Start PYQ (JWT based – SAFE)
+export const startPyq = async (examId: number) => {
   const res = await fetch(
-    `${API_BASE}/api/pyq/${examId}/start?userId=${userId}`,
-    { method: "POST" }
+    `${API_BASE}/api/pyq/${examId}/start`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+      },
+    }
   );
 
   if (!res.ok) throw new Error("Failed to start PYQ");
