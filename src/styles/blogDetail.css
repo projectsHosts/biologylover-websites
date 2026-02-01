@@ -114,11 +114,21 @@
 
 
 /* ===== Right Content ===== */
+/* .blog-right {
+  padding: 3rem 2.5rem;     
+  max-width: 1200px;        
+  /* margin: 0 auto; */
+/* } */ */
+
+
+.content-display,
+.blog-content,
 .blog-right {
-  padding: 3rem 2.5rem;     /* more breathing room */
-  max-width: 1200px;        /* prevent ultra-wide on big screens */
-  margin: 0 auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
+
 
 /* Header */
 .blog-header {
@@ -167,13 +177,14 @@
 
 .blog-content {
   width: 100%;
+  overflow-x: hidden;
 }
 
 .blog-content table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 15px;
+ width: 100%;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .blog-content th,
@@ -205,6 +216,11 @@
   .content-display {
     max-width: 800px;
   }
+   .blog-left {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 }
 
 /* Mobile */
@@ -213,7 +229,14 @@
     max-width: 100%;
     padding: 0;
   }
+  .blog-right {
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+  }
 }
+
+
 
 
 /* Typography */
@@ -359,6 +382,12 @@
   .comparison-table td {
     padding: 10px;
     font-size: 14px;
+  }
+  .main-title {
+    display: block;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
 
