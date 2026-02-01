@@ -12,11 +12,36 @@ export default function QuestionCard({
   selectedOption,
   onSelect,
 }: Props) {
+  let q: {
+  text: string;
+  images?: string[];
+};
+
+try {
+  q = JSON.parse(question.questionText);
+} catch {
+  q = {
+    text: question.questionText,
+    images: [],
+  };
+}
   return (
     <div className="pyq-qcard">
       <h3 className="pyq-qcard-title">
-        Q{question.questionNo}. {question.questionText}
+        Q{question.questionNo}. {q.text}
       </h3>
+      {q.images && q.images.length > 0 && (
+  <div className="question-images">
+    {q.images.map((img, index) => (
+      <img
+        key={index}
+        src={img}
+        alt="question-diagram"
+        className="question-image"
+      />
+    ))}
+  </div>
+)}
 
       {(["A", "B", "C", "D"] as const).map((opt) => {
         const text =
