@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
                 <div className="footer-col footer-col-links">
                     <h3>Legal & Connect</h3>
                     <ul>
-                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><Link to="/terms-of-service"  rel="noopener noreferrer">Terms of Service</Link></li>
                         <li><Link to="/privacy-policy"  rel="noopener noreferrer">Privacy Policy</Link></li>
                         <li><a href="#disclaimer">Disclaimer</a></li>
                         <li><a href="#careers">Join Our Team</a></li>

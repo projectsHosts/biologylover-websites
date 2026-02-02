@@ -66,6 +66,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/help" element={<HelpSupport />} />
           <Route path="/privacy-policy" element={<Policies />} />
+          <Route path="/terms-of-service" element={<HelpSupport />} />
           <Route path="/ai-practice" element={<AIPracticeChat />} />
           <Route path="/daily-quiz" element={<DailyQuizPage />} />
           <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
