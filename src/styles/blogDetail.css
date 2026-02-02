@@ -148,9 +148,6 @@
   font-size: 1.08rem;
   padding: 0 1rem;
   line-height: 1.78;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .content-display p {
@@ -164,9 +161,22 @@
   left: 1rem;
   font-size: 1.1rem;
 }
+/* ================= IMAGE INSIDE CIRCLE – FIX ================= */
+
+.card-icon {
+  overflow: hidden;          
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         
+  object-position: center;   
+  display: block;
+}
+
 
 /* ===== CONTENT WIDTH FIX (MOST IMPORTANT) ===== */
-/* ===== CONTENT LAYOUT FIX ===== */
 
 .table-wrapper {
   width: 100%;
@@ -188,16 +198,9 @@
 /* Table Style - Isme min-width hona zaroori hai */
 .blog-content table {
   width: 100%;
-  min-width: 650px; /* Tablet/Mobile par column spacing maintain rakhega */
   border-collapse: collapse;
-  font-size: 14px;
-}
-
-/* Taki mobile screen se content bahar na jaye */
-.blog-content {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden; 
+  margin: 20px 0;
+  font-size: 15px;
 }
 
 .blog-content th,
@@ -331,16 +334,6 @@
 @media (max-width: 768px) {
   .blog-title {
     font-size: 1.9rem;
-  }
-
-  .blog-right {
-    padding: 1rem; /* Padding kam karein */
-  }
-
-  .main-title {
-    width: 100%; /* Title ko full width karein */
-    box-sizing: border-box;
-    text-align: center;
   }
 
   .blog-right h1 {
