@@ -84,12 +84,6 @@ useEffect(() => {
             navigate("/daily-quiz/leaderboard", { replace: true });
           }
         } else {
-          // const data = await getDailyQuizzes();
-          // if (!data || data.length === 0) {
-          //   setError("No quizzes available today");
-          //   return;
-          // }
-          // setQuizzes(data);
           setAttemptStatus("not_attempted");
         }
       } catch {

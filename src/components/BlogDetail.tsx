@@ -76,7 +76,6 @@ const BlogDetail: React.FC = () => {
     });
 }, [subject]);
 
-
 // 🫧 Bubble Cursor Effect (Blog page only)
 useEffect(() => {
   // Mobile pe disable

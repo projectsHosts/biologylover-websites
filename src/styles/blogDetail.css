@@ -148,6 +148,9 @@
   font-size: 1.08rem;
   padding: 0 1rem;
   line-height: 1.78;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .content-display p {
@@ -165,15 +168,36 @@
 /* ===== CONTENT WIDTH FIX (MOST IMPORTANT) ===== */
 /* ===== CONTENT LAYOUT FIX ===== */
 
-.blog-content {
+.table-wrapper {
   width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch; /* For smooth mobile scroll */
+}
+/* Table Wrapper - Yeh horizontal scroll enable karega */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Force horizontal scroll */
+  margin: 20px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
 }
 
+/* Table Style - Isme min-width hona zaroori hai */
 .blog-content table {
   width: 100%;
+  min-width: 650px; /* Tablet/Mobile par column spacing maintain rakhega */
   border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 15px;
+  font-size: 14px;
+}
+
+/* Taki mobile screen se content bahar na jaye */
+.blog-content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; 
 }
 
 .blog-content th,
@@ -307,6 +331,16 @@
 @media (max-width: 768px) {
   .blog-title {
     font-size: 1.9rem;
+  }
+
+  .blog-right {
+    padding: 1rem; /* Padding kam karein */
+  }
+
+  .main-title {
+    width: 100%; /* Title ko full width karein */
+    box-sizing: border-box;
+    text-align: center;
   }
 
   .blog-right h1 {
