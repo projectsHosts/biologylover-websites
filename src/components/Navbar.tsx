@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import AuthModal from "./auth/AuthModal";
 import { getDailyQuizStatus } from "./quizzes/api/quizApi";
 import { getLevelFromXp } from "../utils/getLevelFromXp";
-import { Color } from "ogl";
 
 
 interface JwtPayload {
