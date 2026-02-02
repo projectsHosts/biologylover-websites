@@ -138,6 +138,15 @@
   font-weight: 500;
 }
 
+.user-level {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1953e;
+  margin-top: 4px;
+  text-shadow: 0 5px 14px rgba(255,255,255,0.7);
+  letter-spacing: 0.5px;
+}
+
 .signin-nav:hover {
   background: #0c6443;
   color: #fff;

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../styles/navbar.css";
 import { useNavigate } from "react-router-dom";
 import AuthModal from "./auth/AuthModal";
+import { getDailyQuizStatus } from "./quizzes/api/quizApi";
+import { getLevelFromXp } from "../utils/getLevelFromXp";
+import { Color } from "ogl";
+
 
 interface JwtPayload {
   sub: string; // email
@@ -38,11 +42,18 @@ const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null); // which dropdown open
   const [showAuth, setShowAuth] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [totalXp, setTotalXp] = useState<number>(0);
+  const userLevel = getLevelFromXp(totalXp);
+
+
+
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
   const [userName, setUserName] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const hasUserName = !!(userName && userName.trim().length > 0);
+  const navigate = useNavigate();
 
   const [profileComplete, setProfileComplete] = useState(false);
   const [profileExists, setProfileExists] = useState(false);
@@ -54,7 +65,22 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const navigate = useNavigate();
+  //For Total XP fetching
+  useEffect(() => {
+  if (!token) return;
+
+  getDailyQuizStatus()
+    .then((res) => {
+      console.log("STATUS API:", res);
+
+      const xp = res?.leaderboard?.totalXp ?? 0;
+      setTotalXp(xp);
+    })
+    .catch((err) => {
+      console.error("Status API error", err);
+    });
+}, [token]);
+
 
   useEffect(() => {
   (window as any).openLogin = () => setShowAuth(true);
@@ -307,7 +333,7 @@ const Navbar: React.FC = () => {
                     {avatarUrl ? (
                       <img src={avatarUrl} alt="Profile" />
                     ) : (
-                      getInitialsFromUserName(userName || userEmail)
+                      getInitialsFromUserName(hasUserName ? userName : undefined, userEmail)
                     )}
                   </div>
 
@@ -322,12 +348,15 @@ const Navbar: React.FC = () => {
                           />
                         ) : (
                           <div className="avatar initials-avatar big">
-                            {getInitialsFromUserName(userName || userEmail)}
+                            {getInitialsFromUserName(hasUserName ? userName : undefined, userEmail)}
                           </div>
                         )}
 
                         <div>
-                          <small>{userEmail}</small>
+                          <strong>
+                            {hasUserName ? userName : userEmail}
+                            <h6 className="user-level"><b style={{color: "white"}}>Level: </b> {userLevel}</h6>
+                          </strong>
                         </div>
                       </div>
                       <ul>

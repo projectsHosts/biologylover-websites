@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import streakAnime from "../../../assets/streak-anime.png";
 
 export default function QuizComplete({
@@ -13,6 +14,7 @@ export default function QuizComplete({
   totalXp: number;
   streak?: number;
 }) {
+  const navigate = useNavigate();
   const getEncouragementMessage = () => {
     if (!userRank) return "Great effort!";
     if (userRank === 1) return " Champion!";
@@ -24,6 +26,7 @@ export default function QuizComplete({
 
   return (
     <div className="quiz-complete">
+
       {/* STREAK ANIME ICON */}
       <div className="complete-icon streak-anime">
         <img src={streakAnime} alt="Streak" />
@@ -41,6 +44,9 @@ export default function QuizComplete({
             <div className="streak-motivation">
               Come back tomorrow to grow your streak!
             </div>
+            <button className="progress-card-btn" onClick={(e) => { e.stopPropagation(); navigate("/level-progress",{state: {totalXp,streak}}); }} >
+          View Achievements →
+        </button>
           </div>
         </div>
       )}

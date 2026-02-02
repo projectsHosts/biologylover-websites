@@ -412,6 +412,32 @@
   box-shadow: 0 0 25px rgba(255, 176, 0, 0.7);
 }
 
+/* // ==================== STREAK BUTTON ==================== */
+.progress-card-btn {
+  margin-top: 12px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  color: #0f172a;
+  background: linear-gradient(135deg, #ffb703, #ff7a18);
+  box-shadow:
+    0 8px 20px rgba(255, 140, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.progress-card-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 12px 30px rgba(255, 140, 0, 0.6);
+}
+
+.progress-card-btn:active {
+  transform: scale(0.97);
+}
+
 .streak-anime {
   width: 96px;
   height: 96px;
@@ -694,6 +720,7 @@
 
 .streak-label {
   font-size: 11px;
+  font-weight: 700;
   letter-spacing: 2px;
   color: #ff5e00;
 }
@@ -701,7 +728,11 @@
 .streak-motivation {
   margin-top: 6px;
   font-size: 10px;
-  color: #3adae6;
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 0 2px #ff7a00, 
+               0 0 4px rgba(255, 140, 0, 0.6);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   opacity: 0.9;
 

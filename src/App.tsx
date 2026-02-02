@@ -33,6 +33,7 @@ import PyqHome from './components/pyq/pages/PyqHome'
 import PyqInstructions from './components/pyq/pages/PyqInstructions'
 import PyqSolve from './components/pyq/pages/PyqSolve'
 import PyqResult from './components/pyq/pages/PyqResult'
+import LevelProgressCard from './components/quizzes/pages/LevelProgressCard'
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/ai-practice" element={<AIPracticeChat />} />
           <Route path="/daily-quiz" element={<DailyQuizPage />} />
           <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
+          <Route path="/level-progress" element={<LevelProgressCard />} />
 
           {/* ================= PYQ ROUTES ================= */}
           <Route path="/pyq" element={<PyqHome />} />
