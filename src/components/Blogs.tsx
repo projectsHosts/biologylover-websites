@@ -7,6 +7,7 @@ import MathImg from '../assets/Math.png';
 import BiologyImg from '../assets/Biology.png';
 import NeetImg from '../assets/NEET.png';
 import JeeImg from '../assets/JEE.png';
+import StudyTipsImg from '../assets/StudyTips.png';
 
 interface Subject {
   id: string;
@@ -23,6 +24,7 @@ const Blogs: React.FC = () => {
     { id: 'biology', title: 'Biology', image: BiologyImg, gradient: 'linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)' },
     { id: 'neet', title: 'NEET', image: NeetImg, gradient: 'linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)' },
     { id: 'Jee', title: 'JEE', image: JeeImg, gradient: 'linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)' },
+    { id: 'study&tips', title: 'Study Tips & Strategies', image: StudyTipsImg, gradient: 'linear-gradient(135deg, #e7aa4f 0%, #2e7746 100%)' },
   ];
 
   return (
