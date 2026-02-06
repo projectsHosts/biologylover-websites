@@ -35,7 +35,7 @@ export default function PyqInstructions() {
     <div className="pyq-scope">
     <div className="pyq-page">
       <div className="pyq-instructions-box">
-        <h2 className="pyq-instructions-title">{data.examName}</h2>
+        <h2 className="pyq-instructions-title">{data.examName}</h2> 
 
         <ul className="pyq-instructions-list">
           <li>

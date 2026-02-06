@@ -12,7 +12,8 @@ export default function PyqCard({ card }: Props) {
   return (
     <div className="pyq-card">
       <h2>
-        {card.subject} PYQ {card.year}
+        {/* {card.subject} PYQ {card.year} */}
+        <h2>{card.examName}</h2>
       </h2>
 
       <p>Questions: {card.totalQuestions}</p>

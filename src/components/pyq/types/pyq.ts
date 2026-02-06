@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 export interface PyqCard {
   examId: number;
+  examName: string;
   subject: string;
   year: number;
   totalQuestions: number;
