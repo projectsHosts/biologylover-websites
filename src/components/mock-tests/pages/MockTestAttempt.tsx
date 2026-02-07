@@ -41,6 +41,11 @@ export default function MockTestAttempt(){
       .catch(()=>submit()); // no more questions
   },[attemptId,index]);
 
+  useEffect(()=>{
+  setSelected(null);
+},[question]);
+
+
   // ===== select answer =====
 
   function select(opt:string){
