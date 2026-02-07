@@ -34,6 +34,16 @@ import PyqInstructions from './components/pyq/pages/PyqInstructions'
 import PyqSolve from './components/pyq/pages/PyqSolve'
 import PyqResult from './components/pyq/pages/PyqResult'
 import LevelProgressCard from './components/quizzes/pages/LevelProgressCard'
+import MockTestAttempt from './components/mock-tests/pages/MockTestAttempt'
+import MockTestList from './components/mock-tests/pages/MockTestList'
+import MockTestResult from './components/mock-tests/pages/MockTestResult'
+import MockTestCategories from './components/mock-tests/pages/MockTestCategories'
+import MedicalEntrance from './components/mock-tests/pages/MedicalEntrance'
+import EngineeringEntrance from './components/mock-tests/pages/EngineeringEntrance'
+import SubcategoryTests from './components/mock-tests/pages/SubcategoryTests'
+import GovernmentEntrance from './components/mock-tests/pages/GovernmentEntrance'
+import ClassWiseTests from './components/mock-tests/pages/ClassWiseTests'
+import TopicWiseTests from './components/mock-tests/pages/TopicWiseTests'
 
 
 function App() {
@@ -77,6 +87,29 @@ function App() {
           <Route path="/pyq/:examId/instructions" element={<PyqInstructions />}/>
           <Route path="/pyq/solve/:attemptId" element={<PyqSolve />} />
           <Route path="/pyq/result" element={<PyqResult />} />
+
+          {/* ================= Mock Tests ================= */}
+          {/* Main Categories Page */}
+        <Route path="/mock-tests" element={<MockTestCategories />} />
+        
+        {/* Stream-specific category pages */}
+        <Route path="/mock-tests/medical" element={<MedicalEntrance />} />
+        <Route path="/mock-tests/engineering" element={<EngineeringEntrance />} />
+        <Route path="/mock-tests/government" element={<GovernmentEntrance />} />
+        <Route path="/mock-tests/classwise" element={<ClassWiseTests />} />
+        <Route path="/mock-tests/topicwise" element={<TopicWiseTests />} />
+
+        
+        {/* Test list by exam type */}
+        <Route path="/mock-tests/list/:examType" element={<MockTestList />} />
+
+        {/* Subcategory page (for NEET Subject Tests) */}
+       <Route path="/mock-tests/medical/:categoryId" element={<SubcategoryTests />} />
+        
+        {/* Test attempt and result */}
+        <Route path="/mock/:id" element={<MockTestAttempt />} />
+        <Route path="/mock-result" element={<MockTestResult />} />
+
 
 
           {/* New: Individual Blog Detail */}
