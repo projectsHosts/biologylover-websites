@@ -8,6 +8,7 @@ interface Category {
   description: string;
   icon: string;
   route: string;
+  statusText: string;
 }
 
 export default function MockTestCategories() {
@@ -19,35 +20,40 @@ export default function MockTestCategories() {
       name: "Medical Entrance (PCB)",
       description: "NEET, AIIMS, JIPMER & other medical entrance exams",
       icon: "local_hospital",
-      route: "/mock-tests/medical"
+      route: "/mock-tests/medical",
+      statusText: "AVAILABLE"
     },
     {
       id: "engineering",
       name: "Engineering Entrance (PCM)",
       description: "JEE Main, JEE Advanced & state engineering exams",
       icon: "engineering",
-      route: "/mock-tests/engineering"
+      route: "/mock-tests/engineering",
+      statusText: "NOT AVAILABLE"
     },
     {
       id: "government",
       name: "Government / Paramedical",
       description: "Government job & paramedical entrance tests",
       icon: "account_balance",
-      route: "/mock-tests/government"
+      route: "/mock-tests/government",
+      statusText: "NOT AVAILABLE"
     },
     {
       id: "classwise",
       name: "Class-wise Tests",
       description: "Practice tests for Class 11 & 12 (PCB/PCM)",
       icon: "school",
-      route: "/mock-tests/classwise"
+      route: "/mock-tests/classwise",
+      statusText: "NOT AVAILABLE"
     },
     {
       id: "topicwise",
       name: "Topic-wise Tests",
       description: "Chapter-wise tests for Physics, Chemistry & Biology",
       icon: "menu_book",
-      route: "/mock-tests/topicwise"
+      route: "/mock-tests/topicwise",
+      statusText: "NOT AVAILABLE"
     }
   ];
 
@@ -63,6 +69,13 @@ export default function MockTestCategories() {
             className="mock-category-card"
             onClick={() => navigate(cat.route)}
           >
+             <div className={
+                cat.statusText === "AVAILABLE"
+                  ? "mock-static-status available"
+                  : "mock-static-status not"
+              }>
+                {cat.statusText}
+              </div>
             <span className="material-icons mock-category-icon">{cat.icon}</span>
             <h3>{cat.name}</h3>
             <p>{cat.description}</p>

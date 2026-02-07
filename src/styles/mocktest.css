@@ -464,6 +464,35 @@ body {
   background-clip: text;
 }
 
+/* ===== Category Status Badge ===== */
+
+.mock-static-status {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  border: 1px solid;
+  backdrop-filter: blur(6px);
+}
+
+/* Green */
+.mock-static-status.available {
+  color: #22c55e;
+  border-color: rgba(34,197,94,.5);
+  background: rgba(34,197,94,.12);
+}
+
+/* Red */
+.mock-static-status.not {
+  color: #ef4444;
+  border-color: rgba(239,68,68,.5);
+  background: rgba(239,68,68,.12);
+}
+
+
 /* ===== Test Header ===== */
 .mock-test-header {
   display: flex;

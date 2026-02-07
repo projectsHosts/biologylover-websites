@@ -292,9 +292,9 @@ const Navbar: React.FC = () => {
 
                   <div>
                     <div className="menu-title">Practice </div>
-                    <div className="menu-link" onClick={() => handleNav("/mock-tests", true)}>Mock Tests <sup style={{color: "red"}}><b>Soon</b></sup></div>
-                    <div className="menu-link" onClick={() => handleNav("/help")}>Competitions <sup style={{color: "red"}}><b>Soon</b></sup> </div>
-                    <div className="menu-link" onClick={() => handleNav("/pyq", true)}>PYQ <sup style={{color: "green"}}><b>NEW</b></sup></div>
+                  <div className="menu-link " onClick={() => handleNav("/mock-tests", true)}>Mock Tests <sup className="menu-badge menu-badge-new"><b>NEW</b></sup></div>
+                  <div className="menu-link" onClick={() => handleNav("/help")}>Competitions <sup className="menu-badge menu-badge-soon"><b>Soon</b></sup> </div>
+                  <div className="menu-link" onClick={() => handleNav("/pyq", true)}>PYQ <sup className="menu-badge menu-badge-new"><b>NEW</b></sup></div>
                   </div>
 
                   <div>
