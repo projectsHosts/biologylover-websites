@@ -20,7 +20,6 @@ export interface Question {
   optionB: string;
   optionC: string;
   optionD: string;
-  correctOption: string;
 }
 
 export interface Category {
@@ -35,4 +34,23 @@ export interface Subcategory {
   name: string;
   examType: string;
   stream?: string;
+}
+
+interface ReviewItem {
+  questionId: number
+  questionText: string
+  yourAnswer: string
+  correctAnswer: string
+  correct: boolean
+}
+
+export interface ResultState {
+  total: number
+  attempted: number
+  correct: number
+  wrong: number
+  skipped: number
+  score: number
+  accuracy: number
+  review: ReviewItem[]
 }

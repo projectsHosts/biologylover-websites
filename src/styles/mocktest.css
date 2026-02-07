@@ -648,17 +648,27 @@ body {
 .mock-question-review-container h3 {
   position: sticky;
   top: 0;
-  background: #000;
-  padding: 20px 0;
-  z-index: 10;
-  margin: 0 0 30px 0;
-  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
-  font-size: 1.6rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  padding: 18px 0;
+  margin-bottom: 25px;
+  z-index: 5;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(120,140,255,0.25);
+
+  font-size: 1.5rem;
+  color: #aab4ff;
 }
+
+.mock-question-review::after {
+  content: "Review";
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font-size: 0.7rem;
+  opacity: 0.25;
+  letter-spacing: 1px;
+}
+
 
 .mock-question-review-wrapper {
   max-height: 600px;
@@ -736,6 +746,21 @@ body {
   color: #fff;
   font-weight: 600;
 }
+
+/* answer highlight */
+
+.mock-question-review.mock-status-correct b {
+  color: #86efac;
+}
+
+.mock-question-review.mock-status-wrong b {
+  color: #fca5a5;
+}
+
+.mock-question-review.mock-status-skip b {
+  color: #fcd34d;
+}
+
 
 /* ===== Back Button/Link ===== */
 /* ===== Premium Back Button ===== */

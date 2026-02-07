@@ -1,115 +1,88 @@
 // MockTestAttempt.tsx
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchQuestions, submitMock } from "../api/mockApi";
-import type { Question } from "../types/mock";
 import "../../../styles/mocktest.css";
 
+import {
+  startAttempt,
+  fetchAttemptQuestion,
+  saveAttemptAnswer,
+  submitAttempt
+} from "../api/mockApi";
 
-export default function MockTestAttempt() {
+export default function MockTestAttempt(){
+
   const { id } = useParams();
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<number,string>>({});
-  const [timeLeft, setTimeLeft] = useState(180 * 60);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!id) {
-      setError("Test ID not found");
-      setLoading(false);
-      return;
-    }
+  const [attemptId,setAttemptId] = useState<number>();
+  const [index,setIndex] = useState(0);
+  const [question,setQuestion] = useState<any>(null);
+  const [selected,setSelected] = useState<string|null>(null);
+  const [timeLeft,setTimeLeft] = useState(180*60);
 
-    fetchQuestions(Number(id))
-      .then(data => {
-        if (!data || data.length === 0) {
-          setError("No questions available for this test");
-        } else {
-          setQuestions(data);
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        setError("Failed to load questions. Please try again.");
-      })
-      .finally(() => setLoading(false));
-  }, [id]);
+  // ===== start attempt =====
 
-  function getOption(q: Question, o: string) {
-    if (o === "A") return q.optionA;
-    if (o === "B") return q.optionB;
-    if (o === "C") return q.optionC;
-    return q.optionD;
-  }
+  useEffect(()=>{
+    if(!id) return;
 
-  function select(opt: string) {
-    const q = questions[index];
-    setAnswers(a => ({ ...a, [q.id]: opt }));
-  }
-async function submit() {
-  const payload = Object.entries(answers)
-    .map(([qid,opt]) => ({
-      questionId: Number(qid),
+    startAttempt(Number(id)).then(aid=>{
+      setAttemptId(aid);
+    });
+  },[id]);
+
+  // ===== load question =====
+
+  useEffect(()=>{
+    if(!attemptId) return;
+
+    fetchAttemptQuestion(attemptId,index)
+      .then(setQuestion)
+      .catch(()=>submit()); // no more questions
+  },[attemptId,index]);
+
+  // ===== select answer =====
+
+  function select(opt:string){
+    if(!attemptId || !question) return;
+
+    setSelected(opt);
+
+    saveAttemptAnswer(attemptId,{
+      questionId: question.id,
       selectedOption: opt
-    }));
+    });
+  }
 
-  const result =
-    await submitMock(Number(id), payload);
+  // ===== submit =====
 
-  navigate("/mock-result", {
-    state: result
-  });
-}
+  async function submit(){
+    if(!attemptId) return;
 
-  // timer with auto submit
-  useEffect(() => {
-    if (questions.length === 0) return;
+    const result = await submitAttempt(attemptId);
 
-    const t = setInterval(() => {
-      setTimeLeft(s => {
-        if (s <= 1) {
+    navigate("/mock-result",{ state: result });
+  }
+
+  // ===== timer =====
+
+  useEffect(()=>{
+    const t = setInterval(()=>{
+      setTimeLeft(s=>{
+        if(s<=1){
           clearInterval(t);
           submit();
           return 0;
         }
-        return s - 1;
+        return s-1;
       });
-    }, 1000);
+    },1000);
 
-    return () => clearInterval(t);
-  }, [questions]);
+    return ()=>clearInterval(t);
+  },[attemptId]);
 
-  if (loading) {
-    return (
-      <div className="container">
-        <div className="mock-loading">
-          <h3>Loading Test...</h3>
-        </div>
-      </div>
-    );
-  }
+  if(!question) return <div className="container">Loading...</div>;
 
-  if (error || questions.length === 0) {
-    return (
-      <div className="container">
-        <div className="mock-error">
-          <h2>⚠️ Test Not Available</h2>
-          <p>{error || "No questions found for this test"}</p>
-          <button 
-            className="mock-back-btn"
-            onClick={() => navigate("/mock-tests")}
-          >
-            Back to Tests
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const q = questions[index];
   const min = Math.floor(timeLeft/60);
   const sec = timeLeft%60;
 
@@ -118,45 +91,40 @@ async function submit() {
 
       <div className="mock-test-header">
         <h2>Mock Test</h2>
-        <div className="mock-timer">
-          Time Left: {min}:{sec.toString().padStart(2,"0")}
-        </div>
+        <div>Time Left: {min}:{sec.toString().padStart(2,"0")}</div>
       </div>
 
-      <div className="mock-test-content">
-        <h3>Q{index+1}. {q.questionText}</h3>
+      <h3>Q{index+1}. {question.questionText}</h3>
 
-        {["A","B","C","D"].map(o => (
-          <button
-            key={o}
-            className={
-              answers[q.id] === o ? "mock-option mock-selected" : "mock-option"
-            }
-            onClick={()=>select(o)}
-          >
-            {o}: {getOption(q,o)}
-          </button>
-        ))}
+      {["A","B","C","D"].map(o=>(
+        <button
+          key={o}
+          className={
+            selected===o
+              ? "mock-option mock-selected"
+              : "mock-option"
+          }
+          onClick={()=>select(o)}
+        >
+          {o}: {question["option"+o]}
+        </button>
+      ))}
 
-        <div className="mock-nav">
-          <button
-            disabled={index===0}
-            onClick={()=>setIndex(i=>i-1)}
-          >
-            Prev
-          </button>
+      <div className="mock-nav">
+        <button
+          disabled={index===0}
+          onClick={()=>setIndex(i=>i-1)}
+        >
+          Prev
+        </button>
 
-          <button
-            disabled={index===questions.length-1}
-            onClick={()=>setIndex(i=>i+1)}
-          >
-            Next
-          </button>
+        <button onClick={()=>setIndex(i=>i+1)}>
+          Next
+        </button>
 
-          <button className="mock-submit-btn" onClick={submit}>
-            Submit Test
-          </button>
-        </div>
+        <button onClick={submit}>
+          Submit Test
+        </button>
       </div>
 
     </div>
