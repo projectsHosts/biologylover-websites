@@ -28,20 +28,20 @@ export default function MedicalEntrance() {
       examType: "NEET_SUBJECT",
       hasSubcategories: true
     },
-    {
-      id: "aiims",
-      name: "AIIMS Pattern Tests",
-      description: "AIIMS entrance exam pattern mock tests",
-      examType: "AIIMS",
-      hasSubcategories: false
-    },
-    {
-      id: "jipmer",
-      name: "JIPMER Pattern Tests",
-      description: "JIPMER entrance exam pattern tests",
-      examType: "JIPMER",
-      hasSubcategories: false
-    },
+    // {
+    //   id: "aiims",
+    //   name: "AIIMS Pattern Tests",
+    //   description: "AIIMS entrance exam pattern mock tests",
+    //   examType: "AIIMS",
+    //   hasSubcategories: false
+    // },
+    // {
+    //   id: "jipmer",
+    //   name: "JIPMER Pattern Tests",
+    //   description: "JIPMER entrance exam pattern tests",
+    //   examType: "JIPMER",
+    //   hasSubcategories: false
+    // },
     {
       id: "bsc-nursing",
       name: "B.Sc Nursing Entrance",
