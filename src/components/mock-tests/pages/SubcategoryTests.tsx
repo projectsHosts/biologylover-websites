@@ -9,7 +9,7 @@ interface SubcategoryOption {
 }
 
 export default function SubcategoryTests() {
-  const { categoryId } = useParams<{ categoryId: string }>();
+  const {  } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
 
   // NEET Subject Tests subcategories
