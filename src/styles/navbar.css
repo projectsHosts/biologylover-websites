@@ -94,7 +94,12 @@
   cursor: pointer;
   color: #fff;
   transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
+
 
 .menu-link:hover {
   background: linear-gradient(90deg,#00ffcc33,#6a5cff33);
@@ -161,7 +166,6 @@
   font-weight: 800;
   border-radius: 999px;
   letter-spacing: .5px;
-  position: relative;
   top: -2px;
   border: 1px solid transparent;
 }
