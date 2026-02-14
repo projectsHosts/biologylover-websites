@@ -14,13 +14,14 @@
 
 .blog-detail-container {
   display: flex;
-  width: 100%;              /* 🔥 FULL WIDTH */
-  margin: 0;                /* 🔥 NO AUTO CENTER */
+  width: 100%;
   min-height: 100vh;
-  background: var(--bg);      /* simple, no gradient outside */
-  color: var(--text);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden; /* IMPORTANT */
+   background: var(--bg); 
+   color: var(--text);
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 
 /* ===== Sidebar ===== */
@@ -115,10 +116,17 @@
 
 /* ===== Right Content ===== */
 .blog-right {
-  padding: 3rem 2.5rem;     /* more breathing room */
-  max-width: 1200px;        /* prevent ultra-wide on big screens */
-  margin: 0 auto;
+  flex: 1;
+  min-width: 0; /* FIX FLEX OVERFLOW */
+  overflow-x: hidden;
 }
+
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 /* Header */
 .blog-header {
@@ -195,30 +203,54 @@
   -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
 }
 
+/* ===== Prevent ANY overflow from blog HTML ===== */
+.blog-content * {
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
 /* Table Style - Isme min-width hona zaroori hai */
+
+.blog-content {
+  overflow-x: auto;
+}
+
+/* REAL TABLE GRID */
 .blog-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 15px;
+  min-width: 600px; /* allow scroll when needed */
 }
 
+/* Cells */
 .blog-content th,
 .blog-content td {
-  border: 1px solid rgba(255,255,255,0.25);
-  padding: 10px 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
   text-align: left;
-  vertical-align: top;
 }
 
+/* Header */
 .blog-content th {
   background: rgba(255,255,255,0.08);
+  color: #93c5fd;
   font-weight: 600;
 }
 
-.blog-content tr:nth-child(even) {
+/* Rows */
+.blog-content tr:nth-child(even) td {
   background: rgba(255,255,255,0.03);
 }
+
+/* First column highlight */
+.blog-content td:first-child {
+  color: #facc15;
+  font-weight: 600;
+}
+
 
 
 .content-display {
@@ -347,6 +379,16 @@
   .blog-content,
   .content-display {
     max-width: 100%;
+  }
+
+  .blog-left {
+    position: relative;
+    height: auto;
+    flex: none;
+  }
+
+  .blog-detail-container {
+    flex-direction: column;
   }
 }
 
