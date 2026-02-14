@@ -1,148 +1,161 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronDown } from 'lucide-react';
-import '../styles/landing.css';
+import React, { useState, useEffect } from "react";
+import { Play, ChevronRight, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import "../styles/landing.css";
+import { isLoggedIn } from "../utils/auth";
 
-const Landing: React.FC = () => {
-  const [, setScrollY] = useState(0);
+const LandingNew: React.FC = () => {
+  const [, setActiveTab] = useState(0);
+  const navigate = useNavigate();
 
-const rotatingPhrases = [
-  "the Cell",
-  "DNA",
-  "Motion",
-  "Electricity",
-  "Atoms",
-  "Chemical Bonding",
-  "Genetics",
-  "Optics",
-  "Organic Chemistry",
-  "Evolution",
-  "Thermodynamics",
-  "Modern Physics"
-];
+  const scrollToCourses = () => {
+    const el = document.getElementById("courses");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const topics = ["Cell Biology", "Genetics", "Evolution", "Ecology"];
 
-  // Rotating text effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsVisible(false);
-
-      setTimeout(() => {
-        setCurrentPhraseIndex((prev) => (prev + 1) % rotatingPhrases.length);
-        setIsVisible(true);
-      }, 400); // fade out duration ke baad change (600ms fade)
-
-    }, 3000); // har 3 seconds mein change (adjust kar sakte ho)
-
+      setActiveTab((prev) => (prev + 1) % topics.length);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <section id="home" className="landing-section">
-      {/* Animated Background Blobs */}
-      <div className="blob blob-1"></div>
-      <div className="blob blob-2"></div>
-      <div className="blob blob-3"></div>
+    <div className="landing-new">
+      {/* Floating orbs */}
+      <div className="orb orb-blue"></div>
+      <div className="orb orb-purple"></div>
+      <div className="orb orb-green"></div>
 
-      {/* Video Background with Overlay */}
-      <video 
-        className="bg-video" 
-        autoPlay 
-        muted 
-        loop 
-        playsInline
-      />
-      <div className="overlay"></div>
-
-      {/* Main Content */}
-      <div className="landing-content">
-        <div className="content-wrapper">
-          {/* Badge */}
-          <div className="badge" style={{
-            animation: 'slideInDown 0.8s ease-out'
-          }}>
-            <span className="badge-text">Welcome to the Future of Biology Learning</span>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="title" style={{
-            animation: 'slideInDown 0.8s ease-out 0.2s forwards'
-          }}>
-            Unlock the Secrets of {' '}
-           <span
-              data-text={rotatingPhrases[currentPhraseIndex]}
-              className={`title-gradient ${isVisible ? "fade-in" : "fade-out"}`}
-            >
-              {rotatingPhrases[currentPhraseIndex]}
-            </span>
-          </h1>
-
-          {/* Tagline Section */}
-          <div className="tagline-section" style={{
-            animation: 'slideInUp 0.8s ease-out 0.4s forwards'
-          }}>
-            <p className="tagline">
-              Discover, Learn & Master Biology Through Interactive Experiences
-            </p>
-            <p className="subtitle">
-              Join thousands of students and professionals in exploring the wonders of life science with cutting-edge technology and expert instruction.
-            </p>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="cta-buttons" style={{
-            animation: 'slideInUp 0.8s ease-out 0.6s forwards'
-          }}>
-            <a href="#courses" className="btn btn-primary">
-              <span className="btn-text">Start Learning Today</span>
-              <span className="btn-icon">→</span>
-            </a>
-            <a 
-              href="https://t.me/biology_lover_02" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn btn-secondary"
-            >
-              <span className="btn-text">Join Community</span>
-              <span className="btn-icon">🌐</span>
-            </a>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div className="scroll-indicator" style={{
-            animation: 'bounce 2s infinite 1.2s'
-          }}>
-            <ChevronDown size={32} />
-          </div>
-
-          {/* Stats Preview */}
-          <div className="stats-preview" style={{
-            animation: 'slideInUp 0.8s ease-out 0.8s forwards'
-          }}>
-            <div className="stat-item">
-              <div className="stat-number">200K+</div>
-              <div className="stat-label">Active Learners</div>
+      {/* Main content */}
+      <div className="container">
+        {/* Hero Section */}
+        <div className="hero-section">
+          <div className="hero-left">
+            <div className="badge-pill">
+              <Star size={14} fill="#fbbf24" stroke="#fbbf24" />
+              <span>Trusted by 50K+ Students</span>
             </div>
-            <div className="stat-item">
-              <div className="stat-number">200+</div>
-              <div className="stat-label">Expert Courses</div>
+
+            <h1 className="main-title">
+              Learn Biology
+              <span className="gradient-text"> The Smart Way</span>
+            </h1>
+
+            <p className="main-description">
+              Master complex concepts through engaging videos, interactive
+              quizzes, and real-world applications. Built by students, for
+              students.
+            </p>
+
+            <div className="cta-row">
+              <button
+                className="btn-cta"
+                onClick={() => navigate("/mock-tests")}
+              >
+                <Play size={18} />
+                <span>Start Free Tests</span>
+              </button>
+              <button className="btn-outline" onClick={scrollToCourses}>
+                <span>Explore Courses</span>
+                <ChevronRight size={18} />
+              </button>
             </div>
-            <div className="stat-item">
-              <div className="stat-number">98%</div>
-              <div className="stat-label">Success Rate</div>
+
+            {/* Quick Stats */}
+            <div className="quick-stats">
+              <div className="stat-box">
+                <div className="stat-num">180+</div>
+                <div className="stat-text">Video Lessons</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-num">1500+</div>
+                <div className="stat-text">Practice Qs</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-num">4.9★</div>
+                <div className="stat-text">Rating</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right side - Scientific Visualizations */}
+          <div className="hero-right">
+            {/* Biology - Cell Diagram */}
+            <div className="science-viz viz-biology">
+              <div className="cell-outer">
+                <div className="nucleus"></div>
+                <div className="mitochondria mito-1"></div>
+                <div className="mitochondria mito-2"></div>
+                <div className="ribosome rib-1"></div>
+                <div className="ribosome rib-2"></div>
+                <div className="ribosome rib-3"></div>
+              </div>
+              <div className="viz-label">Biology</div>
+            </div>
+
+            {/* Chemistry - Molecular Structure */}
+            <div className="science-viz viz-chemistry">
+              <div className="molecule">
+                <div className="atom atom-center">C</div>
+                <div className="atom atom-1">H</div>
+                <div className="atom atom-2">H</div>
+                <div className="atom atom-3">O</div>
+                <div className="atom atom-4">H</div>
+                <div className="bond bond-1"></div>
+                <div className="bond bond-2"></div>
+                <div className="bond bond-3"></div>
+                <div className="bond bond-4"></div>
+              </div>
+              <div className="viz-label">Chemistry</div>
+            </div>
+
+            {/* Physics - Atom Model */}
+            <div className="science-viz viz-physics">
+              <div className="atom-model">
+                <div className="atom-core">
+                  <div className="proton"></div>
+                  <div className="neutron"></div>
+                </div>
+                <div className="electron-orbit orbit-1">
+                  <div className="electron"></div>
+                </div>
+                <div className="electron-orbit orbit-2">
+                  <div className="electron"></div>
+                </div>
+              </div>
+              <div className="viz-label">Physics</div>
             </div>
           </div>
         </div>
+
+        {/* Final CTA */}
+        <div className="final-cta">
+          <h2 className="cta-title">
+            Ready to Transform Your Biology Journey?
+          </h2>
+          <p className="cta-subtitle">
+            Join thousands of students mastering biology every day
+          </p>
+          <button className="btn-cta-large"
+          onClick={() => {
+            if (!isLoggedIn()) {
+              (window as any).openLogin();
+              return;
+            }
+            navigate("/");  // home page 
+          }}>
+            Get Started - It's Free
+            <ChevronRight size={20} />
+          </button>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default Landing;
+export default LandingNew;

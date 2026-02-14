@@ -1,346 +1,269 @@
+/* ============================================
+   STUDENT-FRIENDLY BIOLOGY LANDING PAGE
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.landing-section {
-  position: relative;
+:root {
+  --bg-primary: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-green: #10b981;
+  --accent-yellow: #fbbf24;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   LANDING CONTAINER
+   ============================================ */
+.landing-new {
   min-height: 100vh;
-  padding-top: 60px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+  padding: 80px 0 60px;
 }
 
-/* ============================================
-   ANIMATED BACKGROUND BLOBS
-   ============================================ */
-.blob {
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.3;
-  mix-blend-mode: multiply;
-}
-
-.blob-1 {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(135deg, #00ff88, #00d4ff);
-  top: 10%;
-  left: 10%;
-  animation: float 8s ease-in-out infinite;
-}
-
-.blob-2 {
-  width: 280px;
-  height: 280px;
-  background: linear-gradient(135deg, #00d4ff, #0099ff);
-  top: 30%;
-  right: 5%;
-  animation: float 10s ease-in-out infinite 2s;
-}
-
-.blob-3 {
-  width: 320px;
-  height: 320px;
-  background: linear-gradient(135deg, #00ff88, #0099ff);
-  bottom: 5%;
-  left: 20%;
-  animation: float 9s ease-in-out infinite 4s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-}
-
-/* ============================================
-   BACKGROUND VIDEO & OVERLAY
-   ============================================ */
-.bg-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  opacity: 0.6;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
   z-index: 2;
 }
 
 /* ============================================
-   CONTENT WRAPPER
+   FLOATING ORBS (Background)
    ============================================ */
-.landing-content {
-  position: relative;
-  z-index: 3;
-  max-width: 900px;
-  padding: 0 20px;
-  width: 100%;
-}
-
-.content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* ============================================
-   BADGE
-   ============================================ */
-.badge {
-  display: inline-block;
-  padding: 10px 20px;
-  background: rgba(0, 255, 136, 0.15);
-  border: 1px solid rgba(0, 255, 136, 0.5);
-  border-radius: 50px;
-  margin-bottom: 1rem;
-  opacity: 0;
-  backdrop-filter: blur(10px);
-}
-
-.badge-text {
-  color: #00ff88;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-/* ============================================
-   TITLE & GRADIENT TEXT
-   ============================================ */
-.title {
-  font-size: 4.5rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-  opacity: 0;
-  text-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
-}
-
-.title-gradient {
-   display: inline-block;
-  margin-left: 8px;
-  font-weight: 900;
-  background: linear-gradient(90deg, #00f0ff, #7a7cff, #ff00ff);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: energyFlow 3s linear infinite;
-  position: relative;
-}
-
-.title-gradient::after {
-  content: attr(data-text);
+.orb {
   position: absolute;
-  left: 0;
-  top: 0;
-  filter: blur(10px);
-  opacity: 0.6;
-  background: inherit;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  z-index: -1;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.fade-in {
-  animation:
-    wordIn 1s ease-out,
-    energyFlow 1s linear infinite;
+.orb-blue {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-blue), transparent);
+  top: -100px;
+  right: -150px;
+  animation: float 20s ease-in-out infinite;
 }
 
-.fade-out {
-  animation: wordOut 1s ease-in;
+.orb-purple {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-purple), transparent);
+  bottom: 100px;
+  left: -100px;
+  animation: float 25s ease-in-out infinite reverse;
 }
 
-/* gradient movement */
-@keyframes energyFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.orb-green {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--accent-green), transparent);
+  top: 40%;
+  left: 50%;
+  animation: float 18s ease-in-out infinite;
 }
 
-/* appear */
-@keyframes wordIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* disappear */
-@keyframes wordOut {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-15px) scale(0.85);
-  }
-}
-
-@keyframes gradientShift {
+@keyframes float {
   0%, 100% {
-    filter: hue-rotate(0deg);
+    transform: translate(0, 0);
   }
-  50% {
-    filter: hue-rotate(30deg);
+  33% {
+    transform: translate(50px, -50px);
+  }
+  66% {
+    transform: translate(-30px, 30px);
   }
 }
 
 /* ============================================
-   TAGLINE SECTION
+   HERO SECTION
    ============================================ */
-.tagline-section {
-  margin-bottom: 1rem;
-  opacity: 0;
+.hero-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 120px;
+  min-height: 80vh;
 }
 
-.tagline {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
-  line-height: 1.4;
-  color: #ffffff;
+.hero-left {
+  animation: slideInLeft 0.8s ease-out;
 }
 
-.subtitle {
-  font-size: 1.1rem;
-  color: #b0b0c0;
-  line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* ============================================
-   CTA BUTTONS
-   ============================================ */
-.cta-buttons {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  opacity: 0;
-  margin-bottom: 2rem;
-}
-
-.btn {
+/* Badge */
+.badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-yellow);
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+/* Title */
+.main-title {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -1.5px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* Description */
+.main-description {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  max-width: 500px;
+}
+
+/* CTA Buttons */
+.cta-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--accent-blue);
+  color: white;
   border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transition: left 0.3s ease;
-  z-index: 0;
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4);
+  background: #2563eb;
 }
 
-.btn:hover::before {
-  left: 100%;
-}
-
-.btn-text,
-.btn-icon {
-  position: relative;
-  z-index: 1;
-}
-
-/* Primary Button */
-.btn-primary {
-  background: linear-gradient(135deg, #00ff88, #00d4ff);
-  color: #000;
-}
-
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 50px rgba(0, 255, 136, 0.4);
-}
-
-.btn-primary:active {
-  transform: translateY(-1px);
-}
-
-/* Secondary Button */
-.btn-secondary {
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
   background: transparent;
-  border: 2px solid #ffffff;
-  color: #ffffff;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
 }
 
-.btn-secondary:hover {
-  border-color: #00d4ff;
-  color: #00d4ff;
-  background: rgba(0, 212, 255, 0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+.btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.btn-secondary:active {
-  transform: translateY(-1px);
+/* Quick Stats */
+.quick-stats {
+  display: flex;
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+}
+
+.stat-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* ============================================
-   SCROLL INDICATOR
+   SCIENTIFIC VISUALIZATIONS
    ============================================ */
-.scroll-indicator {
-  color: #00ff88;
-  display: flex;
-  justify-content: center;
-  opacity: 0;
-  margin-bottom: 1rem;
+.hero-right {
+  position: relative;
+  height: 500px;
+  animation: slideInRight 0.8s ease-out;
 }
 
-@keyframes bounce {
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes floatCard {
   0%, 100% {
     transform: translateY(0);
   }
@@ -349,189 +272,969 @@
   }
 }
 
-/* ============================================
-   STATS PREVIEW
-   ============================================ */
-.stats-preview {
-  display: flex;
-  gap: 3rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  opacity: 0;
-  margin-top: 2rem;
+.science-viz {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
 }
 
-.stat-item {
+.science-viz:hover {
+  transform: translateY(-8px);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.viz-label {
   text-align: center;
-  padding: 1.5rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00ff88, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
+/* Biology - Cell Visualization */
+.viz-biology {
+  top: 20px;
+  left: 10px;
+  animation: floatCard 5s ease-in-out infinite;
 }
 
-.stat-label {
-  font-size: 0.95rem;
-  color: #b0b0c0;
-  font-weight: 500;
+.cell-outer {
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--accent-green);
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.nucleus {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px var(--accent-green);
+}
+
+.mitochondria {
+  width: 20px;
+  height: 12px;
+  background: rgba(16, 185, 129, 0.6);
+  border-radius: 50%;
+  position: absolute;
+  border: 1px solid var(--accent-green);
+}
+
+.mito-1 {
+  top: 20%;
+  left: 20%;
+  animation: float 4s ease-in-out infinite;
+}
+
+.mito-2 {
+  bottom: 25%;
+  right: 20%;
+  animation: float 4s ease-in-out infinite 1s;
+}
+
+.ribosome {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.rib-1 {
+  top: 15%;
+  right: 25%;
+}
+
+.rib-2 {
+  bottom: 20%;
+  left: 25%;
+}
+
+.rib-3 {
+  top: 60%;
+  right: 15%;
+}
+
+/* Chemistry - Molecular Structure */
+.viz-chemistry {
+  top: 180px;
+  right: 20px;
+  animation: floatCard 6s ease-in-out infinite 1.5s;
+}
+
+.molecule {
+  width: 140px;
+  height: 140px;
+  position: relative;
+}
+
+.atom {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  position: absolute;
+  box-shadow: 0 0 15px currentColor;
+}
+
+.atom-center {
+  background: var(--accent-blue);
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+  z-index: 2;
+}
+
+.atom-1 {
+  background: var(--accent-purple);
+  color: white;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.atom-2 {
+  background: var(--accent-purple);
+  color: white;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.atom-3 {
+  background: #ef4444;
+  color: white;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.atom-4 {
+  background: var(--accent-purple);
+  color: white;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.bond {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  width: 2px;
+  transform-origin: center;
+}
+
+.bond-1 {
+  height: 30px;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bond-2 {
+  height: 30px;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bond-3 {
+  width: 30px;
+  height: 2px;
+  top: 50%;
+  right: 36px;
+  transform: translateY(-50%);
+}
+
+.bond-4 {
+  width: 30px;
+  height: 2px;
+  top: 50%;
+  left: 36px;
+  transform: translateY(-50%);
+}
+
+/* Physics - Atom Model */
+.viz-physics {
+  bottom: 40px;
+  left: 40px;
+  animation: floatCard 5.5s ease-in-out infinite 2s;
+}
+
+.atom-model {
+  width: 130px;
+  height: 130px;
+  position: relative;
+}
+
+.atom-core {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+}
+
+.proton {
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ef4444;
+}
+
+.neutron {
+  width: 12px;
+  height: 12px;
+  background: #64748b;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #64748b;
+}
+
+.electron-orbit {
+  position: absolute;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-1 {
+  width: 80px;
+  height: 80px;
+  animation: rotate 4s linear infinite;
+}
+
+.orbit-2 {
+  width: 120px;
+  height: 120px;
+  animation: rotate 6s linear infinite reverse;
+}
+
+.electron {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-blue);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px var(--accent-blue);
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Mathematics - Graph Visualization */
+.viz-mathematics {
+  top: 40%;
+  right: 0px;
+  transform: translateY(-50%);
+  animation: floatCard 5s ease-in-out infinite 2.5s;
+}
+
+.math-graph {
+  width: 110px;
+  height: 110px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.math-graph svg {
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
+}
+
+.sine-wave {
+  animation: dashOffset 3s linear infinite;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+
+@keyframes dashOffset {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.math-formula {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-yellow);
+  font-style: italic;
+  font-family: 'Times New Roman', serif;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* Center DNA Helix - Better Design */
+.center-graphic {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 300px;
+  z-index: 1;
+}
+
+.dna-helix {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: spinDNA 20s linear infinite;
+}
+
+@keyframes spinDNA {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+/* DNA Backbone Strands */
+.helix-strand {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Hide original strands, we'll use pseudo elements */
+}
+
+/* Creating spiral effect with multiple base pairs at different positions */
+.base-pair {
+  position: absolute;
+  left: 50%;
+  width: 90px;
+  height: 4px;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.base-pair::before,
+.base-pair::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  box-shadow: 0 0 15px var(--accent-blue);
+  flex-shrink: 0;
+}
+
+/* Connecting line between base pairs */
+.base-pair {
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    var(--accent-blue) 15%,
+    var(--accent-purple) 50%,
+    var(--accent-blue) 85%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* Position base pairs in spiral formation */
+.pair-1 {
+  top: 10%;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.pair-2 {
+  top: 30%;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+.pair-3 {
+  top: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.pair-4 {
+  top: 70%;
+  transform: translateX(-50%) rotate(270deg);
+}
+
+/* Add more base pairs for fuller look */
+.dna-helix::before,
+.dna-helix::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 90px;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(139, 92, 246, 0.4) 15%,
+    rgba(139, 92, 246, 0.6) 50%,
+    rgba(139, 92, 246, 0.4) 85%,
+    transparent 100%
+  );
+}
+
+.dna-helix::before {
+  top: 20%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.dna-helix::after {
+  top: 60%;
+  transform: translateX(-50%) rotate(315deg);
+}
+
+/* Glowing center effect */
+.center-graphic::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(20px);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.8;
+  }
 }
 
 /* ============================================
-   ANIMATIONS
+   FEATURES SECTION
    ============================================ */
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.features-section {
+  margin-bottom: 120px;
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+.section-title {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 60px;
+  letter-spacing: -0.5px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent-blue);
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: white;
+}
+
+.feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.feature-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   TESTIMONIALS
+   ============================================ */
+.social-proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 120px;
+}
+
+.testimonial {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+}
+
+.quote-mark {
+  font-size: 60px;
+  color: var(--accent-blue);
+  line-height: 1;
+  opacity: 0.3;
+  margin-bottom: 16px;
+  font-family: Georgia, serif;
+}
+
+.quote-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.student-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+}
+
+.student-class {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   FINAL CTA
+   ============================================ */
+.final-cta {
+  text-align: center;
+  padding: 80px 40px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cta-title {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.cta-subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.btn-cta-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 40px;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4);
+}
+
+.btn-cta-large:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(59, 130, 246, 0.5);
+  background: #2563eb;
+}
+
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
+@media (max-width: 1024px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: 80px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .hero-right {
+    height: 400px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-title {
+    font-size: 52px;
   }
 }
 
 /* ============================================
-   TABLET RESPONSIVE (768px and below)
+   RESPONSIVE - MOBILE
    ============================================ */
 @media (max-width: 768px) {
-  .landing-section {
-    padding-top: 60px;
-    min-height: 90vh;
+  .landing-new {
+    padding: 60px 0 40px;
   }
 
-  .title {
-    font-size: 2.8rem;
-    letter-spacing: 0.5px;
+  .container {
+    padding: 0 20px;
   }
 
-  .tagline {
-    font-size: 1.4rem;
+  .hero-section {
+    gap: 60px;
+    min-height: auto;
+    margin-bottom: 80px;
   }
 
-  .subtitle {
-    font-size: 1rem;
+  .main-title {
+    font-size: 40px;
+    letter-spacing: -1px;
   }
 
-  .cta-buttons {
+  .main-description {
+    font-size: 16px;
+  }
+
+  .cta-row {
     flex-direction: column;
-    gap: 1rem;
   }
 
-  .btn {
+  .btn-cta,
+  .btn-outline {
     width: 100%;
     justify-content: center;
-    padding: 12px 24px;
-    font-size: 0.95rem;
   }
 
-  .stats-preview {
-    gap: 1.5rem;
-    flex-direction: column;
+  .quick-stats {
+    gap: 24px;
   }
 
-  .stat-item {
-    padding: 1rem;
+  .hero-right {
+    height: 350px;
   }
 
-  .stat-number {
-    font-size: 2rem;
+  .science-viz {
+    padding: 16px;
   }
 
-  .blob-1 {
-    width: 200px;
+  .cell-outer {
+    width: 100px;
+    height: 100px;
+  }
+
+  .nucleus {
+    width: 32px;
+    height: 32px;
+  }
+
+  .molecule {
+    width: 110px;
+    height: 110px;
+  }
+
+  .atom {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .atom-center {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .atom-model {
+    width: 100px;
+    height: 100px;
+  }
+
+  .orbit-1 {
+    width: 60px;
+    height: 60px;
+  }
+
+  .orbit-2 {
+    width: 90px;
+    height: 90px;
+  }
+
+  .math-graph {
+    width: 90px;
+    height: 90px;
+  }
+
+  .math-graph svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .math-formula {
+    font-size: 12px;
+  }
+
+  .center-graphic {
+    width: 80px;
     height: 200px;
   }
 
-  .blob-2 {
-    width: 180px;
-    height: 180px;
+  .base-pair {
+    width: 70px;
   }
 
-  .blob-3 {
-    width: 200px;
-    height: 200px;
+  .base-pair::before,
+  .base-pair::after {
+    width: 10px;
+    height: 10px;
+  }
+
+  .dna-helix::before,
+  .dna-helix::after {
+    width: 70px;
+  }
+
+  .section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .social-proof {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 80px;
+  }
+
+  .final-cta {
+    padding: 60px 24px;
+  }
+
+  .cta-title {
+    font-size: 28px;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
   }
 }
 
-/* ============================================
-   MOBILE RESPONSIVE (480px and below)
-   ============================================ */
 @media (max-width: 480px) {
-  .landing-section {
-    min-height: 80vh;
-    padding-top: 60px;
+  .main-title {
+    font-size: 32px;
   }
 
-  .title {
-    font-size: 2rem;
-    letter-spacing: 0px;
-    margin-bottom: 1rem;
+  .badge-pill {
+    font-size: 12px;
+    padding: 6px 12px;
   }
 
-  .tagline {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+  .stat-num {
+    font-size: 24px;
   }
 
-  .subtitle {
-    font-size: 0.9rem;
+  .btn-cta,
+  .btn-outline,
+  .btn-cta-large {
+    padding: 12px 24px;
+    font-size: 15px;
   }
 
-  .badge-text {
-    font-size: 0.8rem;
+  .floating-card {
+    padding: 12px 16px;
   }
 
-  .btn {
-    padding: 11px 20px;
-    font-size: 0.9rem;
-    width: 100%;
+  .card-icon {
+    font-size: 24px;
   }
 
-  .cta-buttons {
-    gap: 0.8rem;
+  .card-value {
+    font-size: 16px;
   }
 
-  .stats-preview {
-    gap: 1rem;
+  .science-viz {
+    padding: 12px;
   }
 
-  .stat-number {
-    font-size: 1.6rem;
+  .viz-label {
+    font-size: 10px;
   }
 
-  .stat-label {
-    font-size: 0.85rem;
+  .cell-outer {
+    width: 80px;
+    height: 80px;
   }
 
-  .blob-1 {
-    width: 150px;
+  .nucleus {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mitochondria {
+    width: 14px;
+    height: 8px;
+  }
+
+  .molecule {
+    width: 90px;
+    height: 90px;
+  }
+
+  .atom {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .atom-center {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .atom-model {
+    width: 80px;
+    height: 80px;
+  }
+
+  .orbit-1 {
+    width: 50px;
+    height: 50px;
+  }
+
+  .orbit-2 {
+    width: 75px;
+    height: 75px;
+  }
+
+  .math-graph {
+    width: 70px;
+    height: 70px;
+  }
+
+  .math-graph svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .math-formula {
+    font-size: 10px;
+  }
+
+  .center-graphic {
+    width: 60px;
     height: 150px;
   }
 
-  .blob-2 {
-    width: 130px;
-    height: 130px;
+  .base-pair {
+    width: 55px;
+    height: 3px;
   }
 
-  .blob-3 {
-    width: 150px;
-    height: 150px;
+  .base-pair::before,
+  .base-pair::after {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dna-helix::before,
+  .dna-helix::after {
+    width: 55px;
+    height: 3px;
+  }
+
+  .dna-ball {
+    width: 30px;
+    height: 30px;
   }
 }
