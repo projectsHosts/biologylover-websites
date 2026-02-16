@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { BookOpen ,Clock ,Book,ChevronLeft} from "lucide-react";
 import "../styles/blogDetail.css";
 
 
@@ -146,7 +147,7 @@ useEffect(() => {
       <nav className="blog-left">
         <div className="sidebar-header">
           <button className="back-btn sidebar-back" onClick={() => navigate("/blogs")}>
-                       ← Back to subjects
+                        <ChevronLeft size={16} /> Back to Subjects
          </button>
           <h3>{blog.title} Topics</h3>
           <span className="topics-count">{blog.subtopics.length} topics</span>
@@ -194,11 +195,27 @@ useEffect(() => {
           </div> */}
 
           <h1 className="blog-title">{blog.title}</h1>
-          <p className="blog-meta">
-            📚 Educational Content | 🕐 Updated:{" "}
-            {new Date().toLocaleDateString()} | 📖 {blog.subtopics.length}{" "}
-            Topics
-          </p>
+         <div className="blog-meta">
+            <span className="meta-item">
+              <BookOpen size={16} color="#60a5fa" />
+              Educational Content
+            </span>
+
+            <span className="meta-sep">•</span>
+
+            <span className="meta-item">
+              <Clock size={16} color="#facc15" />
+              Updated: {new Date().toLocaleDateString()}
+            </span>
+
+            <span className="meta-sep">•</span>
+
+            <span className="meta-item">
+              <Book size={16} color="#34d399"/>
+              {blog.subtopics.length} Topics
+            </span>
+          </div>
+
         </header>
 
         {/* Dynamic Content */}
