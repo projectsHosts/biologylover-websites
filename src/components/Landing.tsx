@@ -34,7 +34,7 @@ const LandingNew: React.FC = () => {
       {/* Main content */}
       <div className="container">
         {/* Hero Section */}
-        <div className="hero-section">
+        <div className="hero-sectionhs">
           <div className="hero-left">
             <div className="badge-pill">
               <Star size={14} fill="#fbbf24" stroke="#fbbf24" />

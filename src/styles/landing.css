@@ -99,7 +99,7 @@ body {
 /* ============================================
    HERO SECTION
    ============================================ */
-.hero-section {
+.hero-sectionhs{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
@@ -934,7 +934,7 @@ body {
    RESPONSIVE - TABLET
    ============================================ */
 @media (max-width: 1024px) {
-  .hero-section {
+  .hero-sectionhs {
     grid-template-columns: 1fr;
     gap: 80px;
   }
@@ -967,7 +967,7 @@ body {
     padding: 0 20px;
   }
 
-  .hero-section {
+  .hero-sectionhs {
     gap: 60px;
     min-height: auto;
     margin-bottom: 80px;
