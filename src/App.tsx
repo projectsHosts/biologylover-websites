@@ -44,7 +44,7 @@ import SubcategoryTests from './components/mock-tests/pages/SubcategoryTests'
 import GovernmentEntrance from './components/mock-tests/pages/GovernmentEntrance'
 import ClassWiseTests from './components/mock-tests/pages/ClassWiseTests'
 import TopicWiseTests from './components/mock-tests/pages/TopicWiseTests'
-import AIPracticeLanding from './components/ChatLoginGate'
+// import AIPracticeLanding from './components/ChatLoginGate'
 
 
 function App() {
@@ -79,7 +79,7 @@ function App() {
           <Route path="/privacy-policy" element={<Policies />} />
           <Route path="/terms-of-service" element={<HelpSupport />} />
           <Route path="/ai-practice" element={<AIPracticeChat />} />
-          <Route path="/ai-home" element={<AIPracticeLanding />} />
+          {/* <Route path="/ai-home" element={<AIPracticeLanding />} /> */}
           <Route path="/daily-quiz" element={<DailyQuizPage />} />
           <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
           <Route path="/level-progress" element={<LevelProgressCard />} />
