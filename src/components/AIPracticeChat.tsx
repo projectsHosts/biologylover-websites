@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import biologyLogo from "../assets/biologylover02.jpg";
 import "../styles/aipracticeChat.css";
 import { getUserId, isLoggedIn } from "../utils/auth";
+import { Pencil, Trash2 } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
@@ -64,6 +65,9 @@ export default function AIPracticeChat() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [conversations, setConversations] = useState<ConversationItem[]>([]);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingTitle, setEditingTitle] = useState("");
+
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -168,6 +172,24 @@ export default function AIPracticeChat() {
       console.error("Error deleting conversation:", error);
     }
   };
+
+  // Rename conversation
+  const renameConversation = async (convId: number, newName: string) => {
+  try {
+    await fetch(`${API_BASE}/api/ai/conversation/rename/${convId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newName })
+    });
+
+    // reload list
+    loadConversations();
+
+  } catch (error) {
+    console.error("Rename error:", error);
+  }
+};
+
 
   // Handle file selection
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -444,29 +466,63 @@ export default function AIPracticeChat() {
 
       {convs.map(conv => (
         <div key={conv.id} className="conversation-item">
-          <button
-            className="conversation-btn"
-            onClick={() => loadConversation(conv.id)}
-          >
-           <span className="conversation-title">
-          {conv.title || `Chat ${conv.id}`}
-        </span>
-          </button>
+        <button
+          className="conversation-btn"
+          onClick={() => loadConversation(conv.id)}
+        >
+          <span className="conversation-title">
+            {editingId === conv.id ? (
+              <input
+                value={editingTitle}
+                autoFocus
+                onChange={(e) => setEditingTitle(e.target.value)}
+                onBlur={() => {
+                  if (editingTitle.trim()) {
+                    renameConversation(conv.id, editingTitle);
+                  }
+                  setEditingId(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    renameConversation(conv.id, editingTitle);
+                    setEditingId(null);
+                  }
+                }}
+                className="rename-input"
+              />
+            ) : (
+              conv.title || `Chat ${conv.id}`
+            )}
+          </span>
+        </button>
 
-          <button
-            className="delete-conv-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteConversation(conv.id);
-            }}
-          >
-            🗑
-          </button>
-        </div>
-      ))}
-    </div>
-  ))}
-</div>
+        <button
+          className="edit-conv-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setEditingId(conv.id);
+            setEditingTitle(conv.title || "");
+          }}
+        >
+          <Pencil size={16} />
+        </button>
+
+        <button
+          className="delete-conv-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteConversation(conv.id);
+          }}
+        >
+          <Trash2 size={16} />
+        </button>
+
+      </div>
+
+            ))}
+          </div>
+        ))}
+      </div>
 
       </div>
 

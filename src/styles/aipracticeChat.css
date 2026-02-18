@@ -262,12 +262,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
+  height: calc(100vh - 70px); /* header height approx */
   overflow: hidden;
-  position: relative;
-  z-index: 1;
 }
 
 /* =================== Chat Box =================== */
@@ -278,7 +274,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #0a0a0a;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -817,12 +812,15 @@
 
 /* =================== Input Area =================== */
 .chat-input-area {
+  position: sticky;
+  bottom: 0;
   background: #1a1a1a;
   padding: 16px 24px;
   display: flex;
   align-items: center;
   gap: 12px;
   border-top: 1px solid #333;
+  z-index: 10;
 }
 
 .attach-btn {
@@ -930,6 +928,32 @@
   justify-content: space-between;
   gap: 8px;
 }
+
+.edit-conv-btn,
+.delete-conv-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.edit-conv-btn:hover {
+  color: #4dabf7;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.delete-conv-btn:hover {
+  color: #ff6b6b;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 
 
 
