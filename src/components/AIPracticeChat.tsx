@@ -198,7 +198,7 @@ export default function AIPracticeChat() {
     let inList = false;
     let listType = "";
 
-    lines.forEach((line, index) => {
+    lines.forEach((line) => {
       const trimmed = line.trim();
       
       // Skip empty lines
