@@ -9,7 +9,7 @@ export const getUserId = () => {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-   return payload.userId || payload.id || payload.uid || null;
+   return Number(payload.userId || payload.id || payload.uid) || null;
   } catch (error) {
     return null;
   }
