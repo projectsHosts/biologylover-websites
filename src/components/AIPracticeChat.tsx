@@ -118,7 +118,15 @@ export default function AIPracticeChat() {
 
     const response = await fetch(`${API_BASE}/api/ai/conversations/${userId}`);
     const data = await response.json();
-    setConversations(data);
+    const normalized = data.map((c: any) => ({
+    id: c.id,
+    title: c.title ?? "New Chat",
+    createdAt: c.createdAt
+  }));
+
+  setConversations(normalized);
+
+    // setConversations(data);
   } catch (error) {
     console.error("Error loading conversations:", error);
   }
@@ -286,14 +294,24 @@ export default function AIPracticeChat() {
     return formatted.join("");
   };
 
-  const groupConversations = (convs: ConversationItem[]) => {
+ const groupConversations = (convs: ConversationItem[]) => {
   const groups: Record<string, ConversationItem[]> = {};
 
   const today = new Date().toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
 
   convs.forEach(conv => {
-    const date = new Date(conv.createdAt).toDateString();
+
+    if (!conv.createdAt) return;
+
+    const dateObj = new Date(conv.createdAt);
+    // invalid date guard
+    if (isNaN(dateObj.getTime())) {
+      console.warn("Invalid date:", conv.createdAt);
+      return;
+    }
+
+    const date = dateObj.toDateString();
 
     let label = "Older";
 
@@ -306,6 +324,7 @@ export default function AIPracticeChat() {
 
   return groups;
 };
+
 
   // Backend API call
   async function sendMessage(text: string, files: File[]) {
@@ -419,7 +438,7 @@ export default function AIPracticeChat() {
         </div>
         
         <div className="conversation-list">
-  {Object.entries(groupConversations(conversations)).map(([label, convs]) => (
+  {conversations.length > 0 && Object.entries(groupConversations(conversations)).map(([label, convs]) => (
     <div key={label}>
       <div className="conversation-group-title">{label}</div>
 
