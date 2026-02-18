@@ -2,15 +2,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/chatlogingate.css";
 import { isLoggedIn } from "../utils/auth";
 
-const features = [
-  { icon: "🧬", title: "Genetics & DNA",      text: "Understand DNA replication, mutations, genetic inheritance, CRISPR, and molecular biology concepts with step-by-step explanations.", tag: "Molecular Biology" },
-  { icon: "🦠", title: "Microbiology",         text: "Explore bacteria, viruses, fungi, and protozoa. Learn about immune responses, infections, and microbial ecology.",                 tag: "Microbiology" },
-  { icon: "🌿", title: "Botany & Ecology",     text: "From photosynthesis to ecosystem dynamics — understand plant biology, food webs, biomes, and environmental science.",             tag: "Ecology" },
-  { icon: "🧠", title: "Human Anatomy",        text: "Dive into organ systems, neuroscience, physiology, and homeostasis with interactive Q&A and diagram analysis.",                  tag: "Anatomy" },
-  { icon: "🔬", title: "Cell Biology",         text: "Master cell structure, organelles, mitosis, meiosis, cellular respiration, and signal transduction pathways.",                   tag: "Cell Biology" },
-  { icon: "🐾", title: "Zoology & Evolution",  text: "Study animal kingdoms, evolutionary mechanisms, natural selection, adaptation, and taxonomy classification.",                    tag: "Evolution" },
-];
-
 const topics = [
   { icon: "🧫", label: "Cell Division" },       { icon: "🧬", label: "DNA & RNA" },
   { icon: "💊", label: "Pharmacology" },         { icon: "🫀", label: "Cardiovascular System" },
