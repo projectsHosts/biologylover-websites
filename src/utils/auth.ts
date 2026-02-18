@@ -9,8 +9,8 @@ export const getUserId = () => {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.sub || payload.userId || payload.email;
-  } catch {
+   return payload.userId || payload.id || payload.uid || null;
+  } catch (error) {
     return null;
   }
 };
