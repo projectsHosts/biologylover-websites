@@ -1,17 +1,60 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import biologyLogo from "../assets/biologylover02.jpg";
 import "../styles/aipracticeChat.css";
+import { getUserId, isLoggedIn } from "../utils/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
 
-
 interface Message {
+  id: string;
   role: "user" | "assistant";
   content: string;
   files?: { name: string; type: string; url: string }[];
   timestamp: Date;
 }
+
+interface ConversationItem {
+  id: number;
+  title: string;
+  createdAt: string;
+}
+
+// Memoized Header Component to prevent re-renders
+const ChatHeader = memo(({ 
+  onMenuClick, 
+  onBackClick, 
+  onClearClick 
+}: { 
+  onMenuClick: () => void;
+  onBackClick: () => void;
+  onClearClick: () => void;
+}) => (
+  <div className="chat-header">
+    <button className="menu-btn" onClick={onMenuClick}>
+      ☰
+    </button>
+    <button className="back-btn" onClick={onBackClick}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+    <div className="chat-header-info">
+      <h2>AI Biology Assistant</h2>
+      <span className="status-indicator">
+        <span className="status-dot"></span>
+        Online
+      </span>
+    </div>
+    <button className="clear-btn" onClick={onClearClick} title="Clear Chat">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  </div>
+));
+
+ChatHeader.displayName = 'ChatHeader';
 
 export default function AIPracticeChat() {
   const [conversationId, setConversationId] = useState<number | null>(null);
@@ -19,16 +62,104 @@ export default function AIPracticeChat() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [conversations, setConversations] = useState<ConversationItem[]>([]);
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+ const loggedIn = isLoggedIn();
+
+  // Memoized callbacks to prevent header re-renders
+  const handleMenuClick = useCallback(() => {
+    setSidebarOpen(prev => !prev);
+  }, []);
+
+  const handleBackClick = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
+  const handleClearChat = useCallback(() => {
+    setMessages([]);
+    setConversationId(null);
+    setSelectedFiles([]);
+  }, []);
+
+  // Load conversations on mount
+ useEffect(() => {
+  if (isLoggedIn()) {
+    loadConversations();
+  }
+}, []);
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/ai-home");
+    }
+  }, [loggedIn, navigate]);
 
   // Auto-scroll to bottom when new message arrives
   useEffect(() => {
     if (chatBoxRef.current) {
-      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+      requestAnimationFrame(() => {
+        chatBoxRef.current?.scrollTo({
+          top: chatBoxRef.current.scrollHeight,
+          behavior: "auto"
+        });
+      });
     }
-  }, [messages]);
+  }, [messages.length]);
+  
+  // Load all conversations
+ const loadConversations = async () => {
+  try {
+    const userId = getUserId();
+    if (!userId) return;
+
+    const response = await fetch(`${API_BASE}/api/ai/conversations/${userId}`);
+    const data = await response.json();
+    setConversations(data);
+  } catch (error) {
+    console.error("Error loading conversations:", error);
+  }
+};
+
+
+  // Load a specific conversation
+  const loadConversation = async (convId: number) => {
+    try {
+      const response = await fetch(`${API_BASE}/api/ai/history/${convId}`);
+      const data = await response.json();
+      
+      const formattedMessages: Message[] = data.map((msg: any, idx: number) => ({
+        id: `${msg.id || idx}`,
+        role: msg.role,
+        content: msg.content,
+        timestamp: new Date(msg.createdAt)
+      }));
+      
+      setMessages(formattedMessages);
+      setConversationId(convId);
+      setSidebarOpen(false);
+    } catch (error) {
+      console.error("Error loading conversation:", error);
+    }
+  };
+
+  // Delete conversation
+  const deleteConversation = async (convId: number) => {
+    try {
+      await fetch(`${API_BASE}/api/ai/conversation/delete/${convId}`, {
+        method: "DELETE"
+      });
+      loadConversations();
+      if (conversationId === convId) {
+        handleClearChat();
+      }
+    } catch (error) {
+      console.error("Error deleting conversation:", error);
+    }
+  };
 
   // Handle file selection
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,137 +183,178 @@ export default function AIPracticeChat() {
   };
 
   // Format AI response with proper HTML structure
-
-// Format AI response with proper HTML structure
   const formatResponse = (text: string): string => {
     if (!text) return "";
 
     let output = text.trim();
-
-    // --- NORMALIZE ---
+    
+    // Clean up line breaks
     output = output.replace(/\r/g, "");
     output = output.replace(/\n{3,}/g, "\n\n");
 
-    // --- HEADINGS ---
-    // **Text:** or **Text** → <h2>
-    output = output.replace(/\*\*([^*]+):\*\*/g, "<h2>$1</h2>");
-    output = output.replace(/\*\*([^*]+)\*\*/g, "<h2>$1</h2>");
-
-    // --- BULLET POINTS ---
-    // Convert * item → <li>item</li>
+    // Process line by line
     const lines = output.split("\n");
     const formatted: string[] = [];
     let inList = false;
+    let listType = "";
 
-    lines.forEach((line) => {
+    lines.forEach((line, index) => {
       const trimmed = line.trim();
       
-      // Check if it's a bullet point
-      if (trimmed.match(/^\*\s+(.+)$/)) {
-        const content = trimmed.replace(/^\*\s+/, "");
-        if (!inList) {
-          formatted.push("<ul>");
-          inList = true;
-        }
-        formatted.push(`<li>${content}</li>`);
-      } 
-      // Check if it's a numbered list
-      else if (trimmed.match(/^\d+\.\s+(.+)$/)) {
-        const content = trimmed.replace(/^\d+\.\s+/, "");
-        if (!inList) {
-          formatted.push("<ol>");
-          inList = true;
-        }
-        formatted.push(`<li>${content}</li>`);
-      }
-      // Regular text
-      else {
+      // Skip empty lines
+      if (!trimmed) {
         if (inList) {
-          // Check if previous item was ul or ol
-          const lastTag = formatted[formatted.length - 2];
-          if (lastTag && lastTag.includes("<ul>")) {
-            formatted.push("</ul>");
-          } else if (lastTag && lastTag.includes("<ol>")) {
+          formatted.push(listType === "ul" ? "</ul>" : "</ol>");
+          inList = false;
+          listType = "";
+        }
+        formatted.push("<br>");
+        return;
+      }
+
+      // Check for headings with **text:** or **text**
+      if (trimmed.match(/^\*\*(.+?):\*\*$/)) {
+        if (inList) {
+          formatted.push(listType === "ul" ? "</ul>" : "</ol>");
+          inList = false;
+          listType = "";
+        }
+        const heading = trimmed.replace(/^\*\*(.+?):\*\*$/, "$1");
+        formatted.push(`<h2>${heading}</h2>`);
+        return;
+      }
+      
+      if (trimmed.match(/^\*\*(.+?)\*\*$/)) {
+        if (inList) {
+          formatted.push(listType === "ul" ? "</ul>" : "</ol>");
+          inList = false;
+          listType = "";
+        }
+        const heading = trimmed.replace(/^\*\*(.+?)\*\*$/, "$1");
+        formatted.push(`<h2>${heading}</h2>`);
+        return;
+      }
+
+      // Check for bullet points (*, -, •, ■)
+      if (trimmed.match(/^[\*\-•■]\s+(.+)$/)) {
+        const content = trimmed.replace(/^[\*\-•■]\s+/, "");
+        if (!inList || listType !== "ul") {
+          if (inList) {
             formatted.push("</ol>");
           }
-          inList = false;
+          formatted.push("<ul>");
+          inList = true;
+          listType = "ul";
         }
-        
-        if (trimmed && !trimmed.startsWith("<h2")) {
-          formatted.push(`<p>${trimmed}</p>`);
-        } else if (trimmed.startsWith("<h2")) {
-          formatted.push(trimmed);
-        }
+        formatted.push(`<li>${content}</li>`);
+        return;
       }
+
+      // Check for numbered lists
+      if (trimmed.match(/^\d+\.\s+(.+)$/)) {
+        const content = trimmed.replace(/^\d+\.\s+/, "");
+        if (!inList || listType !== "ol") {
+          if (inList) {
+            formatted.push("</ul>");
+          }
+          formatted.push("<ol>");
+          inList = true;
+          listType = "ol";
+        }
+        formatted.push(`<li>${content}</li>`);
+        return;
+      }
+
+      // Regular text
+      if (inList) {
+        formatted.push(listType === "ul" ? "</ul>" : "</ol>");
+        inList = false;
+        listType = "";
+      }
+
+      // Handle inline bold **text**
+      let processedLine = trimmed.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      
+      formatted.push(`<p>${processedLine}</p>`);
     });
 
-    // Close any open list
+    // Close any remaining lists
     if (inList) {
-      const lastTag = formatted[formatted.length - 2];
-      if (lastTag && lastTag.includes("<ul>")) {
-        formatted.push("</ul>");
-      } else if (lastTag && lastTag.includes("<ol>")) {
-        formatted.push("</ol>");
-      }
+      formatted.push(listType === "ul" ? "</ul>" : "</ol>");
     }
 
     return formatted.join("");
   };
 
+  const groupConversations = (convs: ConversationItem[]) => {
+  const groups: Record<string, ConversationItem[]> = {};
 
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
 
+  convs.forEach(conv => {
+    const date = new Date(conv.createdAt).toDateString();
 
+    let label = "Older";
 
-  // Backend API call
- async function sendMessage(text: string, files: File[]) {
-  const fileData = await Promise.all(
-    files.map(async (file) => ({
-      name: file.name,
-      type: file.type,
-      data: await fileToBase64(file),
-    }))
-  );
+    if (date === today) label = "Today";
+    else if (date === yesterday) label = "Yesterday";
 
-  const resp = await fetch(`${API_BASE}/api/ai/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      conversationId: conversationId,
-      userId: "guest-123",
-      message: text,
-      files: fileData,
-    }),
+    if (!groups[label]) groups[label] = [];
+    groups[label].push(conv);
   });
 
-  // 🔥 IMPORTANT: read as TEXT first
-  const rawText = await resp.text();
+  return groups;
+};
 
-  // ❌ HTTP error (502 / 500 / 504 etc)
-  if (!resp.ok) {
-    console.error("Server error:", rawText);
-    throw new Error("Server error");
+  // Backend API call
+  async function sendMessage(text: string, files: File[]) {
+    const fileData = await Promise.all(
+      files.map(async (file) => ({
+        name: file.name,
+        type: file.type,
+        data: await fileToBase64(file),
+      }))
+    );
+
+    const resp = await fetch(`${API_BASE}/api/ai/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        conversationId: conversationId,
+        userId: getUserId(),
+        message: text,
+        files: fileData,
+      }),
+    });
+
+    const rawText = await resp.text();
+
+    if (!resp.ok) {
+      console.error("Server error:", rawText);
+      throw new Error("Server error");
+    }
+
+    if (!rawText.trim().startsWith("{")) {
+      console.error("Invalid response (not JSON):", rawText);
+      throw new Error("Invalid response from server");
+    }
+
+    const data = JSON.parse(rawText);
+
+    if (!conversationId && data.conversationId) {
+      setConversationId(data.conversationId);
+      loadConversations();
+    }
+
+    return data;
   }
-
-  // ❌ Not JSON (HTML page etc)
-  if (!rawText.trim().startsWith("{")) {
-    console.error("Invalid response (not JSON):", rawText);
-    throw new Error("Invalid response from server");
-  }
-
-  // ✅ Safe JSON parse
-  const data = JSON.parse(rawText);
-
-  if (!conversationId && data.conversationId) {
-    setConversationId(data.conversationId);
-  }
-
-  return data;
-}
 
   const handleSend = async () => {
     if (!input.trim() && selectedFiles.length === 0) return;
 
     const userMessage: Message = {
+      id: crypto.randomUUID(),
       role: "user",
       content: input,
       files: selectedFiles.map((f) => ({
@@ -201,6 +373,7 @@ export default function AIPracticeChat() {
       const response = await sendMessage(input, selectedFiles);
 
       const botMessage: Message = {
+        id: crypto.randomUUID(),
         role: "assistant",
         content: response.content,
         timestamp: new Date(),
@@ -210,6 +383,7 @@ export default function AIPracticeChat() {
     } catch (error) {
       console.error("Error sending message:", error);
       const errorMessage: Message = {
+        id: crypto.randomUUID(),
         role: "assistant",
         content: "<h2>Error</h2><p>Sorry, there was an error processing your request. Please try again.</p>",
         timestamp: new Date(),
@@ -221,7 +395,6 @@ export default function AIPracticeChat() {
     }
   };
 
-  // Handle Enter key press
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -229,35 +402,61 @@ export default function AIPracticeChat() {
     }
   };
 
-  // Clear chat
-  const handleClearChat = () => {
-    setMessages([]);
-    setConversationId(null);
-    setSelectedFiles([]);
-  };
-
   return (
     <div className="chat-page">
-      {/* Header */}
-      <div className="chat-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <div className="chat-header-info">
-          <h2>AI Practice Assistant</h2>
-          <span className="status-indicator">
-            <span className="status-dot"></span>
-            Online
-          </span>
+      {/* Sidebar */}
+      {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+      
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <h3>Chat History</h3>
+          <button className="new-chat-btn" onClick={handleClearChat}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            New Chat
+          </button>
         </div>
-        <button className="clear-btn" onClick={handleClearChat} title="Clear Chat">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+        
+        <div className="conversation-list">
+  {Object.entries(groupConversations(conversations)).map(([label, convs]) => (
+    <div key={label}>
+      <div className="conversation-group-title">{label}</div>
+
+      {convs.map(conv => (
+        <div key={conv.id} className="conversation-item">
+          <button
+            className="conversation-btn"
+            onClick={() => loadConversation(conv.id)}
+          >
+           <span className="conversation-title">
+          {conv.title || `Chat ${conv.id}`}
+        </span>
+          </button>
+
+          <button
+            className="delete-conv-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteConversation(conv.id);
+            }}
+          >
+            🗑
+          </button>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
       </div>
+
+      {/* Header */}
+      <ChatHeader 
+        onMenuClick={handleMenuClick}
+        onBackClick={handleBackClick}
+        onClearClick={handleClearChat}
+      />
 
       {/* Chat Container */}
       <div className="chat-container">
@@ -265,17 +464,15 @@ export default function AIPracticeChat() {
           {messages.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
+              <img src={biologyLogo} alt="Biology Lover AI" />
+            </div>
               <h3>Start Your Practice Session</h3>
               <p>Ask questions, upload images, or share files to get started!</p>
               <div className="suggestion-chips">
                 <button className="chip" onClick={() => setInput("Explain photosynthesis in detail")}>
                   Explain photosynthesis
                 </button>
-                <button className="chip" onClick={() => setInput("Give me a study timetable for Class 10 ")}>
+                <button className="chip" onClick={() => setInput("Give me a study timetable for Class 10")}>
                   Class 10 study schedule
                 </button>
                 <button className="chip" onClick={() => setInput("Help me with chemistry reactions")}>
@@ -284,14 +481,14 @@ export default function AIPracticeChat() {
               </div>
             </div>
           ) : (
-            messages.map((msg, idx) => (
-              <div key={idx} className={`message-wrapper ${msg.role}`}>
+            messages.map((msg) => (
+              <div key={msg.id} className={`message-wrapper ${msg.role}`}>
                 <div className="message-avatar">
                   {msg.role === "user" ? (
                     <div className="avatar-user">You</div>
                   ) : (
                     <div className="avatar-bot">
-                       <img src={biologyLogo} alt="Biology Lover AI" />
+                      <img src={biologyLogo} alt="Biology Lover AI" />
                     </div>
                   )}
                 </div>
@@ -333,7 +530,7 @@ export default function AIPracticeChat() {
             <div className="message-wrapper assistant">
               <div className="message-avatar">
                 <div className="avatar-bot">
-                   <img src={biologyLogo} alt="Biology Lover AI" />
+                  <img src={biologyLogo} alt="Biology Lover AI" />
                 </div>
               </div>
               <div className="message-content">

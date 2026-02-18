@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
                     <div className="contact-item">
                         <span className="icon-mail">✉️</span>
                         {/* Updated Email */}
-                        <a href="mailto:biologylover02@gmail.com">biologylover02@gmail.com</a>
+                        <a href="mailto:helpbiologylover02@gmail.com">helpbiologylover02@gmail.com</a>
                     </div>
 
                     <div className="contact-item">
