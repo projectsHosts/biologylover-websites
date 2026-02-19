@@ -1,6 +1,7 @@
 // src/components/mock-tests/pages/MedicalEntrance.tsx
 import { useNavigate } from "react-router-dom";
 import "../../../styles/mocktest.css";
+import { isLoggedIn } from "../../../utils/auth";
 
 interface ExamCategory {
   id: string;
@@ -28,20 +29,6 @@ export default function MedicalEntrance() {
       examType: "NEET_SUBJECT",
       hasSubcategories: true
     },
-    // {
-    //   id: "aiims",
-    //   name: "AIIMS Pattern Tests",
-    //   description: "AIIMS entrance exam pattern mock tests",
-    //   examType: "AIIMS",
-    //   hasSubcategories: false
-    // },
-    // {
-    //   id: "jipmer",
-    //   name: "JIPMER Pattern Tests",
-    //   description: "JIPMER entrance exam pattern tests",
-    //   examType: "JIPMER",
-    //   hasSubcategories: false
-    // },
     {
       id: "bsc-nursing",
       name: "B.Sc Nursing Entrance",
@@ -59,6 +46,18 @@ export default function MedicalEntrance() {
   ];
 
   const handleCategoryClick = (category: ExamCategory) => {
+ 
+     if (!isLoggedIn()) {
+    (window as any).openLogin();   // same modal you use in quiz
+    return;
+  }
+
+   if (category.examType === "NEET_FULL") {
+  navigate("/mock-tests/list/NEET_FULL");
+  return;
+}
+
+  
     if (category.hasSubcategories) {
       // Navigate to subcategory page for NEET Subject Tests
       navigate(`/mock-tests/medical/${category.id}`);
@@ -109,7 +108,10 @@ export default function MedicalEntrance() {
                 </div>
               )}
               
-              <button className="mock-exam-btn">View Tests →</button>
+              <button className="mock-exam-btn"  onClick={(e) => {
+                  e.stopPropagation();      // ✅ prevent double click bubbling
+                  handleCategoryClick(cat);
+                }} >View Tests →</button>
             </div>
           );
         })}

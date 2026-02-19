@@ -1,4 +1,6 @@
 export interface MockTest {
+  userHasAccess: boolean;
+  isPremium: any;
   attemptCount: undefined;
   id: number;
   title: string;
@@ -52,5 +54,6 @@ export interface ResultState {
   skipped: number
   score: number
   accuracy: number
+  maxMarks: number
   review: ReviewItem[]
 }

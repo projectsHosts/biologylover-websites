@@ -22,7 +22,7 @@ export default function MockTestResult() {
 
         <div className="mock-res-card">
           <h3>Score</h3>
-          <p>{data.score}</p>
+          <p>{data.score}/{data.maxMarks}</p>
         </div>
 
         <div className="mock-res-card">

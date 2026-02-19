@@ -1,10 +1,10 @@
 // MockTestAttempt.tsx
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../../styles/mocktest.css";
 
 import {
-  startAttempt,
   fetchAttemptQuestion,
   saveAttemptAnswer,
   submitAttempt
@@ -12,66 +12,59 @@ import {
 
 export default function MockTestAttempt(){
 
-  const { id } = useParams();
+  const { attemptId } = useParams();   // ✅ correct param
   const navigate = useNavigate();
 
-  const [attemptId,setAttemptId] = useState<number>();
+  const aid = Number(attemptId);       // ✅ parse once
+
   const [index,setIndex] = useState(0);
   const [question,setQuestion] = useState<any>(null);
   const [selected,setSelected] = useState<string|null>(null);
   const [timeLeft,setTimeLeft] = useState(180*60);
 
-  // ===== start attempt =====
+  /* ===== load question ===== */
 
   useEffect(()=>{
-    if(!id) return;
+    if(!aid) return;
 
-    startAttempt(Number(id)).then(aid=>{
-      setAttemptId(aid);
-    });
-  },[id]);
-
-  // ===== load question =====
-
-  useEffect(()=>{
-    if(!attemptId) return;
-
-    fetchAttemptQuestion(attemptId,index)
+    fetchAttemptQuestion(aid,index)
       .then(setQuestion)
-      .catch(()=>submit()); // no more questions
-  },[attemptId,index]);
+      .catch(()=>submit());
+
+  },[aid,index]);
 
   useEffect(()=>{
-  setSelected(null);
-},[question]);
+    setSelected(null);
+  },[question]);
 
-
-  // ===== select answer =====
+  /* ===== select answer ===== */
 
   function select(opt:string){
-    if(!attemptId || !question) return;
+
+    if(!question) return;
 
     setSelected(opt);
 
-    saveAttemptAnswer(attemptId,{
+    saveAttemptAnswer(aid,{
       questionId: question.id,
       selectedOption: opt
     });
   }
 
-  // ===== submit =====
+  /* ===== submit ===== */
 
   async function submit(){
-    if(!attemptId) return;
 
-    const result = await submitAttempt(attemptId);
-
+    const result = await submitAttempt(aid);
     navigate("/mock-result",{ state: result });
   }
 
-  // ===== timer =====
+  /* ===== timer ===== */
 
   useEffect(()=>{
+
+    if(!aid) return;
+
     const t = setInterval(()=>{
       setTimeLeft(s=>{
         if(s<=1){
@@ -84,9 +77,11 @@ export default function MockTestAttempt(){
     },1000);
 
     return ()=>clearInterval(t);
-  },[attemptId]);
 
-  if(!question) return <div className="container">Loading...</div>;
+  },[aid]);
+
+  if(!question)
+    return <div className="container">Loading...</div>;
 
   const min = Math.floor(timeLeft/60);
   const sec = timeLeft%60;
@@ -101,17 +96,17 @@ export default function MockTestAttempt(){
 
       <h3>Q{index+1}. {question.questionText}</h3>
 
-      {["A","B","C","D"].map(o=>(
+      {["A","B","C","D"].map(o => (
         <button
           key={o}
           className={
-            selected===o
+            selected === o
               ? "mock-option mock-selected"
               : "mock-option"
           }
-          onClick={()=>select(o)}
+          onClick={() => select(o)}
         >
-          {o}: {question["option"+o]}
+          {o}: {question["option" + o]}
         </button>
       ))}
 
@@ -130,6 +125,7 @@ export default function MockTestAttempt(){
         <button onClick={submit}>
           Submit Test
         </button>
+
       </div>
 
     </div>
