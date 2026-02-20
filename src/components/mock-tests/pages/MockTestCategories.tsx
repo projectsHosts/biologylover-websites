@@ -53,7 +53,7 @@ export default function MockTestCategories() {
       description: "Chapter-wise tests for Physics, Chemistry & Biology",
       icon: "menu_book",
       route: "/mock-tests/topicwise",
-      statusText: "NOT AVAILABLE"
+      statusText: "AVAILABLE"
     }
   ];
 

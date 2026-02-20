@@ -301,6 +301,7 @@ const Navbar: React.FC = () => {
                     <div className="menu-title">Learning</div>
                     <div className="menu-link" onClick={() => handleNav("/resources", true)}>Resources</div>
                     <div className="menu-link" onClick={() => handleNav("/daily-quiz", true)}>Quiz of the Day</div>
+                    <div className="menu-link" onClick={() => handleNav("/ai-practice", true)}><span>BioAlpha AI</span> <span className="menu-badge menu-badge-new"><b>NEW</b></span></div>
                   </div>
                 </div>
               </div>
