@@ -34,20 +34,20 @@ export default function MockTestList() {
   /* ================= LOAD TESTS ================= */
 
   async function load() {
-    if (!examType) return;
+  if (!examType) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const data = await fetchMockTestsByExam(examType);
-      setTests(data);
-    } catch (e) {
-      console.error(e);
-      alert("Failed to load mock tests");
-    } finally {
-      setLoading(false);
-    }
+  try {
+    const data = await fetchMockTestsByExam(examType);
+    setTests(data || []);
+  } catch (e) {
+    console.error("Load error", e);
+    setTests([]);
+  } finally {
+    setLoading(false);
   }
+}
 
   useEffect(() => {
     load();
@@ -55,15 +55,22 @@ export default function MockTestList() {
 
   /* ================= START TEST ================= */
 
-  async function handleStart(testId: number) {
-    try {
-      const attemptId = await startAttempt(testId);
-      navigate(`/mock-attempt/${attemptId}`);
-    } catch (e) {
-      console.error(e);
-      alert("Failed to start test");
-    }
+ async function handleStart(testId: number) {
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    (window as any).openLogin();
+    return;
   }
+
+  try {
+    const attemptId = await startAttempt(testId);
+    navigate(`/mock-attempt/${attemptId}`);
+  } catch (e) {
+    console.error("Start error", e);
+  }
+}
 
   /* ================= PREMIUM UNLOCK ================= */
 

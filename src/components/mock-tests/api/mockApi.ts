@@ -1,24 +1,30 @@
-// src/features/mocktest/api/mockApi.ts
 import type { MockTest } from "../types/mock";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE || "http://localhost:8080";
 
+const getAuthHeader = (): Record<string, string> => {
+  const token = localStorage.getItem("token");
+
+  if (!token || token === "null" || token === "undefined") {
+    return {};
+  }
+
+  return {
+    Authorization: `Bearer ${token}`
+  };
+};
 
 /* ================= MOCK TEST ================= */
 
 export const fetchMockTests = async (): Promise<MockTest[]> => {
-
   const res = await fetch(`${API_BASE}/api/mock-tests`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-    }
+    headers: getAuthHeader()
   });
 
   if (!res.ok) throw new Error("Failed to fetch mock tests");
   return res.json();
 };
-
 
 export const fetchMockTestsByStream = async (
   stream: string
@@ -26,17 +32,12 @@ export const fetchMockTestsByStream = async (
 
   const res = await fetch(
     `${API_BASE}/api/mock-tests/stream/${stream}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
-    }
+    { headers: getAuthHeader() }
   );
 
   if (!res.ok) throw new Error("Failed stream fetch");
   return res.json();
 };
-
 
 export const fetchMockTestsByExam = async (
   examType: string
@@ -44,17 +45,12 @@ export const fetchMockTestsByExam = async (
 
   const res = await fetch(
     `${API_BASE}/api/mock-tests/exam/${examType}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
-    }
+    { headers: getAuthHeader() }
   );
 
   if (!res.ok) throw new Error("Failed exam fetch");
   return res.json();
 };
-
 
 export const fetchMockTestById = async (
   id: number
@@ -62,17 +58,12 @@ export const fetchMockTestById = async (
 
   const res = await fetch(
     `${API_BASE}/api/mock-tests/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
-    }
+    { headers: getAuthHeader() }
   );
 
   if (!res.ok) throw new Error("Failed test fetch");
   return res.json();
 };
-
 
 /* ================= ATTEMPT FLOW ================= */
 
@@ -82,16 +73,13 @@ export const startAttempt = async (testId: number) => {
     `${API_BASE}/api/mock-attempt/start/${testId}`,
     {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
+      headers: getAuthHeader()
     }
   );
 
   if (!res.ok) throw new Error("Start attempt failed");
   return res.json();
 };
-
 
 export const fetchAttemptQuestion = async (
   attemptId: number,
@@ -100,17 +88,12 @@ export const fetchAttemptQuestion = async (
 
   const res = await fetch(
     `${API_BASE}/api/mock-attempt/${attemptId}/question/${index}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
-    }
+    { headers: getAuthHeader() }
   );
 
   if (!res.ok) throw new Error("Fetch question failed");
   return res.json();
 };
-
 
 export const saveAttemptAnswer = async (
   attemptId: number,
@@ -123,7 +106,7 @@ export const saveAttemptAnswer = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+        ...getAuthHeader()
       },
       body: JSON.stringify(payload)
     }
@@ -132,16 +115,13 @@ export const saveAttemptAnswer = async (
   if (!res.ok) throw new Error("Save answer failed");
 };
 
-
 export const submitAttempt = async (attemptId: number) => {
 
   const res = await fetch(
     `${API_BASE}/api/mock-attempt/${attemptId}/submit`,
     {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      }
+      headers: getAuthHeader()
     }
   );
 
