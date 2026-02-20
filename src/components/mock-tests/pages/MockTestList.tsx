@@ -6,7 +6,7 @@ import "../../../styles/mocktest.css";
 
 import { fetchMockTestsByExam, startAttempt } from "../api/mockApi";
 
-import { createPremiumOrder, verifyPayment } from "../../../utils/payment";
+// import { createPremiumOrder, verifyPayment } from "../../../utils/payment";
 
 import type { MockTest } from "../types/mock";
 
@@ -74,73 +74,73 @@ export default function MockTestList() {
 
   /* ================= PREMIUM UNLOCK ================= */
 
-  async function handlePremiumUnlock() {
-    if (paymentLoading) return;
-    setPaymentLoading(true);
+  // async function handlePremiumUnlock() {
+  //   if (paymentLoading) return;
+  //   setPaymentLoading(true);
 
-    try {
-      if (!examType) {
-        alert("Invalid exam type");
-        return;
-      }
+  //   try {
+  //     if (!examType) {
+  //       alert("Invalid exam type");
+  //       return;
+  //     }
 
-      const order = await createPremiumOrder(examType);
+  //     const order = await createPremiumOrder(examType);
 
-      if (!(window as any).Razorpay) {
-        alert("Payment system not ready. Please refresh.");
-        return;
-      }
+  //     if (!(window as any).Razorpay) {
+  //       alert("Payment system not ready. Please refresh.");
+  //       return;
+  //     }
 
-      const rzp = new (window as any).Razorpay({
-          key: order.key,
-          amount: order.amount,
-          currency: order.currency,
-          name: "BiologyLover",
-          description: "NEET Premium Pack",
-          order_id: order.orderId,
+  //     const rzp = new (window as any).Razorpay({
+  //         key: order.key,
+  //         amount: order.amount,
+  //         currency: order.currency,
+  //         name: "BiologyLover",
+  //         description: "NEET Premium Pack",
+  //         order_id: order.orderId,
 
-          modal: {
-            ondismiss: () => {
-              alert("Payment cancelled");
-            }
-          },
+  //         modal: {
+  //           ondismiss: () => {
+  //             alert("Payment cancelled");
+  //           }
+  //         },
 
-          handler: async (resp: any) => {
-            await verifyPayment({
-              razorpayOrderId: resp.razorpay_order_id,
-              razorpayPaymentId: resp.razorpay_payment_id,
-              razorpaySignature: resp.razorpay_signature,
-            });
-            setShowSuccess(true);
-            await waitForAccess();
-          }
-        });
+  //         handler: async (resp: any) => {
+  //           await verifyPayment({
+  //             razorpayOrderId: resp.razorpay_order_id,
+  //             razorpayPaymentId: resp.razorpay_payment_id,
+  //             razorpaySignature: resp.razorpay_signature,
+  //           });
+  //           setShowSuccess(true);
+  //           await waitForAccess();
+  //         }
+  //       });
 
 
-      rzp.open();
-    } catch (e) {
-      alert("Payment failed");
-    } finally {
-      setPaymentLoading(false);
-    }
-  }
+  //     rzp.open();
+  //   } catch (e) {
+  //     alert("Payment failed");
+  //   } finally {
+  //     setPaymentLoading(false);
+  //   }
+  // }
 
-  async function waitForAccess() {
-    for (let i = 0; i < 5; i++) {
-      await load();
+  // async function waitForAccess() {
+  //   for (let i = 0; i < 5; i++) {
+  //     await load();
 
-      const access = tests.some((t) => t.userHasAccess);
-      if (access) return;
+  //     const access = tests.some((t) => t.userHasAccess);
+  //     if (access) return;
 
-      await new Promise((r) => setTimeout(r, 1000));
-    }
-  }
+  //     await new Promise((r) => setTimeout(r, 1000));
+  //   }
+  // }
 
   /* ================= PREMIUM LOCK CONDITION ================= */
 
   const hasPremiumAccess = premiumTests.some((t) => t.userHasAccess === true);
 
-  const showPremiumLock = examType === "NEET_FULL" && !hasPremiumAccess;
+  // const showPremiumLock = examType === "NEET_FULL" && !hasPremiumAccess;
 
   /* ================= UI ================= */
 
