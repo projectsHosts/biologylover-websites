@@ -18,7 +18,7 @@ export default function MockTestList() {
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPremiumList, setShowPremiumList] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  // const [paymentLoading, setPaymentLoading] = useState(false);
 
   const freeTests = tests.filter((t) => t.isPremium === false);
   const premiumTests = tests.filter((t) => t.isPremium === true);
