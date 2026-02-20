@@ -29,6 +29,17 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+
+.question-images {
+  margin: 15px 0;
+}
+
+.question-img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
 /* ===== Typography ===== */
 .container h2 {
   text-align: center;

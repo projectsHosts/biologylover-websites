@@ -225,7 +225,7 @@ export default function MockTestList() {
           ))}
 
         {/* ===== PREMIUM LOCK CARD ===== */}
-        {showPremiumLock && (
+        {/* {showPremiumLock && (
           <div className="mock-card premium-lock">
             <div className="premium-head">
               <i className="fa-solid fa-crown"></i>
@@ -253,7 +253,7 @@ export default function MockTestList() {
           </button>
 
           </div>
-        )}
+        )} */}
 
         {/* ===== PREMIUM GROUP CARD (AFTER PAYMENT) ===== */}
 

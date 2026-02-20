@@ -59,41 +59,70 @@ export default function MockTestResult() {
 
       {/* ===== Review ===== */}
 
-<div className="mock-question-review-container">
-  <h3>Question Review</h3>
+      <div className="mock-question-review-container">
+        <h3>Question Review</h3>
 
-  <div className="mock-question-review-wrapper">
-    {data.review.map((r, i) => {
+        <div className="mock-question-review-wrapper">
 
-      const statusClass =
-        r.yourAnswer == null
-          ? "mock-status-skip"
-          : r.correct
-            ? "mock-status-correct"
-            : "mock-status-wrong";
+          {data.review.map((r, i) => {
 
-      return (
-        <div
-          key={r.questionId}
-          className={`mock-question-review ${statusClass}`}
-        >
-          <div>
-            <b>Q{i + 1}.</b> {r.questionText}
-          </div>
+            // ✅ parse question JSON safely
+            let parsed;
+            try {
+              parsed =
+                typeof r.questionText === "string"
+                  ? JSON.parse(r.questionText)
+                  : r.questionText;
+            } catch {
+              parsed = { text: r.questionText, images: [] };
+            }
 
-          <div>
-            Your Answer: <b>{r.yourAnswer ?? "Skipped"}</b>
-          </div>
+            const statusClass =
+              r.yourAnswer == null
+                ? "mock-status-skip"
+                : r.correct
+                  ? "mock-status-correct"
+                  : "mock-status-wrong";
 
-          <div>
-            Correct Answer: <b>{r.correctAnswer}</b>
-          </div>
+            return (
+              <div
+                key={r.questionId}
+                className={`mock-question-review ${statusClass}`}
+              >
+
+                {/* ===== Question Text ===== */}
+                <div>
+                  <b>Q{i + 1}.</b> {parsed.text}
+                </div>
+
+                {/* ===== Images ===== */}
+                {parsed.images?.length > 0 && (
+                  <div className="question-images">
+                    {parsed.images.map((img: string, idx: number) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt="question"
+                        className="question-img"
+                      />
+                    ))}
+                  </div>
+                )}
+
+                <div>
+                  Your Answer: <b>{r.yourAnswer ?? "Skipped"}</b>
+                </div>
+
+                <div>
+                  Correct Answer: <b>{r.correctAnswer}</b>
+                </div>
+
+              </div>
+            );
+          })}
+
         </div>
-      );
-    })}
-  </div>
-</div>
-
+      </div>
 
       <button
         className="mock-back-btn"
