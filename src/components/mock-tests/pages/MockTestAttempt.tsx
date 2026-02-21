@@ -20,7 +20,15 @@ export default function MockTestAttempt() {
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState<any>(null);
   const [selected, setSelected] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(180 * 60);
+  // const [timeLeft, setTimeLeft] = useState(180 * 60);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+
+  useEffect(() => {
+  if (question && question.duration && timeLeft === null) {
+    setTimeLeft(question.duration * 60);
+  }
+}, [question]);
 
   /* ===== load question ===== */
 
@@ -84,24 +92,24 @@ export default function MockTestAttempt() {
 
   useEffect(() => {
 
-    if (!aid) return;
+  if (!aid || timeLeft === null) return;
 
-    const t = setInterval(() => {
-      setTimeLeft(s => {
-        if (s <= 1) {
-          clearInterval(t);
-          submit();
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
+  const t = setInterval(() => {
+    setTimeLeft(s => {
+      if (!s || s <= 1) {
+        clearInterval(t);
+        submit();
+        return 0;
+      }
+      return s - 1;
+    });
+  }, 1000);
 
-    return () => clearInterval(t);
+  return () => clearInterval(t);
 
-  }, [aid]);
+}, [aid, timeLeft]);
 
-  if (!question)
+  if (!question || timeLeft === null)
     return <div className="container">Loading...</div>;
 
   const min = Math.floor(timeLeft / 60);
