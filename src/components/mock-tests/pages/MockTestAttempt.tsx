@@ -7,11 +7,10 @@ import "../../../styles/mocktest.css";
 import {
   fetchAttemptQuestion,
   saveAttemptAnswer,
-  submitAttempt
+  submitAttempt,
 } from "../api/mockApi";
 
 export default function MockTestAttempt() {
-
   const { attemptId } = useParams();
   const navigate = useNavigate();
 
@@ -22,13 +21,21 @@ export default function MockTestAttempt() {
   const [selected, setSelected] = useState<string | null>(null);
   // const [timeLeft, setTimeLeft] = useState(180 * 60);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-
+  const [totalQuestions, setTotalQuestions] = useState<number | null>(null);
+  const isFirst = index === 0;
+  const isLast = totalQuestions !== null && index === totalQuestions - 1;
 
   useEffect(() => {
-  if (question && question.duration && timeLeft === null) {
-    setTimeLeft(question.duration * 60);
-  }
-}, [question]);
+    if (question?.totalQuestions) {
+      setTotalQuestions(question.totalQuestions);
+    }
+  }, [question]);
+
+  useEffect(() => {
+    if (question && question.duration && timeLeft === null) {
+      setTimeLeft(question.duration * 60);
+    }
+  }, [question]);
 
   /* ===== load question ===== */
 
@@ -38,7 +45,6 @@ export default function MockTestAttempt() {
     fetchAttemptQuestion(aid, index)
       .then(setQuestion)
       .catch(() => submit());
-
   }, [aid, index]);
 
   /* ===== reset selection when question changes ===== */
@@ -65,21 +71,19 @@ export default function MockTestAttempt() {
   /* ===== select answer ===== */
 
   function select(opt: string) {
-
     if (!question) return;
 
     setSelected(opt);
 
     saveAttemptAnswer(aid, {
       questionId: question.id,
-      selectedOption: opt
+      selectedOption: opt,
     });
   }
 
   /* ===== submit test ===== */
 
   async function submit() {
-
     try {
       const result = await submitAttempt(aid);
       navigate("/mock-result", { state: result });
@@ -91,23 +95,21 @@ export default function MockTestAttempt() {
   /* ===== timer ===== */
 
   useEffect(() => {
+    if (!aid || timeLeft === null) return;
 
-  if (!aid || timeLeft === null) return;
+    const t = setInterval(() => {
+      setTimeLeft((s) => {
+        if (!s || s <= 1) {
+          clearInterval(t);
+          submit();
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
 
-  const t = setInterval(() => {
-    setTimeLeft(s => {
-      if (!s || s <= 1) {
-        clearInterval(t);
-        submit();
-        return 0;
-      }
-      return s - 1;
-    });
-  }, 1000);
-
-  return () => clearInterval(t);
-
-}, [aid, timeLeft]);
+    return () => clearInterval(t);
+  }, [aid, timeLeft]);
 
   if (!question || timeLeft === null)
     return <div className="container">Loading...</div>;
@@ -117,11 +119,12 @@ export default function MockTestAttempt() {
 
   return (
     <div className="container">
-
       {/* ===== Header ===== */}
       <div className="mock-test-header">
         <h2>Mock Test</h2>
-        <div>Time Left: {min}:{sec.toString().padStart(2, "0")}</div>
+        <div>
+          Time Left: {min}:{sec.toString().padStart(2, "0")}
+        </div>
       </div>
 
       {/* ===== Question Text ===== */}
@@ -133,24 +136,17 @@ export default function MockTestAttempt() {
       {parsedQuestion.images?.length > 0 && (
         <div className="question-images">
           {parsedQuestion.images.map((img: string, i: number) => (
-            <img
-              key={i}
-              src={img}
-              alt="question"
-              className="question-img"
-            />
+            <img key={i} src={img} alt="question" className="question-img" />
           ))}
         </div>
       )}
 
       {/* ===== Options ===== */}
-      {["A", "B", "C", "D"].map(o => (
+      {["A", "B", "C", "D"].map((o) => (
         <button
           key={o}
           className={
-            selected === o
-              ? "mock-option mock-selected"
-              : "mock-option"
+            selected === o ? "mock-option mock-selected" : "mock-option"
           }
           onClick={() => select(o)}
         >
@@ -160,24 +156,19 @@ export default function MockTestAttempt() {
 
       {/* ===== Navigation ===== */}
       <div className="mock-nav">
-
         <button
-          disabled={index === 0}
-          onClick={() => setIndex(i => i - 1)}
+          disabled={isFirst}
+          onClick={() => setIndex((i) => Math.max(0, i - 1))}
         >
           Prev
         </button>
 
-        <button onClick={() => setIndex(i => i + 1)}>
+        <button disabled={isLast} onClick={() => setIndex((i) => i + 1)}>
           Next
         </button>
 
-        <button onClick={submit}>
-          Submit Test
-        </button>
-
+        <button onClick={submit}>Submit Test</button>
       </div>
-
     </div>
   );
 }
