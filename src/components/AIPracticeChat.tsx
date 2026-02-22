@@ -143,7 +143,7 @@ export default function AIPracticeChat() {
   const [liveTranscript, setLiveTranscript] = useState("");
   const recognitionRef = useRef<any>(null);
   const [isProcessingVoice, setIsProcessingVoice] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [, setIsSpeaking] = useState(false)
 
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -287,14 +287,14 @@ export default function AIPracticeChat() {
   };
 
   // Convert file to base64
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // const fileToBase64 = (file: File): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result as string);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
 
   // Format AI response with proper HTML structure
   const formatResponse = (text: string): string => {
