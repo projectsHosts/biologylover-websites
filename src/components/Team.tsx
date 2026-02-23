@@ -2,10 +2,11 @@ import React, { useState } from "react";
 
 import "../styles/team.css";
 
-import yogeshImg from "../assets/yogesh.jpeg";
+import yogeshImg from "../assets/Yogesh Image.jpeg";
 import poojaImg from "../assets/pooja.jpeg";
 import jyotiImg from "../assets/jyoti.jpeg";
 import abhiImg from "../assets/abhishek.jpeg";
+import vikashImg from "../assets/vikash.png";
 
 const teamMembers = [
   {
@@ -26,6 +27,17 @@ const teamMembers = [
     intro: "Passionate educator simplifying complex concepts and guiding students to achieve academic excellence. Specializes in creating engaging video lectures and interactive learning experiences.",
     socials: {
       instagram: "https://www.instagram.com/biology_lover_02",
+      facebook: "#",
+      linkedin: "#",
+    },
+  },
+  {
+    name: "Vikash Kumar",
+    role: "Educator & Content Creator",
+    img: vikashImg,
+    intro: "Creative educator sharing engaging mathematics posts and short tricks videos to make learning fun and easy for students. Passionate about simplifying complex concepts and helping students excel in their studies.",
+    socials: {
+      instagram: "https://www.instagram.com/math_done_02",
       facebook: "#",
       linkedin: "#",
     },
@@ -71,7 +83,9 @@ const OurTeam: React.FC = () => {
     >
       <div className="card-inner">
         <div className="card-front">
-          <img src={member.img} alt={member.name} />
+         <div className="img-box">
+  <img src={member.img} alt={member.name} />
+</div>
           <h3>{member.name}</h3>
           <p>{member.role}</p>
         </div>
