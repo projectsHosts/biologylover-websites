@@ -6,7 +6,7 @@ import yogeshImg from "../assets/Yogesh Image.jpeg";
 import poojaImg from "../assets/pooja.jpeg";
 import jyotiImg from "../assets/jyoti.jpeg";
 import abhiImg from "../assets/abhishek.jpeg";
-import vikashImg from "../assets/vikash.png";
+import vikashImg from "../assets/blogs/vikash.png";
 
 const teamMembers = [
   {
