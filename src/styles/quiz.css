@@ -197,7 +197,7 @@
 
 /* Question Text */
 .question-text {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 2rem;
@@ -945,7 +945,7 @@
   }
 
   .question-text {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   .quiz-nav {
