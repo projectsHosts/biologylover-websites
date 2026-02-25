@@ -32,7 +32,7 @@ const teamMembers = [
     },
   },
   {
-    name: "Vikash Kumar",
+    name: "Vikas Sagar",
     role: "Educator & Content Creator",
     img: vikashImg,
     intro: "Creative educator sharing engaging mathematics posts and short tricks videos to make learning fun and easy for students. Passionate about simplifying complex concepts and helping students excel in their studies.",
