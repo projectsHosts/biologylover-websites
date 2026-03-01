@@ -1,7 +1,7 @@
 /* ---------------- BASE NAVBAR ---------------- */
 /* Navbar base */
 .site-nav {
-  background: rgba(0,0,0,0.35);
+  background: #080c14;
   color: #fff;
   padding: 15px 20px;
   position: sticky; /* keep it on top */

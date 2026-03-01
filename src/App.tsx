@@ -45,6 +45,10 @@ import GovernmentEntrance from './components/mock-tests/pages/GovernmentEntrance
 import ClassWiseTests from './components/mock-tests/pages/ClassWiseTests'
 import TopicWiseTests from './components/mock-tests/pages/TopicWiseTests'
 import AIPracticeLanding from './components/ChatLoginGate'
+import CompetitionsList from './components/competitions/pages/CompetitionsList'
+import CompetitionDetails from './components/competitions/pages/CompetitionDetails'
+import AttemptCompetition from './components/competitions/pages/AttemptCompetition'
+import CompetitionLeaderboard from './components/competitions/pages/CompetitionLeaderboard'
 
 
 function App() {
@@ -83,6 +87,16 @@ function App() {
           <Route path="/daily-quiz" element={<DailyQuizPage />} />
           <Route path="/daily-quiz/leaderboard" element={<DailyQuizPage />} />
           <Route path="/level-progress" element={<LevelProgressCard />} />
+
+          {/* ================= COMPETITION ROUTES ================= */}
+
+        <Route path="/competition" element={<CompetitionsList/>}/>
+
+        <Route path="/competition/attempt/:attemptId" element={<AttemptCompetition/>}/>
+
+        <Route path="/competition/leaderboard/:id" element={<CompetitionLeaderboard/>}/>
+
+        <Route path="/competition/:id" element={<CompetitionDetails/>}/>
 
           {/* ================= PYQ ROUTES ================= */}
           <Route path="/pyq" element={<PyqHome />} />
