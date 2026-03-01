@@ -1,11 +1,10 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import "../../../styles/compitions/competitionPages.css"
 import type { Result } from "../competitions/types/competitionTypes"
 
 export default function CompetitionResult() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { attemptId } = useParams()
   const result = location.state as Result
 
   if (!result) {
