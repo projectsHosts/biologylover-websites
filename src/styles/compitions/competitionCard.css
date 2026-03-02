@@ -1,4 +1,8 @@
-.card {
+/* =========================================================
+   CompetitionCard Scoped
+   ========================================================= */
+
+.competition-card-scope .card {
   background: #1e293b;
   border-radius: 14px;
   padding: 16px;
@@ -7,36 +11,62 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
-.card:hover {
+.competition-card-scope .card:hover {
   background: #334155;
   transform: translateY(-4px);
 }
 
-.banner {
+.competition-card-scope .banner,
+.competition-card-scope .card img {
   width: 100%;
   height: 160px;
   object-fit: cover;
   border-radius: 10px;
 }
 
-.title {
+.competition-card-scope .title,
+.competition-card-scope .card h3 {
   font-size: 18px;
   margin-top: 8px;
   font-weight: 600;
+  color: #fff;
 }
 
-.desc {
+.competition-card-scope .desc,
+.competition-card-scope .card p {
   font-size: 14px;
   color: #cbd5e1;
   margin-top: 4px;
 }
 
-.price {
+.competition-card-scope .price {
   color: #22c55e;
   font-weight: 600;
   margin-top: 6px;
 }
-.card {
+
+.competition-card-scope .card button {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #5b6ef5;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.competition-card-scope .card button:hover {
+  background: #4756d6;
+}
+
+
+/* =========================================================
+   QuestionCard Scoped
+   ========================================================= */
+
+.question-card-scope .card,
+.question-card-scope .question-card {
   background: #1e293b;
   padding: 16px;
   border-radius: 12px;
@@ -44,12 +74,13 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
-.question {
+.question-card-scope .question {
   margin-bottom: 10px;
   font-size: 15px;
+  color: #fff;
 }
 
-.optionBtn {
+.question-card-scope .optionBtn {
   width: 100%;
   text-align: left;
   background: #334155;
@@ -62,11 +93,11 @@
   transition: all 0.2s ease;
 }
 
-.optionBtn:hover {
+.question-card-scope .optionBtn:hover {
   background: #475569;
 }
 
-.optionBtn:active {
+.question-card-scope .optionBtn:active {
   transform: scale(0.98);
 }
 
@@ -668,7 +699,7 @@
 }
 
 /* ===================== OPTION BUTTON ===================== */
-.option-btn {
+.option-btnn {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -690,7 +721,7 @@
   user-select: none;
 }
 
-.option-btn::after {
+.option-btnn::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -700,12 +731,12 @@
   pointer-events: none;
 }
 
-.option-btn:hover { border-color: rgba(91,110,245,0.45); background: #1a1f38; color: #f0f2ff; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(91,110,245,0.15); }
-.option-btn:hover::after { opacity: 1; }
-.option-btn.selected { border-color: #5b6ef5; background: rgba(91,110,245,0.1); color: #f0f2ff; box-shadow: 0 0 0 3px rgba(91,110,245,0.2), 0 6px 24px rgba(91,110,245,0.2); }
-.option-btn.selected::after { opacity: 1; }
+.option-btnn:hover { border-color: rgba(91,110,245,0.45); background: #1a1f38; color: #f0f2ff; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(91,110,245,0.15); }
+.option-btnn:hover::after { opacity: 1; }
+.option-btnn.selected { border-color: #5b6ef5; background: rgba(91,110,245,0.1); color: #f0f2ff; box-shadow: 0 0 0 3px rgba(91,110,245,0.2), 0 6px 24px rgba(91,110,245,0.2); }
+.option-btnn  .selected::after { opacity: 1; }
 
-.option-btn strong {
+.option-btnn strong {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
@@ -723,8 +754,8 @@
   margin-top: 1px;
 }
 
-.option-btn:hover strong,
-.option-btn.selected strong { background: #5b6ef5; border-color: #5b6ef5; color: #fff; }
+.option-btnn:hover strong,
+.option-btnn.selected strong { background: #5b6ef5; border-color: #5b6ef5; color: #fff; }
 
 /* ===================== NAVIGATION ===================== */
 .navigation-buttons {

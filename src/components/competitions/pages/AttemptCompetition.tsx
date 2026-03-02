@@ -345,7 +345,7 @@ if (!testStarted) {
             {(["A", "B", "C", "D"] as const).map(opt => (
               <button
                 key={opt}
-                className={`option-btn ${selectedOption === opt ? "selected" : ""}`}
+                className={`option-btnn ${selectedOption === opt ? "selected" : ""}`}
                 onClick={() => handleSelect(opt)}
               >
                 <strong>{opt}.</strong> {question[`option${opt}`]}
