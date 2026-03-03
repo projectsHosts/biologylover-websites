@@ -6,7 +6,7 @@ import {
   submitCompetitionAttempt
 } from "../api/competitionApi"
 import type { SafeQuestion } from "../types/competitionTypes"
-import "../../../styles/compitions/competitionCard.css"
+import "../../../styles/compitions/competitionAttempt.css"
 import { useAntiCheat } from "./AntiCheatState "
 
 export default function AttemptCompetition() {
@@ -24,7 +24,6 @@ export default function AttemptCompetition() {
   const [testStarted, setTestStarted] = useState(false)
   const [autoSubmitCountdown, setAutoSubmitCountdown] = useState<number | null>(null)
 
-  // ✅ Success popup states
   const [showSuccess, setShowSuccess] = useState(false)
   const [redirectCountdown, setRedirectCountdown] = useState(5)
 
@@ -32,23 +31,16 @@ export default function AttemptCompetition() {
   const hasSubmittedRef = useRef(false)
 
   /* ================= SUBMIT ================= */
-
   const handleSubmit = useCallback(async () => {
     if (hasSubmittedRef.current) return
     hasSubmittedRef.current = true
-
     if (timerRef.current) clearInterval(timerRef.current)
-
     try {
       await submitCompetitionAttempt(numericAttemptId)
     } catch (err) {
       console.error("Submit error:", err)
     }
-
-    // Show success popup
     setShowSuccess(true)
-
-    // 5-second countdown then redirect
     let cd = 5
     setRedirectCountdown(cd)
     const cdInterval = setInterval(() => {
@@ -62,7 +54,6 @@ export default function AttemptCompetition() {
   }, [numericAttemptId, navigate])
 
   /* ================= ANTI-CHEAT ================= */
-
   const {
     violationCount,
     isFullscreen,
@@ -91,7 +82,6 @@ export default function AttemptCompetition() {
   })
 
   /* ================= LOAD QUESTION ================= */
-
   const loadQuestion = async (questionIndex: number) => {
     try {
       setLoading(true)
@@ -113,11 +103,9 @@ export default function AttemptCompetition() {
   }, [numericAttemptId])
 
   /* ================= TIMER ================= */
-
   useEffect(() => {
     if (timeLeft <= 0 || !testStarted) return
     if (timerRef.current) clearInterval(timerRef.current)
-
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         const next = prev - 1
@@ -130,12 +118,10 @@ export default function AttemptCompetition() {
         return next
       })
     }, 1000)
-
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [testStarted, timeLeft > 0])
 
   /* ================= HANDLERS ================= */
-
   const handleSelect = (option: string) => setSelectedOption(option)
 
   const handleSaveAndNext = async () => {
@@ -168,70 +154,63 @@ export default function AttemptCompetition() {
   }
 
   /* ================= PRE-TEST SCREEN ================= */
-
-if (!testStarted) {
-  return (
-    <div className="attempt-container">
-      <div className="pretest-card">
-
-        <span className="pretest-eyebrow">Competition Rules</span>
-        <h1>Ready to Begin?</h1>
-        <p className="pretest-sub">Read the rules carefully before starting your test</p>
-
-        <div className="pretest-divider" />
-
-        <ul className="pretest-rules">
-          <li>
-            <span className="rule-icon" />
-            <span>Test runs in <strong>fullscreen mode</strong> — exiting will be counted as a violation</span>
-          </li>
-          <li>
-            <span className="rule-icon" />
-            <span><strong>Tab switching</strong> or app switching is strictly not allowed</span>
-          </li>
-          <li>
-            <span className="rule-icon" />
-            <span><strong>Copy / Paste</strong> is disabled for the duration of the test</span>
-          </li>
-          <li>
-            <span className="rule-icon" />
-            <span><strong>Right-click</strong> and context menus are disabled</span>
-          </li>
-          <li>
-            <span className="rule-icon" />
-            <span>Keyboard shortcuts like <strong>Ctrl+C, F12, Alt+Tab</strong> are blocked</span>
-          </li>
-          <li className="rule-warn">
-            <span className="rule-icon" />
-            <span>After <strong>3 violations</strong>, your test will be auto-submitted immediately</span>
-          </li>
-          <li>
-            <span className="rule-icon" />
-            <span>The timer starts the moment you click <strong>Start Test</strong></span>
-          </li>
-        </ul>
-
-        <button className="pretest-start-btn" onClick={handleStartTest}>
-          Start Test
-        </button>
-
+  if (!testStarted) {
+    return (
+      <div className="ac-container">
+        <div className="ac-pretest-card">
+          <span className="ac-pretest-eyebrow">Competition Rules</span>
+          <h1>Ready to Begin?</h1>
+          <p className="ac-pretest-sub">Read the rules carefully before starting your test</p>
+          <div className="ac-pretest-divider" />
+          <ul className="ac-pretest-rules">
+            <li>
+              <span className="ac-rule-icon" />
+              <span>Test runs in <strong>fullscreen mode</strong> — exiting will be counted as a violation</span>
+            </li>
+            <li>
+              <span className="ac-rule-icon" />
+              <span><strong>Tab switching</strong> or app switching is strictly not allowed</span>
+            </li>
+            <li>
+              <span className="ac-rule-icon" />
+              <span><strong>Copy / Paste</strong> is disabled for the duration of the test</span>
+            </li>
+            <li>
+              <span className="ac-rule-icon" />
+              <span><strong>Right-click</strong> and context menus are disabled</span>
+            </li>
+            <li>
+              <span className="ac-rule-icon" />
+              <span>Keyboard shortcuts like <strong>Ctrl+C, F12, Alt+Tab</strong> are blocked</span>
+            </li>
+            <li className="ac-rule-warn">
+              <span className="ac-rule-icon" />
+              <span>After <strong>3 violations</strong>, your test will be auto-submitted immediately</span>
+            </li>
+            <li>
+              <span className="ac-rule-icon" />
+              <span>The timer starts the moment you click <strong>Start Test</strong></span>
+            </li>
+          </ul>
+          <button className="ac-pretest-start-btn" onClick={handleStartTest}>
+            Start Test
+          </button>
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
   /* ================= FULLSCREEN PROMPT ================= */
-
   if (!isFullscreen && !showSuccess) {
     return (
-      <div className="attempt-container">
-        <div className="fullscreen-prompt">
-          <div className="fullscreen-icon">⛶</div>
+      <div className="ac-container">
+        <div className="ac-fullscreen-prompt">
+          <div className="ac-fullscreen-icon">⛶</div>
           <h2>Fullscreen Required</h2>
           <p>You exited fullscreen. Return to continue your test.</p>
-          <p className="fs-warning">This exit has been recorded as a violation.</p>
-          <div className="violation-badge">Violations: {violationCount} / 3</div>
-          <button className="pretest-start-btn" onClick={requestFullscreen}>
+          <p className="ac-fs-warning">This exit has been recorded as a violation.</p>
+          <div className="ac-violation-badge">Violations: {violationCount} / 3</div>
+          <button className="ac-pretest-start-btn" onClick={requestFullscreen}>
             Return to Fullscreen
           </button>
         </div>
@@ -240,62 +219,49 @@ if (!testStarted) {
   }
 
   /* ================= AUTO-SUBMIT SCREEN ================= */
-
   if (autoSubmitCountdown !== null && !showSuccess) {
     return (
-      <div className="attempt-container">
-        <div className="autosubmit-overlay">
-          <div className="autosubmit-icon">🚨</div>
+      <div className="ac-container">
+        <div className="ac-autosubmit-overlay">
+          <div className="ac-autosubmit-icon">🚨</div>
           <h2>Too Many Violations</h2>
           <p>Your test is being auto-submitted due to repeated violations.</p>
-          <div className="autosubmit-countdown">{autoSubmitCountdown}</div>
-          <p className="autosubmit-sub">Submitting in {autoSubmitCountdown}s...</p>
+          <div className="ac-autosubmit-countdown">{autoSubmitCountdown}</div>
+          <p className="ac-autosubmit-sub">Submitting in {autoSubmitCountdown}s...</p>
         </div>
       </div>
     )
   }
 
   /* ================= MAIN TEST ================= */
-
   if (loading && index === 0) {
-    return <div className="attempt-loading">Loading...</div>
+    return <div className="ac-loading">Loading...</div>
   }
 
   return (
-    <div className="attempt-container" onContextMenu={e => e.preventDefault()}>
+    <div className="ac-container" onContextMenu={e => e.preventDefault()}>
 
-      {/* ✅ SUCCESS POPUP OVERLAY */}
+      {/* SUCCESS POPUP */}
       {showSuccess && (
-        <div className="success-overlay">
-          <div className="success-modal">
-            {/* Animated checkmark */}
-            <div className="success-check-wrapper">
-              <svg className="success-checkmark" viewBox="0 0 52 52">
-                <circle className="success-checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                <path className="success-checkmark__check" fill="none" d="M14 27l7 7 17-17" />
+        <div className="ac-success-overlay">
+          <div className="ac-success-modal">
+            <div className="ac-check-wrapper">
+              <svg className="ac-checkmark" viewBox="0 0 52 52">
+                <circle className="ac-checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                <path className="ac-checkmark__check" fill="none" d="M14 27l7 7 17-17" />
               </svg>
             </div>
-
-            <h2 className="success-title">Test Submitted!</h2>
-            <p className="success-msg">
+            <h2 className="ac-success-title">Test Submitted!</h2>
+            <p className="ac-success-msg">
               Your answers have been recorded successfully. Great job completing the competition!
             </p>
-
-            <div className="success-redirect-bar">
-              <div
-                className="success-redirect-fill"
-                style={{ animationDuration: "5s" }}
-              />
+            <div className="ac-redirect-bar">
+              <div className="ac-redirect-fill" style={{ animationDuration: "5s" }} />
             </div>
-
-            <p className="success-redirect-text">
+            <p className="ac-redirect-text">
               Redirecting to competitions in <strong>{redirectCountdown}s</strong>
             </p>
-
-            <button
-              className="success-redirect-btn"
-              onClick={() => navigate("/competition")}
-            >
+            <button className="ac-redirect-btn" onClick={() => navigate("/competition")}>
               Go Now →
             </button>
           </div>
@@ -304,48 +270,48 @@ if (!testStarted) {
 
       {/* VIOLATION TOAST */}
       {warningVisible && (
-        <div className="violation-toast">
-          <span className="toast-msg">{warningMessage}</span>
-          <span className="toast-count">{violationCount}/3</span>
-          <button className="toast-close" onClick={dismissWarning}>✕</button>
+        <div className="ac-violation-toast">
+          <span className="ac-toast-msg">{warningMessage}</span>
+          <span className="ac-toast-count">{violationCount}/3</span>
+          <button className="ac-toast-close" onClick={dismissWarning}>✕</button>
         </div>
       )}
 
       {/* VIOLATION DOTS */}
-      <div className="violation-tracker">
+      <div className="ac-violation-tracker">
         {[1, 2, 3].map(i => (
-          <div key={i} className={`violation-dot ${violationCount >= i ? "active" : ""}`} title={`Violation ${i}`} />
+          <div key={i} className={`ac-violation-dot ${violationCount >= i ? "active" : ""}`} title={`Violation ${i}`} />
         ))}
-        <span className="violation-label">
+        <span className="ac-violation-label">
           {violationCount === 0 ? "No violations" : `${violationCount} violation${violationCount !== 1 ? "s" : ""}`}
         </span>
       </div>
 
       {/* HEADER */}
-      <div className="attempt-header">
+      <div className="ac-header">
         <h2>Competition Test</h2>
-        <div className={`attempt-timer ${timeLeft <= 60 ? "warning" : ""}`}>
+        <div className={`ac-timer ${timeLeft <= 60 ? "warning" : ""}`}>
           {formatTime(timeLeft)}
         </div>
       </div>
 
       {/* QUESTION */}
       {loading ? (
-        <div className="question-card">
+        <div className="ac-question-card">
           <p style={{ color: "#7a80a8", textAlign: "center" }}>Loading question...</p>
         </div>
       ) : question ? (
         <>
-          <div className="question-card">
+          <div className="ac-question-card">
             <h3>Question {index + 1} of {totalQuestions}</h3>
             <p>{question.questionText}</p>
           </div>
 
-          <div className="options-grid">
+          <div className="ac-options-grid">
             {(["A", "B", "C", "D"] as const).map(opt => (
               <button
                 key={opt}
-                className={`option-btnn ${selectedOption === opt ? "selected" : ""}`}
+                className={`ac-option-btn ${selectedOption === opt ? "selected" : ""}`}
                 onClick={() => handleSelect(opt)}
               >
                 <strong>{opt}.</strong> {question[`option${opt}`]}
@@ -353,19 +319,19 @@ if (!testStarted) {
             ))}
           </div>
 
-          <div className="navigation-buttons">
-            <button onClick={handlePrevious} disabled={index === 0} className="nav-btn">
+          <div className="ac-navigation">
+            <button onClick={handlePrevious} disabled={index === 0} className="ac-nav-btn">
               Previous
             </button>
             {index < totalQuestions - 1 ? (
-              <button onClick={handleSaveAndNext} className="nav-btn primary">Save & Next</button>
+              <button onClick={handleSaveAndNext} className="ac-nav-btn primary">Save & Next</button>
             ) : (
-              <button onClick={handleSubmit} className="nav-btn submit">Submit Test</button>
+              <button onClick={handleSubmit} className="ac-nav-btn submit">Submit Test</button>
             )}
           </div>
         </>
       ) : (
-        <div className="question-card">
+        <div className="ac-question-card">
           <p style={{ color: "#ff6b6b", textAlign: "center" }}>Question not found.</p>
         </div>
       )}

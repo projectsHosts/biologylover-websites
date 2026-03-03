@@ -9,9 +9,11 @@ export default function CompetitionResult() {
 
   if (!result) {
     return (
-      <div style={{ background: "var(--bg-base)", minHeight: "100vh" }}>
-        <div className="comp-bg" />
-        <div className="comp-loading"><div className="loading-spinner" /></div>
+      <div className="cp-scope">
+        <div className="cp-bg" />
+        <div className="cp-loading">
+          <div className="cp-loading-spinner" />
+        </div>
       </div>
     )
   }
@@ -26,27 +28,27 @@ export default function CompetitionResult() {
   }
 
   return (
-    <div style={{ background: "var(--bg-base)", minHeight: "100vh" }}>
-      <div className="comp-bg" />
+    <div className="cp-scope">
+      <div className="cp-bg" />
 
-      <div className="result-page">
-        <div className="result-trophy">🏆</div>
+      <div className="cp-result-page">
+        <span className="cp-result-trophy">🏆</span>
 
-        <h1 className="result-title">Test Complete!</h1>
-        <p className="result-subtitle">{getMessage()}</p>
+        <h1 className="cp-result-title">Test Complete!</h1>
+        <p className="cp-result-subtitle">{getMessage()}</p>
 
-        <div className="result-stats">
-          <div className="result-stat">
-            <div className="result-stat-value green">{result.score}</div>
-            <div className="result-stat-label">Score</div>
+        <div className="cp-result-stats">
+          <div className="cp-result-stat">
+            <div className="cp-result-stat-value green">{result.score}</div>
+            <div className="cp-result-stat-label">Score</div>
           </div>
-          <div className="result-stat">
-            <div className="result-stat-value blue">{result.totalQuestions}</div>
-            <div className="result-stat-label">Total Qs</div>
+          <div className="cp-result-stat">
+            <div className="cp-result-stat-value blue">{result.totalQuestions}</div>
+            <div className="cp-result-stat-label">Total Qs</div>
           </div>
-          <div className="result-stat">
-            <div className="result-stat-value gold">#{result.rank}</div>
-            <div className="result-stat-label">Your Rank</div>
+          <div className="cp-result-stat">
+            <div className="cp-result-stat-value gold">#{result.rank}</div>
+            <div className="cp-result-stat-label">Your Rank</div>
           </div>
         </div>
 
@@ -57,16 +59,16 @@ export default function CompetitionResult() {
             justifyContent: "space-between",
             marginBottom: 8,
             fontSize: 13,
-            color: "var(--text-secondary)"
+            color: "#8a9abb"
           }}>
             <span style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: 1, textTransform: "uppercase", fontSize: 11 }}>Accuracy</span>
-            <span style={{ fontFamily: "'Rajdhani', sans-serif", color: "var(--accent)", fontWeight: 700 }}>{percentage}%</span>
+            <span style={{ fontFamily: "'Rajdhani', sans-serif", color: "#00ffc8", fontWeight: 700 }}>{percentage}%</span>
           </div>
-          <div style={{ height: 6, background: "var(--bg-card)", borderRadius: 100, overflow: "hidden" }}>
+          <div style={{ height: 6, background: "#0d1320", borderRadius: 100, overflow: "hidden" }}>
             <div style={{
               height: "100%",
               width: `${percentage}%`,
-              background: "linear-gradient(90deg, var(--accent) 0%, #00d4aa 100%)",
+              background: "linear-gradient(90deg, #00ffc8 0%, #00d4aa 100%)",
               borderRadius: 100,
               transition: "width 1s ease"
             }} />
@@ -75,13 +77,13 @@ export default function CompetitionResult() {
 
         <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
           <button
-            className="btn-leaderboard"
+            className="cp-btn-leaderboard"
             onClick={() => navigate(`/competition/leaderboard/${result.rank}`)}
           >
             View Leaderboard
           </button>
           <button
-            className="btn-submit-test"
+            className="cp-btn-submit-test"
             onClick={() => navigate("/competitions")}
           >
             Back to Competitions

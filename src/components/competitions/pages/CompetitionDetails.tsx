@@ -126,132 +126,39 @@ function ToastNotification({
             overflow: "hidden",
           }}
         >
-          {/* Glow blob */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-30px",
-              left: "-30px",
-              width: "140px",
-              height: "140px",
-              borderRadius: "50%",
-              background: glow,
-              filter: "blur(35px)",
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* Left accent bar */}
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: "12%",
-              height: "76%",
-              width: "3px",
-              borderRadius: "0 3px 3px 0",
-              background: `linear-gradient(to bottom, ${bar}, ${bar}88)`,
-              boxShadow: `0 0 10px ${bar}`,
-            }}
-          />
-
-          {/* Icon */}
+          <div style={{ position: "absolute", top: "-30px", left: "-30px", width: "140px", height: "140px", borderRadius: "50%", background: glow, filter: "blur(35px)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", left: 0, top: "12%", height: "76%", width: "3px", borderRadius: "0 3px 3px 0", background: `linear-gradient(to bottom, ${bar}, ${bar}88)`, boxShadow: `0 0 10px ${bar}` }} />
           <div style={{ flexShrink: 0, marginTop: "1px" }}>{icon}</div>
-
-          {/* Text */}
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "13.5px",
-                fontWeight: 600,
-                color: "#f1f5f9",
-                letterSpacing: "0.01em",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              {title}
-            </p>
-            <p
-              style={{
-                margin: "3px 0 0",
-                fontSize: "12.5px",
-                color: "rgba(255,255,255,0.45)",
-                fontFamily: "'DM Sans', sans-serif",
-                lineHeight: "1.45",
-              }}
-            >
-              {toast.message}
-            </p>
+            <p style={{ margin: 0, fontSize: "13.5px", fontWeight: 600, color: "#f1f5f9", letterSpacing: "0.01em", fontFamily: "'DM Sans', sans-serif" }}>{title}</p>
+            <p style={{ margin: "3px 0 0", fontSize: "12.5px", color: "rgba(255,255,255,0.45)", fontFamily: "'DM Sans', sans-serif", lineHeight: "1.45" }}>{toast.message}</p>
           </div>
-
-          {/* Close button */}
           <button
             onClick={handleClose}
-            style={{
-              background: "none",
-              border: "none",
-              color: "rgba(255,255,255,0.25)",
-              cursor: "pointer",
-              padding: "0 2px",
-              fontSize: "18px",
-              lineHeight: 1,
-              flexShrink: 0,
-              transition: "color 0.2s",
-              fontFamily: "sans-serif",
-            }}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.25)", cursor: "pointer", padding: "0 2px", fontSize: "18px", lineHeight: 1, flexShrink: 0, transition: "color 0.2s", fontFamily: "sans-serif" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
-          >
-            ×
-          </button>
-
-          {/* Progress bar */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              height: "2.5px",
-              background: `linear-gradient(to right, ${bar}, ${bar}55)`,
-              borderRadius: "0 0 14px 14px",
-              animation: `toast-shrink-${toast.id} ${duration}ms linear forwards`,
-            }}
-          />
+          >×</button>
+          <div style={{ position: "absolute", bottom: 0, left: 0, height: "2.5px", background: `linear-gradient(to right, ${bar}, ${bar}55)`, borderRadius: "0 0 14px 14px", animation: `toast-shrink-${toast.id} ${duration}ms linear forwards` }} />
         </div>
       </div>
     </>
   )
 }
 
-function ToastContainer({
-  toasts,
-  onClose,
-}: {
-  toasts: ToastItem[]
-  onClose: (id: number) => void
-}) {
-  return (
-    <>
-      {toasts.map((toast, index) => (
-        <ToastNotification key={toast.id} toast={toast} onClose={onClose} index={index} />
-      ))}
-    </>
-  )
+function ToastContainer({ toasts, onClose }: { toasts: ToastItem[]; onClose: (id: number) => void }) {
+  return <>{toasts.map((toast, index) => <ToastNotification key={toast.id} toast={toast} onClose={onClose} index={index} />)}</>
 }
 
 function useToast() {
   const [toasts, setToasts] = useState<ToastItem[]>([])
-
   const showToast = useCallback((message: string, type: ToastType = "success") => {
     const id = Date.now()
     setToasts((prev) => [...prev, { id, message, type }])
   }, [])
-
   const removeToast = useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id))
   }, [])
-
   return { showToast, toasts, removeToast }
 }
 
@@ -282,11 +189,8 @@ export default function CompetitionDetail() {
 
   const handleFinalRegister = async () => {
     if (!id || !comp) return
-
     try {
       setLoading(true)
-
-      // ── FREE flow ─────────────────────────────────────────
       if (comp.isFree) {
         const response = await registerCompetition(Number(id), formData)
         if (response.trim() === "REGISTERED") {
@@ -296,33 +200,21 @@ export default function CompetitionDetail() {
         }
         return
       }
-
-      // ── PAID flow ─────────────────────────────────────────
-      // Step 1: create Razorpay order
       const order = await createCompetitionOrder(Number(id))
-
-      // Release loading before opening Razorpay modal
       setLoading(false)
-
       const options = {
         key: order.key,
         amount: order.amount,
         currency: order.currency,
         name: comp.title,
         order_id: order.orderId,
-
-        // Step 2: Razorpay calls this after successful payment
         handler: async function (response: any) {
           try {
-            // Step 3: verify payment — backend auto-registers user here
             await verifyCompetitionPayment(Number(id), {
               razorpayOrderId: response.razorpay_order_id,
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
             })
-
-            // Backend auto-registers user inside verifyCompetitionPayment
-            // DO NOT call registerCompetition for paid — backend blocks it intentionally
             setRegistered(true)
             setShowRegisterModal(false)
             showToast("Payment successful! You're registered 🎉", "success")
@@ -330,18 +222,11 @@ export default function CompetitionDetail() {
             showToast("Payment done but registration failed. Contact support.", "error")
           }
         },
-
-        modal: {
-          ondismiss: () => {
-            // User closed Razorpay modal — do nothing
-          },
-        },
+        modal: { ondismiss: () => {} },
       }
-
       const rzp = new (window as any).Razorpay(options)
       rzp.open()
-      return // loading already set to false above
-
+      return
     } catch {
       showToast("Something went wrong. Please try again.", "error")
     } finally {
@@ -350,54 +235,44 @@ export default function CompetitionDetail() {
   }
 
   /* ================= LIVE CLOCK ================= */
- // NAYA — clock + near-transition re-fetch
-useEffect(() => {
-  const interval = setInterval(() => {
-    setNow(new Date())
-
-    if (comp) {
-      const msToStart = new Date(comp.startTime).getTime() - Date.now()
-      const msToEnd = new Date(comp.endTime).getTime() - Date.now()
-
-      const nearTransition =
-        (msToStart > -5_000 && msToStart < 5_000) ||  // start ke ±5 sec
-        (msToEnd > -5_000 && msToEnd < 5_000)          // end ke ±5 sec
-
-      if (nearTransition) {
-        getCompetitionById(Number(id)).then(setComp).catch(() => {})
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date())
+      if (comp) {
+        const msToStart = new Date(comp.startTime).getTime() - Date.now()
+        const msToEnd = new Date(comp.endTime).getTime() - Date.now()
+        const nearTransition =
+          (msToStart > -5_000 && msToStart < 5_000) ||
+          (msToEnd > -5_000 && msToEnd < 5_000)
+        if (nearTransition) {
+          getCompetitionById(Number(id)).then(setComp).catch(() => {})
+        }
       }
-    }
-  }, 1000)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [comp, id])
 
-  return () => clearInterval(interval)
-}, [comp, id])
-
-// Silent background poll — har 30 sec
-useEffect(() => {
-  if (!id) return
-  const interval = setInterval(() => {
-    getCompetitionById(Number(id)).then(setComp).catch(() => {})
-    checkRegistrationStatus(Number(id)).then(setRegistered).catch(() => {})
-  }, 30_000)
-  return () => clearInterval(interval)
-}, [id])
+  useEffect(() => {
+    if (!id) return
+    const interval = setInterval(() => {
+      getCompetitionById(Number(id)).then(setComp).catch(() => {})
+      checkRegistrationStatus(Number(id)).then(setRegistered).catch(() => {})
+    }, 30_000)
+    return () => clearInterval(interval)
+  }, [id])
 
   /* ================= LOAD DATA ================= */
   useEffect(() => {
     if (!id) return
-
     const load = async () => {
       try {
         const data = await getCompetitionById(Number(id))
         setComp(data)
-
         const attempt = await getAttemptStatus(Number(id))
-
         if (attempt.attempted) {
           setAttempted(true)
           setAttemptStatus(attempt.status || "")
         }
-
         const status = await checkRegistrationStatus(Number(id))
         setRegistered(status)
       } catch (err) {
@@ -406,25 +281,22 @@ useEffect(() => {
         setPageLoading(false)
       }
     }
-
     load()
   }, [id])
 
   if (pageLoading || !comp) {
     return (
-      <div style={{ minHeight: "100vh" }}>
-        <div className="comp-loading">
-          <div className="loading-spinner" />
+      <div className="cp-scope">
+        <div className="cp-loading">
+          <div className="cp-loading-spinner" />
         </div>
       </div>
     )
   }
 
   /* ================= TIME LOGIC ================= */
-
   const startTime = new Date(comp.startTime)
   const endTime = new Date(comp.endTime)
-
   const regStart = comp.registrationStart ? new Date(comp.registrationStart) : null
   const regEnd = comp.registrationEnd ? new Date(comp.registrationEnd) : null
 
@@ -436,30 +308,21 @@ useEffect(() => {
   const isRegistrationClosed = regEnd && now > regEnd
 
   /* ================= COUNTDOWN ================= */
-
   const getCountdown = () => {
     const diff = startTime.getTime() - now.getTime()
-
     if (diff <= 0) return "Starting..."
-
     const totalSeconds = Math.floor(diff / 1000)
     const days = Math.floor(totalSeconds / (24 * 3600))
     const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600)
     const minutes = Math.floor((totalSeconds % 3600) / 60)
     const seconds = totalSeconds % 60
-
-    if (days > 0) {
-      return `${days} Day${days > 1 ? "s" : ""} ${hours}h ${minutes}m ${seconds}s`
-    }
-
+    if (days > 0) return `${days} Day${days > 1 ? "s" : ""} ${hours}h ${minutes}m ${seconds}s`
     return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`
   }
 
   /* ================= START TEST ================= */
-
   const startTest = async () => {
     if (!id) return
-
     try {
       const res = await startCompetitionAttempt(Number(id))
       navigate(`/competition/attempt/${res.attemptId}`, {
@@ -470,82 +333,66 @@ useEffect(() => {
     }
   }
 
-  /* ================= FORMAT DATE ================= */
-
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+      weekday: "short", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit",
     })
 
-  /* ================= BADGE ================= */
-
   const statusBadge = isLive ? (
-    <div className="section-badge live">● Live Now</div>
+    <div className="cp-section-badge live">● Live Now</div>
   ) : isBeforeStart ? (
-    <div className="section-badge upcoming">⏳ Upcoming</div>
+    <div className="cp-section-badge upcoming">⏳ Upcoming</div>
   ) : (
-    <div className="section-badge completed">✓ Completed</div>
+    <div className="cp-section-badge completed">✓ Completed</div>
   )
 
   return (
-    <div className="competition-dark-page">
-      {/* Toast notifications render here */}
+    <div className="cp-scope">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
-      <div className="comp-detail-page">
-        <button className="btn-back" onClick={() => navigate("/competition")}>
+      <div className="cp-detail-page">
+        <button className="cp-btn-back" onClick={() => navigate("/competition")}>
           ← Back
         </button>
 
         {comp.bannerUrl ? (
-          <img className="comp-detail-banner" src={comp.bannerUrl} alt={comp.title} />
+          <img className="cp-detail-banner" src={comp.bannerUrl} alt={comp.title} />
         ) : (
-          <div className="comp-detail-banner-placeholder">🏆</div>
+          <div className="cp-detail-banner-placeholder">🏆</div>
         )}
 
-        <div className="comp-detail-header">
-          <div className="comp-detail-tags">
+        <div className="cp-detail-header">
+          <div className="cp-detail-tags">
             {statusBadge}
-            <span className={`comp-tag ${comp.isFree ? "free" : "paid"}`}>
+            <span className={`cp-tag ${comp.isFree ? "free" : "paid"}`}>
               {comp.isFree ? "Free Entry" : `₹${comp.price}`}
             </span>
           </div>
-
           <h1>{comp.title}</h1>
           <p>{comp.description}</p>
         </div>
 
         {/* ================= CTA SECTION ================= */}
-
-        <div className="comp-action-area">
+        <div className="cp-action-area">
 
           {/* UPCOMING */}
           {isBeforeStart && (
             <>
               {!registered && isRegistrationOpen && (
-                <button
-                  className="btn-primary"
-                  onClick={() => setShowRegisterModal(true)}
-                  disabled={loading}
-                >
+                <button className="cp-btn-primary" onClick={() => setShowRegisterModal(true)} disabled={loading}>
                   {loading ? "Registering..." : "Register Now →"}
                 </button>
               )}
-
               {!registered && isRegistrationClosed && (
-                <button className="btn-disabled">Registration Closed</button>
+                <button className="cp-btn-disabled">Registration Closed</button>
               )}
-
               {registered && (
                 <>
-                  <button className="btn-primary" disabled>
+                  <button className="cp-btn-primary" disabled>
                     🔒 Starts at {formatDate(comp.startTime)}
                   </button>
-                  <div className="countdown-display">Starts in {getCountdown()}</div>
+                  <div className="cp-countdown-display">Starts in {getCountdown()}</div>
                 </>
               )}
             </>
@@ -555,13 +402,13 @@ useEffect(() => {
           {isLive && (
             <>
               {attempted && (attemptStatus === "SUBMITTED" || attemptStatus === "TIME_UP") ? (
-                <button className="btn-submitted">Submitted – Wait for Result</button>
+                <button className="cp-btn-submitted">Submitted – Wait for Result</button>
               ) : registered ? (
-                <button className="btn-start" onClick={startTest}>
-                   Enter Competition
+                <button className="cp-btn-start" onClick={startTest}>
+                  Enter Competition
                 </button>
               ) : (
-                <button className="btn-warning" onClick={() => setShowModal(true)}>
+                <button className="cp-btn-warning" onClick={() => setShowModal(true)}>
                   Not Registered
                 </button>
               )}
@@ -571,80 +418,42 @@ useEffect(() => {
           {/* COMPLETED */}
           {isEnded && (
             <>
-              <button className="btn-ended">❌ Competition Ended</button>
-              <button
-                className="btn-leaderboard"
-                onClick={() => navigate(`/competition/leaderboard/${comp.id}`)}
-              >
+              <button className="cp-btn-ended">❌ Competition Ended</button>
+              <button className="cp-btn-leaderboard" onClick={() => navigate(`/competition/leaderboard/${comp.id}`)}>
                 View Leaderboard
               </button>
             </>
           )}
         </div>
 
-        {/* ================= NOT REGISTERED MODAL ================= */}
-
+        {/* Not Registered Modal */}
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="cp-modal">
+            <div className="cp-modal-content">
               <h3>Not Registered</h3>
               <p>You were not registered during the registration period.</p>
-              <button onClick={() => setShowModal(false)}>Close</button>
+              <div className="cp-modal-actions">
+                <button className="cp-btn-cancel" onClick={() => setShowModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* ================= REGISTER MODAL ================= */}
-
+        {/* Register Modal */}
         {showRegisterModal && (
-          <div className="modal">
-            <div className="modal-content large">
+          <div className="cp-modal">
+            <div className="cp-modal-content large">
               <h3>Competition Registration</h3>
-
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              />
-
-              <input
-                type="text"
-                placeholder="Contact Number"
-                value={formData.contactNumber}
-                onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
-              />
-
-              <input
-                type="text"
-                placeholder="Instagram Handle"
-                value={formData.instagramHandle}
-                onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })}
-              />
-
-              <input
-                type="email"
-                placeholder="Email ID"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-
-              <textarea
-                placeholder="Address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              />
-
-              <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                <button
-                  className="btn-primary"
-                  onClick={() => handleFinalRegister()}
-                  disabled={loading}
-                >
+              <input type="text" placeholder="Full Name" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} />
+              <input type="text" placeholder="Contact Number" value={formData.contactNumber} onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })} />
+              <input type="text" placeholder="Instagram Handle" value={formData.instagramHandle} onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })} />
+              <input type="email" placeholder="Email ID" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+              <textarea placeholder="Address" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+              <div className="cp-modal-actions">
+                <button className="cp-btn-primary" onClick={handleFinalRegister} disabled={loading}>
                   {loading ? "Processing..." : comp.isFree ? "Submit Registration" : "Proceed to Pay"}
                 </button>
-
-                <button onClick={() => setShowRegisterModal(false)}>Cancel</button>
+                <button className="cp-btn-cancel" onClick={() => setShowRegisterModal(false)}>Cancel</button>
               </div>
             </div>
           </div>
