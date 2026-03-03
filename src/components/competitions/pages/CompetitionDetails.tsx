@@ -11,6 +11,7 @@ import {
 } from "../api/competitionApi"
 import type { Competition } from "../types/competitionTypes"
 import "../../../styles/compitions/competitionPages.css"
+import { isLoggedIn } from "../../../utils/auth"
 
 /* ================= TOAST SYSTEM ================= */
 
@@ -380,7 +381,12 @@ export default function CompetitionDetail() {
           {isBeforeStart && (
             <>
               {!registered && isRegistrationOpen && (
-                <button className="cp-btn-primary" onClick={() => setShowRegisterModal(true)} disabled={loading}>
+                <button className="cp-btn-primary" onClick={() => {
+                  if (!isLoggedIn()) {
+                    (window as any).openLogin(); // 🔥 auth modal
+                    return;
+                  }
+                  setShowRegisterModal(true)}} disabled={loading}>
                   {loading ? "Registering..." : "Register Now →"}
                 </button>
               )}
@@ -404,12 +410,18 @@ export default function CompetitionDetail() {
               {attempted && (attemptStatus === "SUBMITTED" || attemptStatus === "TIME_UP") ? (
                 <button className="cp-btn-submitted">Submitted – Wait for Result</button>
               ) : registered ? (
-                <button className="cp-btn-start" onClick={startTest}>
+                <button className="cp-btn-start" onClick={() => {
+                   if (!isLoggedIn()) {
+                    (window as any).openLogin(); // 🔥 auth modal
+                    return;
+                  }
+                  startTest()}}>
+
                   Enter Competition
                 </button>
               ) : (
                 <button className="cp-btn-warning" onClick={() => setShowModal(true)}>
-                  Not Registered
+                  Required Login
                 </button>
               )}
             </>
