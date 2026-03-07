@@ -53,11 +53,16 @@ export default function PyqInstructions() {
           </li>
         </ul>
 
-        <button onClick={ () => {if (!isLoggedIn()) {
-                            (window as any).openLogin(); // 🔥 auth modal
-                            return;
-                          }start}} 
-                          className="pyq-start-btn">
+       <button
+          onClick={() => {
+            if (!isLoggedIn()) {
+              (window as any).openLogin(); // auth modal open
+              return;
+            }
+            start();
+          }}
+          className="pyq-start-btn"
+        >
           Start Practice
         </button>
       </div>
