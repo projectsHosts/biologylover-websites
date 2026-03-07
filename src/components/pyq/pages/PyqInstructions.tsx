@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getInstructions, startPyq } from "../api/pyqapi";
 import "../../../styles/pyq.css"
+import { isLoggedIn } from "../../../utils/auth";
 
 
 export default function PyqInstructions() {
@@ -52,7 +53,11 @@ export default function PyqInstructions() {
           </li>
         </ul>
 
-        <button onClick={start} className="pyq-start-btn">
+        <button onClick={ () => {if (!isLoggedIn()) {
+                            (window as any).openLogin(); // 🔥 auth modal
+                            return;
+                          }start}} 
+                          className="pyq-start-btn">
           Start Practice
         </button>
       </div>
