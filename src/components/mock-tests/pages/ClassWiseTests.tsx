@@ -15,10 +15,16 @@ export default function ClassWiseTests() {
   { id: "10-maths",   name: "Class 10 Maths",   examType: "CLASS10_MATHS" },
 
   // Class 11
-  { id: "11-pcb", name: "Class 11 PCMB", examType: "CLASS11_PCMB" },
+  { id: "11-pcb", name: "Class 11 PHYSICS", examType: "CLASS11_PHYSICS" },
+  { id: "11-pcb", name: "Class 11 CHEMISTRY", examType: "CLASS11_CHEMISTRY" },
+  { id: "11-pcb", name: "Class 11 BIOLOGY", examType: "CLASS11_BIOLOGY" },
+  { id: "11-pcb", name: "Class 11 MATHEMATICS", examType: "CLASS11_MATHS" },
 
   // Class 12
-  { id: "12-pcb", name: "Class 12 PCMB", examType: "CLASS12_PCMB" },
+  { id: "12-pcb", name: "Class 12 PHYSICS", examType: "CLASS12_PHYSICS" },
+  { id: "12-pcb", name: "Class 12 CHEMISTRY", examType: "CLASS12_CHEMISTRY" },
+  { id: "12-pcb", name: "Class 12 BIOLOGY", examType: "CLASS12_BIOLOGY" },
+  { id: "12-pcb", name: "Class 12 MATHEMATICS", examType: "CLASS12_MATHS" },
 ];
 
 
