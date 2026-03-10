@@ -45,7 +45,7 @@ export default function MockTestCategories() {
       description: "Practice tests for Class 11 & 12 (PCB/PCM)",
       icon: "school",
       route: "/mock-tests/classwise",
-      statusText: "NOT AVAILABLE"
+      statusText: "AVAILABLE"
     },
     {
       id: "topicwise",
