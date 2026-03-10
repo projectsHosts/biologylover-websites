@@ -15,12 +15,10 @@ export default function ClassWiseTests() {
   { id: "10-maths",   name: "Class 10 Maths",   examType: "CLASS10_MATHS" },
 
   // Class 11
-  { id: "11-pcb", name: "Class 11 PCB", examType: "CLASS11_PCB" },
-  { id: "11-pcm", name: "Class 11 PCM", examType: "CLASS11_PCM" },
+  { id: "11-pcb", name: "Class 11 PCMB", examType: "CLASS11_PCMB" },
 
   // Class 12
-  { id: "12-pcb", name: "Class 12 PCB", examType: "CLASS12_PCB" },
-  { id: "12-pcm", name: "Class 12 PCM", examType: "CLASS12_PCM" },
+  { id: "12-pcb", name: "Class 12 PCMB", examType: "CLASS12_PCMB" },
 ];
 
 
