@@ -421,7 +421,7 @@ export default function CompetitionDetail() {
                 </button>
               ) : (
                 <button className="cp-btn-warning" onClick={() => setShowModal(true)}>
-                  Required Login
+                  Registration Required
                 </button>
               )}
             </>
