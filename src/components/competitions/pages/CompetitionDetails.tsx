@@ -6,7 +6,7 @@ import {
   getAttemptStatus,
   getCompetitionById,
   registerCompetition,
-  startCompetitionAttempt,
+  // startCompetitionAttempt,
   verifyCompetitionPayment
 } from "../api/competitionApi"
 import type { Competition } from "../types/competitionTypes"
