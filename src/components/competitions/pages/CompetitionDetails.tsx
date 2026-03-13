@@ -343,17 +343,17 @@ export default function CompetitionDetail() {
   }
 
   /* ================= START TEST ================= */
-  const startTest = async () => {
-    if (!id) return
-    try {
-      const res = await startCompetitionAttempt(Number(id))
-      navigate(`/competition/attempt/${res.attemptId}`, {
-        state: { duration: res.durationMinutes },
-      })
-    } catch {
-      showToast("Unable to start the test. Please try again.", "error")
-    }
-  }
+  // const startTest = async () => {
+  //   if (!id) return
+  //   try {
+  //     const res = await startCompetitionAttempt(Number(id))
+  //     navigate(`/competition/attempt/${res.attemptId}`, {
+  //       state: { duration: res.durationMinutes },
+  //     })
+  //   } catch {
+  //     showToast("Unable to start the test. Please try again.", "error")
+  //   }
+  // }
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("en-US", {
