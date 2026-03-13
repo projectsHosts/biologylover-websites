@@ -21,7 +21,8 @@ export default function AttemptCompetition() {
   const [loading, setLoading] = useState(true)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState(0)
-  const [testStarted, setTestStarted] = useState(false)
+  // const [testStarted, setTestStarted] = useState(false)
+  const [antiCheatActive, setAntiCheatActive] = useState(true)
   const [autoSubmitCountdown, setAutoSubmitCountdown] = useState<number | null>(null)
 
   const [showSuccess, setShowSuccess] = useState(false)
@@ -39,6 +40,13 @@ export default function AttemptCompetition() {
       await submitCompetitionAttempt(numericAttemptId)
     } catch (err) {
       console.error("Submit error:", err)
+    }
+    if (document.fullscreenElement) {
+    try {
+        await document.exitFullscreen()
+      } catch (e) {
+        console.warn("Failed to exit fullscreen")
+      }
     }
     setShowSuccess(true)
     let cd = 5
@@ -62,12 +70,14 @@ export default function AttemptCompetition() {
     requestFullscreen,
     dismissWarning,
   } = useAntiCheat({
-    enabled: testStarted,
+    enabled: antiCheatActive,
     maxWarnings: 3,
     onViolation: (type, count) => {
       console.warn(`[AntiCheat] Violation: ${type} | Total: ${count}`)
     },
     onAutoSubmit: () => {
+      if (!antiCheatActive) return
+      setAntiCheatActive(false)
       let cd = 3
       setAutoSubmitCountdown(cd)
       const cdInterval = setInterval(() => {
@@ -102,24 +112,40 @@ export default function AttemptCompetition() {
     loadQuestion(0)
   }, [numericAttemptId])
 
-  /* ================= TIMER ================= */
+  //auto returns fullscreen
   useEffect(() => {
-    if (timeLeft <= 0 || !testStarted) return
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  }
+
+}, [])
+
+  /* ================= TIMER ================= */
+ useEffect(() => {
+  if (timeLeft <= 0) return
+
+  if (timerRef.current) clearInterval(timerRef.current)
+
+  timerRef.current = setInterval(() => {
+    setTimeLeft(prev => {
+      const next = prev - 1
+
+      if (next <= 0) {
+        clearInterval(timerRef.current!)
+        timerRef.current = null
+        handleSubmit()
+        return 0
+      }
+
+      return next
+    })
+  }, 1000)
+
+  return () => {
     if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
-        const next = prev - 1
-        if (next <= 0) {
-          clearInterval(timerRef.current!)
-          timerRef.current = null
-          handleSubmit()
-          return 0
-        }
-        return next
-      })
-    }, 1000)
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [testStarted, timeLeft > 0])
+  }
+
+}, [timeLeft])
 
   /* ================= HANDLERS ================= */
   const handleSelect = (option: string) => setSelectedOption(option)
@@ -142,10 +168,10 @@ export default function AttemptCompetition() {
     }
   }
 
-  const handleStartTest = () => {
-    requestFullscreen()
-    setTestStarted(true)
-  }
+  // const handleStartTest = () => {
+  //   requestFullscreen()
+  //   setTestStarted(true)
+  // }
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60)
@@ -154,51 +180,51 @@ export default function AttemptCompetition() {
   }
 
   /* ================= PRE-TEST SCREEN ================= */
-  if (!testStarted) {
-    return (
-      <div className="ac-container">
-        <div className="ac-pretest-card">
-          <span className="ac-pretest-eyebrow">Competition Rules</span>
-          <h1>Ready to Begin?</h1>
-          <p className="ac-pretest-sub">Read the rules carefully before starting your test</p>
-          <div className="ac-pretest-divider" />
-          <ul className="ac-pretest-rules">
-            <li>
-              <span className="ac-rule-icon" />
-              <span>Test runs in <strong>fullscreen mode</strong> — exiting will be counted as a violation</span>
-            </li>
-            <li>
-              <span className="ac-rule-icon" />
-              <span><strong>Tab switching</strong> or app switching is strictly not allowed</span>
-            </li>
-            <li>
-              <span className="ac-rule-icon" />
-              <span><strong>Copy / Paste</strong> is disabled for the duration of the test</span>
-            </li>
-            <li>
-              <span className="ac-rule-icon" />
-              <span><strong>Right-click</strong> and context menus are disabled</span>
-            </li>
-            <li>
-              <span className="ac-rule-icon" />
-              <span>Keyboard shortcuts like <strong>Ctrl+C, F12, Alt+Tab</strong> are blocked</span>
-            </li>
-            <li className="ac-rule-warn">
-              <span className="ac-rule-icon" />
-              <span>After <strong>3 violations</strong>, your test will be auto-submitted immediately</span>
-            </li>
-            <li>
-              <span className="ac-rule-icon" />
-              <span>The timer starts the moment you click <strong>Start Test</strong></span>
-            </li>
-          </ul>
-          <button className="ac-pretest-start-btn" onClick={handleStartTest}>
-            Start Test
-          </button>
-        </div>
-      </div>
-    )
-  }
+  // if (!testStarted) {
+  //   return (
+  //     <div className="ac-container">
+  //       <div className="ac-pretest-card">
+  //         <span className="ac-pretest-eyebrow">Competition Rules</span>
+  //         <h1>Ready to Begin?</h1>
+  //         <p className="ac-pretest-sub">Read the rules carefully before starting your test</p>
+  //         <div className="ac-pretest-divider" />
+  //         <ul className="ac-pretest-rules">
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span>Test runs in <strong>fullscreen mode</strong> — exiting will be counted as a violation</span>
+  //           </li>
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span><strong>Tab switching</strong> or app switching is strictly not allowed</span>
+  //           </li>
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span><strong>Copy / Paste</strong> is disabled for the duration of the test</span>
+  //           </li>
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span><strong>Right-click</strong> and context menus are disabled</span>
+  //           </li>
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span>Keyboard shortcuts like <strong>Ctrl+C, F12, Alt+Tab</strong> are blocked</span>
+  //           </li>
+  //           <li className="ac-rule-warn">
+  //             <span className="ac-rule-icon" />
+  //             <span>After <strong>3 violations</strong>, your test will be auto-submitted immediately</span>
+  //           </li>
+  //           <li>
+  //             <span className="ac-rule-icon" />
+  //             <span>The timer starts the moment you click <strong>Start Test</strong></span>
+  //           </li>
+  //         </ul>
+  //         <button className="ac-pretest-start-btn" onClick={handleStartTest}>
+  //           Start Test
+  //         </button>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   /* ================= FULLSCREEN PROMPT ================= */
   if (!isFullscreen && !showSuccess) {

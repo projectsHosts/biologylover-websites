@@ -188,8 +188,29 @@ export default function CompetitionDetail() {
     address: "",
   })
 
-  const handleFinalRegister = async () => {
+  const handleFinalRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!id || !comp) return
+
+    if (
+    !formData.fullName.trim() ||
+    !formData.contactNumber.trim() ||
+    !formData.instagramHandle.trim() ||
+    !formData.email.trim() ||
+    !formData.address.trim()
+  ) {
+    showToast("Please fill all required fields", "error")
+    return
+  }
+
+  // ✅ Contact number validation yaha lagana hai
+  const phoneRegex = /^[0-9]{10}$/;
+
+  if (!phoneRegex.test(formData.contactNumber)) {
+    showToast("Enter a valid 10 digit contact number", "error");
+    return;
+  }
+
     try {
       setLoading(true)
       if (comp.isFree) {
@@ -410,15 +431,28 @@ export default function CompetitionDetail() {
               {attempted && (attemptStatus === "SUBMITTED" || attemptStatus === "TIME_UP") ? (
                 <button className="cp-btn-submitted">Submitted – Wait for Result</button>
               ) : registered ? (
-                <button className="cp-btn-start" onClick={() => {
-                   if (!isLoggedIn()) {
-                    (window as any).openLogin(); // 🔥 auth modal
-                    return;
-                  }
-                  startTest()}}>
+                // <button className="cp-btn-start" onClick={() => {
+                //    if (!isLoggedIn()) {
+                //     (window as any).openLogin(); // 🔥 auth modal
+                //     return;
+                //   }
+                //   startTest()}}>
 
-                  Enter Competition
-                </button>
+                //   Enter Competition
+                // </button>
+             <button
+              className="cp-btn-start"
+              onClick={() => {
+                if (!isLoggedIn()) {
+                  (window as any).openLogin(); // open login modal
+                  return;
+                }
+
+                navigate(`/competition/pretest/${comp.id}`);
+              }}
+            >
+              Enter Competition
+            </button>
               ) : (
                 <button className="cp-btn-warning" onClick={() => setShowModal(true)}>
                   Registration Required
@@ -431,7 +465,12 @@ export default function CompetitionDetail() {
           {isEnded && (
             <>
               <button className="cp-btn-ended">❌ Competition Ended</button>
-              <button className="cp-btn-leaderboard" onClick={() => navigate(`/competition/leaderboard/${comp.id}`)}>
+              <button className="cp-btn-leaderboard" onClick={() =>  {
+              if (!isLoggedIn()) {
+                    (window as any).openLogin(); // 🔥 auth modal
+                    return;
+                  }
+                  navigate(`/competition/leaderboard/${comp.id}`)}}>
                 View Leaderboard
               </button>
             </>
@@ -456,17 +495,23 @@ export default function CompetitionDetail() {
           <div className="cp-modal">
             <div className="cp-modal-content large">
               <h3>Competition Registration</h3>
-              <input type="text" placeholder="Full Name" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} />
-              <input type="text" placeholder="Contact Number" value={formData.contactNumber} onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })} />
-              <input type="text" placeholder="Instagram Handle" value={formData.instagramHandle} onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })} />
-              <input type="email" placeholder="Email ID" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-              <textarea placeholder="Address" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+              <div className="cp-payment-summary">
+              <p>Entry Fee</p>
+              <h2>{comp.isFree ? "Free Entry" : `₹${comp.price}`}</h2>
+            </div>
+              <form onSubmit={handleFinalRegister}>
+                <input type="text" required placeholder="Full Name" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} />
+                <input type="text" required placeholder="Contact Number" value={formData.contactNumber} onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })} />
+                <input type="text" required placeholder="Instagram Handle" value={formData.instagramHandle} onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })} />
+                <input type="email" required placeholder="Email ID" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                <textarea required placeholder="Address" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
               <div className="cp-modal-actions">
-                <button className="cp-btn-primary" onClick={handleFinalRegister} disabled={loading}>
+                <button type="submit" className="cp-btn-primary" disabled={loading}>
                   {loading ? "Processing..." : comp.isFree ? "Submit Registration" : "Proceed to Pay"}
                 </button>
                 <button className="cp-btn-cancel" onClick={() => setShowRegisterModal(false)}>Cancel</button>
               </div>
+               </form>
             </div>
           </div>
         )}

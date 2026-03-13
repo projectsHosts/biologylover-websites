@@ -49,6 +49,7 @@ import CompetitionsList from './components/competitions/pages/CompetitionsList'
 import CompetitionDetails from './components/competitions/pages/CompetitionDetails'
 import AttemptCompetition from './components/competitions/pages/AttemptCompetition'
 import CompetitionLeaderboard from './components/competitions/pages/CompetitionLeaderboard'
+import CompetitionPreTest from './components/competitions/pages/CompetitionPreTest'
 
 
 function App() {
@@ -97,6 +98,8 @@ function App() {
         <Route path="/competition/leaderboard/:id" element={<CompetitionLeaderboard/>}/>
 
         <Route path="/competition/:id" element={<CompetitionDetails/>}/>
+        <Route path="/competition/pretest/:id" element={<CompetitionPreTest />}
+/>
 
           {/* ================= PYQ ROUTES ================= */}
           <Route path="/pyq" element={<PyqHome />} />

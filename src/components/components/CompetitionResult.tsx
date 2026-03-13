@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import "../../../styles/compitions/competitionPages.css"
 import type { Result } from "../competitions/types/competitionTypes"
+import { isLoggedIn } from "../../utils/auth"
 
 export default function CompetitionResult() {
   const location = useLocation()
@@ -78,7 +79,13 @@ export default function CompetitionResult() {
         <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
           <button
             className="cp-btn-leaderboard"
-            onClick={() => navigate(`/competition/leaderboard/${result.rank}`)}
+            onClick={() => {
+              if (!isLoggedIn()) {
+                (window as any).openLogin(); // 🔥 auth modal
+                return;
+              }
+              navigate(`/competition/leaderboard/${result.rank}`)
+            }}
           >
             View Leaderboard
           </button>

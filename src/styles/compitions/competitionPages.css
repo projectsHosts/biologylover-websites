@@ -798,6 +798,27 @@
   background: var(--cp-red-dim);
 }
 
+.cp-payment-summary{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  text-align:center;
+}
+
+.cp-payment-summary p{
+  font-size:13px;
+  color:#94a3b8;
+  margin-bottom:3px;
+}
+
+.cp-payment-summary h2{
+  font-size:24px;
+  font-weight:700;
+  color:#4ade80;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
   .cp-scope .cp-page,
