@@ -6,127 +6,52 @@ import {
   getAttemptStatus,
   getCompetitionById,
   registerCompetition,
-  // startCompetitionAttempt,
   verifyCompetitionPayment
 } from "../api/competitionApi"
 import type { Competition } from "../types/competitionTypes"
 import "../../../styles/compitions/competitionPages.css"
 import { isLoggedIn } from "../../../utils/auth"
 
-/* ================= TOAST SYSTEM ================= */
-
 type ToastType = "success" | "error" | "info"
+interface ToastItem { id: number; message: string; type: ToastType }
 
-interface ToastItem {
-  id: number
-  message: string
-  type: ToastType
-}
-
-function ToastNotification({
-  toast,
-  onClose,
-  index,
-}: {
-  toast: ToastItem
-  onClose: (id: number) => void
-  index: number
-}) {
+function ToastNotification({ toast, onClose, index }: { toast: ToastItem; onClose: (id: number) => void; index: number }) {
   const [visible, setVisible] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const duration = 3800
 
   useEffect(() => {
     const enterTimer = setTimeout(() => setVisible(true), 10)
-    const leaveTimer = setTimeout(() => {
-      setLeaving(true)
-      setTimeout(() => onClose(toast.id), 400)
-    }, duration)
-    return () => {
-      clearTimeout(enterTimer)
-      clearTimeout(leaveTimer)
-    }
+    const leaveTimer = setTimeout(() => { setLeaving(true); setTimeout(() => onClose(toast.id), 400) }, duration)
+    return () => { clearTimeout(enterTimer); clearTimeout(leaveTimer) }
   }, [toast.id, onClose])
 
-  const handleClose = () => {
-    setLeaving(true)
-    setTimeout(() => onClose(toast.id), 400)
-  }
+  const handleClose = () => { setLeaving(true); setTimeout(() => onClose(toast.id), 400) }
 
   const config = {
     success: {
-      bar: "#4ade80",
-      glow: "rgba(74,222,128,0.18)",
-      title: "Registration Successful!",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" fill="rgba(74,222,128,0.15)" stroke="#4ade80" strokeWidth="1.5" />
-          <path d="M7.5 12.5l3 3 6-6" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
+      bar: "#4ade80", glow: "rgba(74,222,128,0.18)", title: "Registration Successful!",
+      icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(74,222,128,0.15)" stroke="#4ade80" strokeWidth="1.5" /><path d="M7.5 12.5l3 3 6-6" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>),
     },
     error: {
-      bar: "#f87171",
-      glow: "rgba(248,113,113,0.18)",
-      title: "Something went wrong",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" fill="rgba(248,113,113,0.15)" stroke="#f87171" strokeWidth="1.5" />
-          <path d="M15 9l-6 6M9 9l6 6" stroke="#f87171" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      ),
+      bar: "#f87171", glow: "rgba(248,113,113,0.18)", title: "Something went wrong",
+      icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(248,113,113,0.15)" stroke="#f87171" strokeWidth="1.5" /><path d="M15 9l-6 6M9 9l6 6" stroke="#f87171" strokeWidth="2" strokeLinecap="round" /></svg>),
     },
     info: {
-      bar: "#60a5fa",
-      glow: "rgba(96,165,250,0.18)",
-      title: "Heads up!",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" strokeWidth="1.5" />
-          <path d="M12 8v4M12 16h.01" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      ),
+      bar: "#60a5fa", glow: "rgba(96,165,250,0.18)", title: "Heads up!",
+      icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" strokeWidth="1.5" /><path d="M12 8v4M12 16h.01" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" /></svg>),
     },
   }
-
   const { bar, glow, title, icon } = config[toast.type]
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&display=swap');
-        @keyframes toast-shrink-${toast.id} {
-          from { width: 100%; }
-          to   { width: 0%; }
-        }
+        @keyframes toast-shrink-${toast.id} { from { width: 100%; } to { width: 0%; } }
       `}</style>
-      <div
-        style={{
-          position: "fixed",
-          top: `${24 + index * 88}px`,
-          right: "24px",
-          zIndex: 9999 + index,
-          maxWidth: "360px",
-          width: "calc(100vw - 48px)",
-          transform: visible && !leaving ? "translateX(0) scale(1)" : "translateX(120%) scale(0.9)",
-          opacity: visible && !leaving ? 1 : 0,
-          transition: "transform 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s ease",
-        }}
-      >
-        <div
-          style={{
-            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: "14px",
-            padding: "14px 16px 14px 20px",
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "11px",
-            boxShadow: `0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), 0 0 40px ${glow}`,
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
+      <div style={{ position: "fixed", top: `${24 + index * 88}px`, right: "24px", zIndex: 9999 + index, maxWidth: "360px", width: "calc(100vw - 48px)", transform: visible && !leaving ? "translateX(0) scale(1)" : "translateX(120%) scale(0.9)", opacity: visible && !leaving ? 1 : 0, transition: "transform 0.45s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s ease" }}>
+        <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "14px", padding: "14px 16px 14px 20px", display: "flex", alignItems: "flex-start", gap: "11px", boxShadow: `0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), 0 0 40px ${glow}`, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: "-30px", left: "-30px", width: "140px", height: "140px", borderRadius: "50%", background: glow, filter: "blur(35px)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", left: 0, top: "12%", height: "76%", width: "3px", borderRadius: "0 3px 3px 0", background: `linear-gradient(to bottom, ${bar}, ${bar}88)`, boxShadow: `0 0 10px ${bar}` }} />
           <div style={{ flexShrink: 0, marginTop: "1px" }}>{icon}</div>
@@ -134,12 +59,7 @@ function ToastNotification({
             <p style={{ margin: 0, fontSize: "13.5px", fontWeight: 600, color: "#f1f5f9", letterSpacing: "0.01em", fontFamily: "'DM Sans', sans-serif" }}>{title}</p>
             <p style={{ margin: "3px 0 0", fontSize: "12.5px", color: "rgba(255,255,255,0.45)", fontFamily: "'DM Sans', sans-serif", lineHeight: "1.45" }}>{toast.message}</p>
           </div>
-          <button
-            onClick={handleClose}
-            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.25)", cursor: "pointer", padding: "0 2px", fontSize: "18px", lineHeight: 1, flexShrink: 0, transition: "color 0.2s", fontFamily: "sans-serif" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
-          >×</button>
+          <button onClick={handleClose} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.25)", cursor: "pointer", padding: "0 2px", fontSize: "18px", lineHeight: 1, flexShrink: 0, transition: "color 0.2s", fontFamily: "sans-serif" }} onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}>×</button>
           <div style={{ position: "absolute", bottom: 0, left: 0, height: "2.5px", background: `linear-gradient(to right, ${bar}, ${bar}55)`, borderRadius: "0 0 14px 14px", animation: `toast-shrink-${toast.id} ${duration}ms linear forwards` }} />
         </div>
       </div>
@@ -163,8 +83,6 @@ function useToast() {
   return { showToast, toasts, removeToast }
 }
 
-/* ================= MAIN COMPONENT ================= */
-
 export default function CompetitionDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -180,36 +98,47 @@ export default function CompetitionDetail() {
   const [attemptStatus, setAttemptStatus] = useState("")
   const [showRegisterModal, setShowRegisterModal] = useState(false)
 
+  // ✅ city, state, pincode added
   const [formData, setFormData] = useState({
     fullName: "",
     contactNumber: "",
     instagramHandle: "",
     email: "",
     address: "",
+    city: "",
+    state: "",
+    pincode: "",
   })
 
   const handleFinalRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!id || !comp) return
 
+    // ✅ All fields validation including new ones
     if (
-    !formData.fullName.trim() ||
-    !formData.contactNumber.trim() ||
-    !formData.instagramHandle.trim() ||
-    !formData.email.trim() ||
-    !formData.address.trim()
-  ) {
-    showToast("Please fill all required fields", "error")
-    return
-  }
+      !formData.fullName.trim() ||
+      !formData.contactNumber.trim() ||
+      !formData.instagramHandle.trim() ||
+      !formData.email.trim() ||
+      !formData.address.trim() ||
+      !formData.city.trim() ||
+      !formData.state.trim() ||
+      !formData.pincode.trim()
+    ) {
+      showToast("Please fill all required fields", "error")
+      return
+    }
 
-  // ✅ Contact number validation yaha lagana hai
-  const phoneRegex = /^[0-9]{10}$/;
+    if (!/^[0-9]{10}$/.test(formData.contactNumber)) {
+      showToast("Enter a valid 10 digit contact number", "error")
+      return
+    }
 
-  if (!phoneRegex.test(formData.contactNumber)) {
-    showToast("Enter a valid 10 digit contact number", "error");
-    return;
-  }
+    // ✅ Pincode validation
+    if (!/^[0-9]{6}$/.test(formData.pincode)) {
+      showToast("Enter a valid 6 digit pincode", "error")
+      return
+    }
 
     try {
       setLoading(true)
@@ -256,7 +185,6 @@ export default function CompetitionDetail() {
     }
   }
 
-  /* ================= LIVE CLOCK ================= */
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date())
@@ -283,7 +211,6 @@ export default function CompetitionDetail() {
     return () => clearInterval(interval)
   }, [id])
 
-  /* ================= LOAD DATA ================= */
   useEffect(() => {
     if (!id) return
     const load = async () => {
@@ -309,14 +236,11 @@ export default function CompetitionDetail() {
   if (pageLoading || !comp) {
     return (
       <div className="cp-scope">
-        <div className="cp-loading">
-          <div className="cp-loading-spinner" />
-        </div>
+        <div className="cp-loading"><div className="cp-loading-spinner" /></div>
       </div>
     )
   }
 
-  /* ================= TIME LOGIC ================= */
   const startTime = new Date(comp.startTime)
   const endTime = new Date(comp.endTime)
   const regStart = comp.registrationStart ? new Date(comp.registrationStart) : null
@@ -329,7 +253,6 @@ export default function CompetitionDetail() {
   const isRegistrationOpen = regStart && regEnd && now >= regStart && now <= regEnd
   const isRegistrationClosed = regEnd && now > regEnd
 
-  /* ================= COUNTDOWN ================= */
   const getCountdown = () => {
     const diff = startTime.getTime() - now.getTime()
     if (diff <= 0) return "Starting..."
@@ -341,19 +264,6 @@ export default function CompetitionDetail() {
     if (days > 0) return `${days} Day${days > 1 ? "s" : ""} ${hours}h ${minutes}m ${seconds}s`
     return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`
   }
-
-  /* ================= START TEST ================= */
-  // const startTest = async () => {
-  //   if (!id) return
-  //   try {
-  //     const res = await startCompetitionAttempt(Number(id))
-  //     navigate(`/competition/attempt/${res.attemptId}`, {
-  //       state: { duration: res.durationMinutes },
-  //     })
-  //   } catch {
-  //     showToast("Unable to start the test. Please try again.", "error")
-  //   }
-  // }
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("en-US", {
@@ -374,9 +284,7 @@ export default function CompetitionDetail() {
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       <div className="cp-detail-page">
-        <button className="cp-btn-back" onClick={() => navigate("/competition")}>
-          ← Back
-        </button>
+        <button className="cp-btn-back" onClick={() => navigate("/competition")}>← Back</button>
 
         {comp.bannerUrl ? (
           <img className="cp-detail-banner" src={comp.bannerUrl} alt={comp.title} />
@@ -395,19 +303,15 @@ export default function CompetitionDetail() {
           <p>{comp.description}</p>
         </div>
 
-        {/* ================= CTA SECTION ================= */}
         <div className="cp-action-area">
-
           {/* UPCOMING */}
           {isBeforeStart && (
             <>
               {!registered && isRegistrationOpen && (
                 <button className="cp-btn-primary" onClick={() => {
-                  if (!isLoggedIn()) {
-                    (window as any).openLogin(); // 🔥 auth modal
-                    return;
-                  }
-                  setShowRegisterModal(true)}} disabled={loading}>
+                  if (!isLoggedIn()) { (window as any).openLogin(); return }
+                  setShowRegisterModal(true)
+                }} disabled={loading}>
                   {loading ? "Registering..." : "Register Now →"}
                 </button>
               )}
@@ -431,28 +335,12 @@ export default function CompetitionDetail() {
               {attempted && (attemptStatus === "SUBMITTED" || attemptStatus === "TIME_UP") ? (
                 <button className="cp-btn-submitted">Submitted – Wait for Result</button>
               ) : registered ? (
-                // <button className="cp-btn-start" onClick={() => {
-                //    if (!isLoggedIn()) {
-                //     (window as any).openLogin(); // 🔥 auth modal
-                //     return;
-                //   }
-                //   startTest()}}>
-
-                //   Enter Competition
-                // </button>
-             <button
-              className="cp-btn-start"
-              onClick={() => {
-                if (!isLoggedIn()) {
-                  (window as any).openLogin(); // open login modal
-                  return;
-                }
-
-                navigate(`/competition/pretest/${comp.id}`);
-              }}
-            >
-              Enter Competition
-            </button>
+                <button className="cp-btn-start" onClick={() => {
+                  if (!isLoggedIn()) { (window as any).openLogin(); return }
+                  navigate(`/competition/pretest/${comp.id}`)
+                }}>
+                  Enter Competition
+                </button>
               ) : (
                 <button className="cp-btn-warning" onClick={() => setShowModal(true)}>
                   Registration Required
@@ -465,12 +353,10 @@ export default function CompetitionDetail() {
           {isEnded && (
             <>
               <button className="cp-btn-ended">❌ Competition Ended</button>
-              <button className="cp-btn-leaderboard" onClick={() =>  {
-              if (!isLoggedIn()) {
-                    (window as any).openLogin(); // 🔥 auth modal
-                    return;
-                  }
-                  navigate(`/competition/leaderboard/${comp.id}`)}}>
+              <button className="cp-btn-leaderboard" onClick={() => {
+                if (!isLoggedIn()) { (window as any).openLogin(); return }
+                navigate(`/competition/leaderboard/${comp.id}`)
+              }}>
                 View Leaderboard
               </button>
             </>
@@ -490,28 +376,128 @@ export default function CompetitionDetail() {
           </div>
         )}
 
-        {/* Register Modal */}
+        {/* ✅ Register Modal — with city, state, pincode */}
         {showRegisterModal && (
           <div className="cp-modal">
             <div className="cp-modal-content large">
               <h3>Competition Registration</h3>
               <div className="cp-payment-summary">
-              <p>Entry Fee</p>
-              <h2>{comp.isFree ? "Free Entry" : `₹${comp.price}`}</h2>
-            </div>
-              <form onSubmit={handleFinalRegister}>
-                <input type="text" required placeholder="Full Name" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} />
-                <input type="text" required placeholder="Contact Number" value={formData.contactNumber} onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })} />
-                <input type="text" required placeholder="Instagram Handle" value={formData.instagramHandle} onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })} />
-                <input type="email" required placeholder="Email ID" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                <textarea required placeholder="Address" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
-              <div className="cp-modal-actions">
-                <button type="submit" className="cp-btn-primary" disabled={loading}>
-                  {loading ? "Processing..." : comp.isFree ? "Submit Registration" : "Proceed to Pay"}
-                </button>
-                <button className="cp-btn-cancel" onClick={() => setShowRegisterModal(false)}>Cancel</button>
+                <p>Entry Fee</p>
+                <h2>{comp.isFree ? "Free Entry" : `₹${comp.price}`}</h2>
               </div>
-               </form>
+              <form onSubmit={handleFinalRegister}>
+
+                <input
+                  type="text" required placeholder="Full Name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                />
+                <input
+                  type="text" required placeholder="Contact Number (10 digits)"
+                  value={formData.contactNumber}
+                  onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                />
+                <input
+                  type="text" required placeholder="Instagram Handle (e.g. @username)"
+                  value={formData.instagramHandle}
+                  onChange={(e) => setFormData({ ...formData, instagramHandle: e.target.value })}
+                />
+                <input
+                  type="email" required placeholder="Email ID"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+                <textarea
+                  required placeholder="Address (House No, Street, Area)"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                />
+
+                {/* ✅ City + Pincode in one row */}
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <input
+                    type="text" required placeholder="City"
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    style={{ flex: 1 }}
+                  />
+                  <input
+                    type="text" required placeholder="Pincode (6 digits)"
+                    value={formData.pincode} maxLength={6}
+                    onChange={(e) => setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, "") })}
+                    style={{ flex: 1 }}
+                  />
+                </div>
+
+                {/* ✅ State Dropdown — all Indian states + UTs */}
+                <select
+                  required
+                  value={formData.state}
+                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    borderRadius: "8px",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "#1e293b",
+                    color: formData.state ? "#f1f5f9" : "rgba(255,255,255,0.4)",
+                    fontSize: "14px",
+                    outline: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="" disabled>Select State / UT</option>
+                  <optgroup label="States">
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                  </optgroup>
+                  <optgroup label="Union Territories">
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Puducherry">Puducherry</option>
+                  </optgroup>
+                </select>
+
+                <div className="cp-modal-actions">
+                  <button type="submit" className="cp-btn-primary" disabled={loading}>
+                    {loading ? "Processing..." : comp.isFree ? "Submit Registration" : "Proceed to Pay"}
+                  </button>
+                  <button type="button" className="cp-btn-cancel" onClick={() => setShowRegisterModal(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
