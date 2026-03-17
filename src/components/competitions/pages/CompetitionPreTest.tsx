@@ -28,7 +28,10 @@ export default function CompetitionPreTest() {
         opacity: 0 !important;
         pointer-events: none !important;
       }
-      body.test-active { overflow: hidden; }
+           body.test-active {
+        overflow-y: auto !important;
+      }
+
     `
     document.head.appendChild(style)
 

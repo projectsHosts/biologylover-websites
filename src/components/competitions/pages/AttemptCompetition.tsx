@@ -52,7 +52,10 @@ export default function AttemptCompetition() {
         opacity: 0 !important;
         pointer-events: none !important;
       }
-      body.test-active { overflow: hidden; }
+       body.test-active {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+      }
     `
     document.head.appendChild(style)
 
