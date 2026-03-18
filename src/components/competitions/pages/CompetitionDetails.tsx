@@ -265,11 +265,38 @@ export default function CompetitionDetail() {
     return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`
   }
 
+  const getRegistrationCountdown = () => {
+  if (!regEnd) return ""
+
+  const diff = regEnd.getTime() - now.getTime()
+
+  if (diff <= 0) return "Registration Closed"
+
+  const totalSeconds = Math.floor(diff / 1000)
+  const days = Math.floor(totalSeconds / (24 * 3600))
+  const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  if (days > 0) {
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`
+  }
+
+  return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`
+}
+
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("en-US", {
       weekday: "short", month: "short", day: "numeric",
       hour: "2-digit", minute: "2-digit",
     })
+
+  const formatShortDate = (date: Date) => {
+   return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+  })
+}
 
   const statusBadge = isLive ? (
     <div className="cp-section-badge live">● Live Now</div>
@@ -308,12 +335,19 @@ export default function CompetitionDetail() {
           {isBeforeStart && (
             <>
               {!registered && isRegistrationOpen && (
+                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <button className="cp-btn-primary" onClick={() => {
                   if (!isLoggedIn()) { (window as any).openLogin(); return }
                   setShowRegisterModal(true)
                 }} disabled={loading}>
                   {loading ? "Registering..." : "Register Now →"}
                 </button>
+
+                 <div className="cp-countdown-display">
+                   Ends on {formatShortDate(regEnd!)} • {getRegistrationCountdown()}
+                </div>
+                </div>
+
               )}
               {!registered && isRegistrationClosed && (
                 <button className="cp-btn-disabled">Registration Closed</button>
