@@ -80,8 +80,9 @@ export default function CompetitionList() {
   const [live, setLive] = useState<Competition[]>([])
   const [upcoming, setUpcoming] = useState<Competition[]>([])
   const [completed, setCompleted] = useState<Competition[]>([])
+  const visibleCompleted = completed.slice(0, 3)
   const [loading, setLoading] = useState(true)
-
+  const navigate = useNavigate()
   useEffect(() => {
     const load = async () => {
       const [l, u, c] = await Promise.all([
@@ -158,20 +159,38 @@ export default function CompetitionList() {
         )}
 
         {/* Completed */}
-        <div className="cp-section-header">
-          <div className="cp-section-badge completed">✓ Completed</div>
-          <div className="cp-section-line" />
-          <span className="cp-section-count">{completed.length} finished</span>
-        </div>
+       {/* Completed */}
+<div className="cp-section-header">
+  <div className="cp-section-badge completed">✓ Completed</div>
+  <div className="cp-section-line" />
+  <span className="cp-section-count">{completed.length} finished</span>
+</div>
 
-        {completed.length > 0 ? (
-          <div className="cp-grid">
-            {completed.map(c => <CompCard key={c.id} comp={c} variant="default" />)}
-          </div>
-        ) : (
-          <div className="cp-empty">No completed competitions yet</div>
-        )}
+{completed.length > 0 ? (
+  <>
+    <div className="cp-grid">
+      {visibleCompleted.map(c => (
+        <CompCard key={c.id} comp={c} variant="default" />
+      ))}
+    </div>
+
+    {completed.length > 3 && (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button
+          className="cp-btn-viewall-clean"
+          onClick={() => navigate("/competition/completed")}
+        >
+          View All →
+        </button>
+      </div>
+    )}
+  </>
+) : (
+  <div className="cp-empty">No completed competitions yet</div>
+)}
       </div>
     </div>
+
+    
   )
 }
