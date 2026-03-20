@@ -189,3 +189,71 @@ export const getAttemptStatus = async (
   return res.json()
 }
 
+// competitionApi.ts ke end mein certificate section replace karo
+
+// ================= CERTIFICATE =================
+
+export const downloadCompetitionCertificate = async (
+  competitionId: number,
+  recipientName: string
+): Promise<void> => {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    throw new Error("You are not logged in. Please log in and try again.")
+  }
+
+  const res = await fetch(
+    `${API_BASE}/api/certificate/${competitionId}/download`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  if (res.status === 401) {
+    throw new Error("Session expired. Please log in again.")
+  }
+
+  if (res.status === 500) {
+    const text = await res.text()
+    throw new Error(text || "Server error. Please try again later.")
+  }
+
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(text || "Failed to generate certificate.")
+  }
+
+  const blob = await res.blob()
+
+  if (blob.size === 0) {
+    throw new Error("Certificate file is empty. Please try again.")
+  }
+
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = `certificate-${recipientName.replace(/\s+/g, "-")}.pdf`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
+export const verifyCertificate = async (uuid: string): Promise<{
+  uuid: string
+  recipientName: string
+  competitionTitle: string
+  certificateType: string
+  rankPosition: number
+  issuedAt: string
+}> => {
+  const res = await fetch(`${API_BASE}/api/certificate/verify/${uuid}`)
+  if (res.status === 404) throw new Error("Certificate not found.")
+  if (!res.ok) throw new Error("Verification failed. Please try again.")
+  return res.json()
+}
+

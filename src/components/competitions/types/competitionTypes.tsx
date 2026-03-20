@@ -51,6 +51,7 @@ export interface Leaderboard {
   displayName: string
   score: number
   rankPosition  : number
+  profileImage?: string
 }
 
 export interface CompetitionLeaderboardResponse {

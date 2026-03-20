@@ -51,6 +51,7 @@ import AttemptCompetition from './components/competitions/pages/AttemptCompetiti
 import CompetitionLeaderboard from './components/competitions/pages/CompetitionLeaderboard'
 import CompetitionPreTest from './components/competitions/pages/CompetitionPreTest'
 import CompletedPage from './components/competitions/pages/CompletedPage '
+import CertificateVerify from './components/competitions/pages/CertificateVerify'
 
 
 function App() {
@@ -99,8 +100,10 @@ function App() {
         <Route path="/competition/leaderboard/:id" element={<CompetitionLeaderboard/>}/>
          <Route path="/competition/completed" element={<CompletedPage />} />
         <Route path="/competition/:id" element={<CompetitionDetails/>}/>
-        <Route path="/competition/pretest/:id" element={<CompetitionPreTest />}
-/>
+        <Route path="/competition/pretest/:id" element={<CompetitionPreTest />} />
+        
+        <Route path="/certificate/verify" element={<CertificateVerify />} />
+        <Route path="/certificate/verify/:uuid" element={<CertificateVerify />} />
 
           {/* ================= PYQ ROUTES ================= */}
           <Route path="/pyq" element={<PyqHome />} />

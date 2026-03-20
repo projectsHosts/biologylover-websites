@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { LeaderboardResponse } from "../types/quiz";
+import type { DailyTopperHistoryItem, LeaderboardResponse } from "../types/quiz";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE || "https://api.biologylover.com";
@@ -56,4 +56,16 @@ export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
     },
   });
   return res.data;
+};
+
+
+export const getTopperHistory = async (): Promise<DailyTopperHistoryItem[]> => {
+  const res = await fetch(`${API_BASE}/api/quiz/daily/topper-history`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch topper history");
+  return res.json();
 };

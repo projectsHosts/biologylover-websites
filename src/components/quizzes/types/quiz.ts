@@ -19,3 +19,13 @@ export interface LeaderboardResponse {
   totalXp: number;
   streak?: number;
 }
+
+export interface DailyTopperHistoryItem {
+  avatar: any;
+  displayName: any;
+  profileImage: any;
+  userId: number;
+  totalXp: number;
+  timeTakenSeconds: number;
+  quizDate: string;
+}
