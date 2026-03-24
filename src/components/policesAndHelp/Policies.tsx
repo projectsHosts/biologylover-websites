@@ -46,15 +46,40 @@ export default function PrivacyPolicy() {
       </p>
       <p>We may share anonymized data with:</p>
       <ul>
-        <li>Analytics tools (like Google Analytics – no personal identifiers)</li>
+        <li>Google Analytics (for anonymous traffic analysis)</li>
+        <li>Google AdSense (for advertising)</li>
         <li>Hosting providers (only for site operation)</li>
       </ul>
       <p>We may disclose data if required by law (court order, etc.).</p>
 
       <h2>Cookies & Tracking</h2>
-      <p>
-        We use essential cookies only. You can disable them in your browser settings, but some features may not work perfectly.
-      </p>
+        <p>
+          We use cookies to:
+        </p>
+        <ul>
+          <li>Improve user experience</li>
+          <li>Analyze traffic (Google Analytics)</li>
+          <li>Serve advertisements (via Google AdSense)</li>
+        </ul>
+        <p>
+          You can disable cookies in your browser settings, but some features may not work properly.
+        </p>
+
+        <h2>Advertising & Google AdSense</h2>
+        <p>
+          We may use Google AdSense to display advertisements. Google uses cookies (such as the DoubleClick cookie) 
+          to serve ads based on a user’s visits to this and other websites.
+        </p>
+        <p>
+          Users may opt out of personalized advertising by visiting:
+          <br />
+          <a href="https://www.google.com/settings/ads" target="_blank">
+            https://www.google.com/settings/ads
+          </a>
+        </p>
+        <p>
+          Third-party vendors, including Google, use cookies and similar technologies to serve ads based on prior visits.
+        </p>
 
       <h2>Security</h2>
       <p>
@@ -77,6 +102,11 @@ export default function PrivacyPolicy() {
       <h2>Changes to This Policy</h2>
       <p>
         We may update this policy from time to time. Changes will be posted here with a new "Last updated" date.
+      </p>
+      <h2>International Users</h2>
+      <p>
+        For users in the European Economic Area (EEA), UK, and Switzerland, we comply with applicable data protection laws 
+        and provide consent options where required.
       </p>
 
       <h2>Contact Us</h2>
