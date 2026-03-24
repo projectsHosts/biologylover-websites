@@ -52,6 +52,8 @@ export interface Leaderboard {
   score: number
   rankPosition  : number
   profileImage?: string
+  city?: string 
+  state?: string
 }
 
 export interface CompetitionLeaderboardResponse {

@@ -130,6 +130,11 @@ export default function CompetitionLeaderboard() {
                     <div className="lb-podium-medal">{cfg.emoji}</div>
                   </div>
                   <div className="lb-podium-name">{entry.displayName}</div>
+                             {(entry.city || entry.state) && (
+                <span className="lb-location">
+                 {[entry.state].filter(Boolean).join(", ")}
+                </span>
+              )}
                   <div className="lb-podium-score">{entry.score}</div>
                   <div className={`lb-podium-stage ${cfg.stageClass}`}>
                     <div className="lb-stage-glow-line" />

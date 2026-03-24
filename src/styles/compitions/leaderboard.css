@@ -408,6 +408,27 @@
   animation: lb-spin 0.7s linear infinite; display: inline-block;
 }
 
+/* leaderboard.css */
+
+.lb-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lb-location {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.02em;
+}
+
+.lb-podium-location {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
 .lb-root .lb-cert-verify-link {
   color: #5b6ef5;
   cursor: pointer;
