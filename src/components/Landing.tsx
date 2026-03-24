@@ -38,7 +38,7 @@ const LandingNew: React.FC = () => {
           <div className="hero-left">
             <div className="badge-pill">
               <Star size={14} fill="#fbbf24" stroke="#fbbf24" />
-              <span>Trusted by 50K+ Students</span>
+              <span>Trusted by 100K+ Students</span>
             </div>
 
             <h1 className="main-title">
