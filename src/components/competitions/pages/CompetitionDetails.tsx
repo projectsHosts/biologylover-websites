@@ -386,12 +386,12 @@ export default function CompetitionDetail() {
           {/* COMPLETED */}
           {isEnded && (
             <>
-              <button className="cp-btn-ended">❌ Competition Ended</button>
+              <button className="cp-btn-ended"> Competition Ended</button>
               <button className="cp-btn-leaderboard" onClick={() => {
                 if (!isLoggedIn()) { (window as any).openLogin(); return }
                 navigate(`/competition/leaderboard/${comp.id}`)
               }}>
-                View Leaderboard
+                View Result
               </button>
             </>
           )}
