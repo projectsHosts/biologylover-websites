@@ -3,9 +3,11 @@ import StateBooks from "./StateBooks";
 import NcertBooks from "./NcertBooks";
 import gsap from "gsap";
 import "../../styles/resources.css";
+import ShortNotes from "./ShortNotes";
+import CompetitiveExams from "./CompetitiveExams";
 
 export default function Resources() {
-  const [activeTab, setActiveTab] = useState<"state" | "ncert">("state");
+  const [activeTab, setActiveTab] = useState<"state" | "ncert" | "short-notes" | "competitive">("state");
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -54,11 +56,27 @@ export default function Resources() {
         >
           NCERT Books
         </button>
+        <button
+          className={activeTab === "short-notes" ? "active" : ""}
+          onClick={() => setActiveTab("short-notes")}
+        >
+          short notes
+        </button>
+        <button
+  className={activeTab === "competitive" ? "active" : ""}
+  onClick={() => setActiveTab("competitive")}
+>
+  NEET / JEE
+</button>
       </div>
       </div>
 
       {/* Content */}
-      {activeTab === "state" ? <StateBooks /> : <NcertBooks />}
+      {/* {activeTab === "state" ? <StateBooks /> : <NcertBooks />} */}
+      {activeTab === "state" && <StateBooks />}
+      {activeTab === "ncert" && <NcertBooks />}
+      {activeTab === "short-notes" && <ShortNotes />}
+      {activeTab === "competitive" && <CompetitiveExams />}
     </div>
   );
 }
