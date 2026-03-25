@@ -52,10 +52,32 @@ import CompetitionLeaderboard from './components/competitions/pages/CompetitionL
 import CompetitionPreTest from './components/competitions/pages/CompetitionPreTest'
 import CompletedPage from './components/competitions/pages/CompletedPage '
 import CertificateVerify from './components/competitions/pages/CertificateVerify'
+import { useEffect } from 'react'
 
 
 function App() {
   const location = useLocation(); 
+
+
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const isExpired = Date.now() > payload.exp * 1000;
+
+    if (isExpired) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
+  } catch {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  }
+}, []);
+
   usePageTracking();
   return (
     <div>
