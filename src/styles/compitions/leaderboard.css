@@ -206,7 +206,7 @@
 }
 .lb-root .lb-table-head {
   display: grid;
-  grid-template-columns: 72px 1fr 100px;
+  grid-template-columns: 72px 1fr 100px 120px;
   padding: 14px 24px;
   background: rgba(255,255,255,0.03);
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -221,7 +221,7 @@
 
 .lb-root .lb-row {
   display: grid;
-  grid-template-columns: 72px 1fr 100px;
+  grid-template-columns: 72px 1fr 100px 120px;
   align-items: center;
   padding: clamp(12px,2vw,16px) 24px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -315,6 +315,30 @@
   letter-spacing:0.14em; text-transform:uppercase; color:#5b6ef5;
   margin-bottom:14px; display:flex; align-items:center; gap:8px;
 }
+
+.lb-root .lb-col-time {
+  text-align: right;
+}
+
+.lb-root .lb-time-cell {
+  text-align: right;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #9aa0c0;
+  white-space: nowrap;
+}
+
+.lb-root .lb-podium-time {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 0.70rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 8px;   /* score aur stage ke beech thoda gap */
+  letter-spacing: 0.02em;
+}
+
 .lb-root .lb-self-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(91,110,245,0.3),transparent); }
 .lb-root .lb-self-row  { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
 .lb-root .lb-self-rank { font-family:'Sora',sans-serif; font-size:clamp(1.4rem,3vw,2rem); font-weight:900; color:#5b6ef5; min-width:60px; }
@@ -444,15 +468,15 @@
 }
 
 @media (max-width: 700px) {
-  .lb-root .lb-table-head { grid-template-columns: 52px 1fr 80px; padding: 12px 14px; }
-  .lb-root .lb-row         { grid-template-columns: 52px 1fr 80px; padding: 12px 14px; }
+  .lb-root .lb-table-head { grid-template-columns: 52px 1fr 80px 100px; padding: 12px 14px; }
+  .lb-root .lb-row         { grid-template-columns: 52px 1fr 80px 100px; padding: 12px 14px; }
 }
 
 @media (max-width: 520px) {
   .lb-root .lb-page { padding: 20px 16px 60px; }
   .lb-root .lb-podium-name   { font-size: 0.66rem; max-width: 80px; }
-  .lb-root .lb-table-head    { grid-template-columns: 44px 1fr 72px; padding: 10px 12px; }
-  .lb-root .lb-row            { grid-template-columns: 44px 1fr 72px; padding: 10px 12px; }
+  .lb-root .lb-table-head    { grid-template-columns: 44px 1fr 72px 96px; padding: 10px 12px; }
+  .lb-root .lb-row            { grid-template-columns: 44px 1fr 72px 96px; padding: 10px 12px; }
   .lb-root .lb-row-me         { margin: 4px 4px; }
   .lb-root .lb-stats-strip    { padding: 16px 12px; }
   .lb-root .lb-stat-divider   { margin: 0 12px; }

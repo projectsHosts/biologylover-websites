@@ -54,6 +54,7 @@ export interface Leaderboard {
   profileImage?: string
   city?: string 
   state?: string
+  timeTakenMillis: number
 }
 
 export interface CompetitionLeaderboardResponse {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { downloadCompetitionCertificate, getCompetitionLeaderboard } from "../api/competitionApi"
 import type { CompetitionLeaderboardResponse } from "../types/competitionTypes"
 import "../../../styles/compitions/leaderboard.css"
+import { Timer } from "lucide-react"
 
 export default function CompetitionLeaderboard() {
   const { id } = useParams()
@@ -25,6 +26,14 @@ export default function CompetitionLeaderboard() {
       })
       .finally(() => setLoading(false))
   }, [id])
+
+const formatTime = (ms: number | null | undefined) => {
+  if (ms == null || ms <= 0) return "-";  // null/undefined/0 All handle Here
+  const totalSec = Math.floor(ms / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  return `${min}m ${sec}s`;
+};
 
   const getInitials = (name: string) => name.charAt(0).toUpperCase()
 
@@ -136,6 +145,12 @@ export default function CompetitionLeaderboard() {
                 </span>
               )}
                   <div className="lb-podium-score">{entry.score}</div>
+                  {entry.timeTakenMillis != null && (
+                      <div className="lb-podium-time">
+                        <Timer size={11} strokeWidth={2.5} />
+                        {formatTime(entry.timeTakenMillis)}
+                      </div>
+                    )}
                   <div className={`lb-podium-stage ${cfg.stageClass}`}>
                     <div className="lb-stage-glow-line" />
                     <div className="lb-stage-shimmer" />
@@ -172,6 +187,7 @@ export default function CompetitionLeaderboard() {
             <span className="lb-col-rank">Rank</span>
             <span className="lb-col-name">Participant</span>
             <span className="lb-col-score">Score</span>
+            <span className="lb-col-time">Time</span>
           </div>
 
           {top10.length === 0 ? (
@@ -207,6 +223,9 @@ export default function CompetitionLeaderboard() {
                     </span>
                   </div>
                   <span className={`lb-score-cell ${rankCls}`}>{entry.score}</span>
+                  <span className="lb-time-cell">
+               {formatTime(entry.timeTakenMillis)}
+            </span>
                 </div>
               )
             })
