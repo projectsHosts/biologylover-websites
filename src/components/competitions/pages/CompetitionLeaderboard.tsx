@@ -4,6 +4,7 @@ import { downloadCompetitionCertificate, getCompetitionLeaderboard } from "../ap
 import type { CompetitionLeaderboardResponse } from "../types/competitionTypes"
 import "../../../styles/compitions/leaderboard.css"
 import { Timer } from "lucide-react"
+import { isLoggedIn } from "../../../utils/auth"
 
 export default function CompetitionLeaderboard() {
   const { id } = useParams()
@@ -15,6 +16,11 @@ export default function CompetitionLeaderboard() {
 
   useEffect(() => {
     if (!id) return
+    if (!isLoggedIn()) {
+    navigate(`/competition/${id}`, { replace: true })
+    return
+  }
+  
     getCompetitionLeaderboard(Number(id))
       .then(res => { setData(res); setError(null) })
       .catch(err => {
@@ -25,7 +31,7 @@ export default function CompetitionLeaderboard() {
         }
       })
       .finally(() => setLoading(false))
-  }, [id])
+  }, [id,navigate])
 
 const formatTime = (ms: number | null | undefined) => {
   if (ms == null || ms <= 0) return "-";  // null/undefined/0 All handle Here
