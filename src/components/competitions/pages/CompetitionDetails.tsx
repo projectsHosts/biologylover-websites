@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, type Key } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import {
   checkRegistrationStatus,
