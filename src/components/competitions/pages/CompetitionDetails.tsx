@@ -470,7 +470,7 @@ export default function CompetitionDetail() {
       {/* Syllabus */}
       <div className="cp-unstop-card syllabus">
         <div className="cp-card-label syllabus-label">Syllabus</div>
-        <p>{details.syllabus}</p>
+        <p className="syllabus-text">{details.syllabus}</p>
       </div>
 
     </div>

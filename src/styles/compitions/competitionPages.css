@@ -833,6 +833,11 @@
   line-height: 1.7;
 }
 
+.syllabus-text {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
 /* Bullet list for rules */
 .cp-bullet-list {
   margin: 0;
