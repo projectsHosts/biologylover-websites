@@ -285,6 +285,7 @@ export default function CompetitionDetail() {
 
   const isRegistrationOpen = regStart && regEnd && now >= regStart && now <= regEnd
   const isRegistrationClosed = regEnd && now > regEnd
+  const isRegistrationNotStarted = regStart && now < regStart
 
   const getCountdown = () => {
     const diff = startTime.getTime() - now.getTime()
@@ -374,6 +375,11 @@ export default function CompetitionDetail() {
           {/* UPCOMING */}
           {isBeforeStart && (
             <>
+            {!registered && isRegistrationNotStarted && (
+                <button className="cp-btn-disabled-1">
+                 Registration starts on {formatShortDate(regStart!)}
+                </button>
+              )}
               {!registered && isRegistrationOpen && (
                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <button className="cp-btn-primary" onClick={() => {
