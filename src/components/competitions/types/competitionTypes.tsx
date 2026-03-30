@@ -67,3 +67,11 @@ export interface Result {
   totalQuestions: number
   rank: number
 }
+
+export interface CompetitionDetails {
+  overview: string
+  eligibility: string
+  rules: string
+  syllabus: string
+  rewards: string
+}

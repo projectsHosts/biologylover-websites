@@ -135,6 +135,19 @@ export const getCompetitionLeaderboard = async (competitionId: number) => {
   return res.json()
 }
 
+export const getCompetitionDetails = async (id: number) => {
+  const res = await fetch(
+    `${API_BASE}/api/competitions/${id}/details`, 
+    {
+      method: "GET", 
+      headers: getAuthHeaders()
+    }
+  )
+
+  if (!res.ok) throw new Error("Failed to fetch details")
+  return res.json()
+}
+
 // ================= PAYMENT (COMPETITION) =================
 
 export const createCompetitionOrder = async (competitionId: number) => {

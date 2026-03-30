@@ -1,14 +1,15 @@
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, type Key } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import {
   checkRegistrationStatus,
   createCompetitionOrder,
   getAttemptStatus,
   getCompetitionById,
+  getCompetitionDetails,
   registerCompetition,
   verifyCompetitionPayment
 } from "../api/competitionApi"
-import type { Competition } from "../types/competitionTypes"
+import type { Competition, CompetitionDetails } from "../types/competitionTypes"
 import "../../../styles/compitions/competitionPages.css"
 import { isLoggedIn } from "../../../utils/auth"
 
@@ -97,6 +98,7 @@ export default function CompetitionDetail() {
   const [attempted, setAttempted] = useState(false)
   const [attemptStatus, setAttemptStatus] = useState("")
   const [showRegisterModal, setShowRegisterModal] = useState(false)
+  const [details, setDetails] = useState<CompetitionDetails | null>(null)
 
   // ✅ city, state, pincode added
   const [formData, setFormData] = useState({
@@ -107,7 +109,7 @@ export default function CompetitionDetail() {
     address: "",
     city: "",
     state: "",
-    pincode: "",
+    pincode: "", 
   })
 
   const handleFinalRegister = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -201,6 +203,37 @@ export default function CompetitionDetail() {
     }, 1000)
     return () => clearInterval(interval)
   }, [comp, id])
+
+
+  useEffect(() => {
+  if (!id) return
+
+  const load = async () => {
+    try {
+      const data = await getCompetitionById(Number(id))
+      setComp(data)
+
+      const detailsData = await getCompetitionDetails(Number(id))
+      setDetails(detailsData)
+
+      const attempt = await getAttemptStatus(Number(id))
+      if (attempt.attempted) {
+        setAttempted(true)
+        setAttemptStatus(attempt.status || "")
+      }
+
+      const status = await checkRegistrationStatus(Number(id))
+      setRegistered(status)
+
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setPageLoading(false)
+    }
+  }
+
+  load()
+}, [id])
 
   useEffect(() => {
     if (!id) return
@@ -306,19 +339,26 @@ export default function CompetitionDetail() {
     <div className="cp-section-badge completed">✓ Completed</div>
   )
 
+  function parseRewards(rewards: string) {
+    return rewards
+      .split('\n')
+      .map(line => line.replace(/^\?\s*/, '').trim())
+      .filter(Boolean)
+  }
+
   return (
     <div className="cp-scope">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       <div className="cp-detail-page">
         <button className="cp-btn-back" onClick={() => navigate("/competition")}>← Back</button>
-
+        <div className="cp-banner-wrapper">
         {comp.bannerUrl ? (
           <img className="cp-detail-banner" src={comp.bannerUrl} alt={comp.title} />
         ) : (
           <div className="cp-detail-banner-placeholder">🏆</div>
         )}
-
+     </div>
         <div className="cp-detail-header">
           <div className="cp-detail-tags">
             {statusBadge}
@@ -342,11 +382,11 @@ export default function CompetitionDetail() {
                 }} disabled={loading}>
                   {loading ? "Registering..." : "Register Now →"}
                 </button>
-
                  <div className="cp-countdown-display">
                    Ends on {formatShortDate(regEnd!)} • {getRegistrationCountdown()}
                 </div>
                 </div>
+                
 
               )}
               {!registered && isRegistrationClosed && (
@@ -396,6 +436,78 @@ export default function CompetitionDetail() {
             </>
           )}
         </div>
+{details && (
+  <div className="cp-unstop-info">
+    <div className="cp-unstop-header">
+      <span className="cp-unstop-bar" />
+      All that you need to know — {comp.title}
+    </div>
+
+    <div className="cp-unstop-grid">
+
+      {/* Overview */}
+      <div className="cp-unstop-card overview">
+        <div className="cp-card-label overview-label">Overview</div>
+        <p>{details.overview}</p>
+      </div>
+
+      {/* Eligibility */}
+      <div className="cp-unstop-card eligibility">
+        <div className="cp-card-label eligibility-label">Eligibility</div>
+        <p>{details.eligibility}</p>
+      </div>
+
+      {/* Rules */}
+      <div className="cp-unstop-card rules">
+        <div className="cp-card-label rules-label">Rules</div>
+        <ul className="cp-bullet-list">
+          {details.rules.split('\n').filter(Boolean).map((rule, i) => (
+            <li key={i}>{rule.replace(/^\d+\.\s*/, '')}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Syllabus */}
+      <div className="cp-unstop-card syllabus">
+        <div className="cp-card-label syllabus-label">Syllabus</div>
+        <p>{details.syllabus}</p>
+      </div>
+
+    </div>
+
+    {/* Rewards — 2 boxes */}
+    <div className="cp-rewards-label-header">
+      Rewards & Prizes
+    </div>
+    <div className="cp-rewards-grid">
+      {parseRewards(details.rewards).map((item, i) => {
+        const [tier, ...rest] = item.split('?')
+        const prize = rest.join('').trim()
+        const tierClean = tier.trim()
+        const rankColors = [
+          { bg: "#1a1400", border: "rgba(250,204,21,0.3)", accent: "#facc15", rank: "🥇" },
+          { bg: "#0f1a10", border: "rgba(74,222,128,0.25)", accent: "#4ade80", rank: "🥈" },
+          { bg: "#0f1520", border: "rgba(96,165,250,0.25)", accent: "#60a5fa", rank: "🥉" },
+        ]
+        const color = rankColors[i] || rankColors[2]
+        return (
+          <div key={i} className="cp-reward-box" style={{
+            background: color.bg,
+            border: `1px solid ${color.border}`,
+          }}>
+            <div className="cp-reward-rank" style={{ color: color.accent }}>
+              {tierClean}
+            </div>
+            <div className="cp-reward-prize" style={{ borderTop: `1px solid ${color.border}` }}>
+              {prize}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+
+  </div>
+)}
 
         {/* Not Registered Modal */}
         {showModal && (
