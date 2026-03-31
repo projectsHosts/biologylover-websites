@@ -396,7 +396,7 @@ export default function CompetitionDetail() {
 
               )}
               {!registered && isRegistrationClosed && (
-                <button className="cp-btn-disabled">Registration Closed</button>
+                <button className="cp-btn-disabled-2">Registration Closed</button>
               )}
               {registered && (
                 <>

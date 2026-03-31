@@ -592,6 +592,19 @@
   color: var(--cp-accent-glow);
   cursor: not-allowed;
 }
+.cp-btn-disabled-2{
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  border-radius: var(--cp-radius);
+  border: 2px solid red;
+  background: transparent;
+  color: var(--cp-red-glow);
+  cursor: not-allowed;
+}
 
 .cp-scope .cp-btn-disabled {
   font-family: 'Rajdhani', sans-serif;
@@ -894,7 +907,7 @@
 
 .cp-rewards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
